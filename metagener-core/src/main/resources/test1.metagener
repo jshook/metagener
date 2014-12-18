@@ -1,0 +1,54 @@
+/// set manual seed
+seed 2340
+
+/// or set seed from chksum
+seed chksum
+
+/// declare an entity with defaults
+entity testentity1
+
+/// declare an entity with population size 100
+entity applefarmers pop=100
+
+/// declare an entity with some fields which are idempotent to the entity id
+entity farmers pop=1000
+
+ // field 'name' is of type text
+ // its values are sampled from a textfile known as 'names'
+ // The selector of the value from this file is determined by using the entity id by default
+ // db:names is just shorthand for generator type 'db' with parameter 'names'
+ field name:text <- db:names
+
+ // field name=zip, field type=int, generator name=zip, generator input=entityid
+ field zip:int <- zip <- byentityid
+
+ // field name=height, field type=float, generator =float, distribution=normal
+ field height:float <- float <- normal <- byentityid
+
+ ( contrast this with a pure sample from a stream.. )
+
+entity applefarmers
+
+/// explicitly create a sample stream for farmers
+sample farmers
+
+/// implicitly create a sample stream for applefarmers
+/// ( this can happen automatically )
+
+/// create a sample stream which interleaves multiples in various rates
+// This creates an entity stream of all three types, with samples interleaved between the streams.
+sample all_farmers
+ applefarmers 1
+ pearfarmers 6
+ bananafarmers 10
+
+
+
+The sample distribution is not assigned at the entity
+
+/// possible future enhancements
+
+/// declare an entity with population size based on another entity
+entity pear_farmers pop=apple_farmers/100
+entity banana_farmers pop=pear_farmers*5
+
