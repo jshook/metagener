@@ -14,4 +14,18 @@
         <relativePath>../metagener-parent</relativePath>
     </parent>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.metawiring</groupId>
+            <artifactId>metagener-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.metawiring</groupId>
+            <artifactId>metagener-syntax</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+
 </project>
