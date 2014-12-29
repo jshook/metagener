@@ -1,11 +1,14 @@
 package com.metawiring.wiring;
 
-import com.metawiring.clientapi.EntitySampleStream;
-import com.metawiring.coreapi.EntityDescriptor;
-import com.metawiring.coreapi.SampleStreamDescriptor;
-import com.metawiring.entities.SimpleEntitySampleStream;
+import com.metawiring.types.ConfigDefs;
+import com.metawiring.types.EntitySampler;
+import com.metawiring.types.EntityDef;
+import com.metawiring.types.SamplerDef;
+import com.metawiring.generation.EntitySamplerImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,19 +16,25 @@ import java.util.Map;
  */
 public class GeneratorContext {
 
-    private Map<String,EntityDescriptor> entityDescriptorMap = new HashMap<>();
-    private Map<String,SampleStreamDescriptor> streamDescriptorMap = new HashMap<>();
+    // The map of sampler implementations
+    private Map<String, EntitySampler> entitySamplerMap = new HashMap<>();
 
-    private Map<String,EntitySampleStream> sampleStreamMap = new HashMap<>();
+    // Entities, defined
+    private Map<String,EntityDef> entityDefMap = new HashMap<>();
 
-    public EntitySampleStream getEntitySampleStream(String entitySampleStreamName) {
-        EntitySampleStream ess = sampleStreamMap.get(entitySampleStreamName);
+    // Samplers, defined
+    private Map<String,SamplerDef> samplerDefMap = new HashMap<>();
+
+
+
+    public EntitySampler getEntitySampleStream(String entitySampleStreamName) {
+        EntitySampler ess = entitySamplerMap.get(entitySampleStreamName);
         if (ess==null) {
             synchronized (this) {
-                ess = sampleStreamMap.get(entitySampleStreamName);
+                ess = entitySamplerMap.get(entitySampleStreamName);
                 if (ess==null) {
-                    ess = createSampleStream(entitySampleStreamName);
-                    sampleStreamMap.put(entitySampleStreamName,ess);
+                    ess = createEntitySampler(entitySampleStreamName);
+                    entitySamplerMap.put(entitySampleStreamName,ess);
                 }
             }
         }
@@ -33,14 +42,43 @@ public class GeneratorContext {
 
     }
 
-    private EntitySampleStream createSampleStream(String entitySampleStreamName) {
-        SampleStreamDescriptor essd = streamDescriptorMap.get(entitySampleStreamName);
+    private EntitySampler createEntitySampler(String entitySampleStreamName) {
+        SamplerDef essd = samplerDefMap.get(entitySampleStreamName);
         if (essd==null) {
-            throw new RuntimeException("attempt to access undefined stream [" + entitySampleStreamName + "]");
+            throw new RuntimeException("attempt to access undefined samplerDef [" + entitySampleStreamName + "]");
         }
-        SimpleEntitySampleStream sampleStream = new SimpleEntitySampleStream(essd);
-        sampleStream.resolveEntities(entityDescriptorMap);
+        EntityDef entityDef = entityDefMap.get(essd.getEntityName());
+        if (entityDef==null) {
+            throw new RuntimeException("attempt to access undefined entityDef [" + essd.getEntityName() + "]");
+        }
+
+        EntitySamplerImpl sampleStream = new EntitySamplerImpl(essd,entityDef);
+        sampleStream.resolvePipeline();
         return sampleStream;
     }
 
+    public void loadDefs(ConfigDefs cb) {
+        loadEntityDefs(cb.getEntityDefs());
+        loadSamplerDefs(cb.getSamplerDefs());
+    }
+
+    private void loadEntityDefs(List<EntityDef> entityDefs) {
+        for (EntityDef entityDef : entityDefs) {
+            this.entityDefMap.put(entityDef.getName(), entityDef);
+        }
+    }
+
+    private void loadSamplerDefs(List<SamplerDef> samplerDefs) {
+        for (SamplerDef samplerDef : samplerDefs) {
+            this.samplerDefMap.put(samplerDef.getName(), samplerDef);
+        }
+    }
+
+    public Map<? extends String, ? extends EntitySampler> getEntitySamplerMap() {
+        return entitySamplerMap;
+    }
+
+    public List<SamplerDef> getDefinedEntitySamplers() {
+        return new ArrayList<SamplerDef>(samplerDefMap.values());
+    }
 }

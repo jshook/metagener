@@ -1,0 +1,31 @@
+[EntityDef|
+ name
+ population
+]
+
+[FieldDef|
+ name
+ type
+ genfunc
+]
+
+[SamplerDef|
+ distribution
+ entity name
+]
+
+[EntityDef]1-*[FieldDef]
+
+[SamplerContext|
+ entitydefs
+ samplerdefs
+ fielddefs
+ samplers
+]
+
+[SamplerContext]->[EntityDef]
+[SamplerContext]->[EntitySampler]
+[SamplerContext]->[SamplerDef]
+[EntitySampler]->[EntityDef]
+[EntitySampler]->[SamplerDef]
+

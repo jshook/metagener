@@ -1,12 +1,12 @@
 package com.metawiring.descriptors.bundled;
 
-import com.metawiring.clientapi.PrebundledStreams;
-import com.metawiring.clientapi.SampleStreamProvider;
+import com.metawiring.types.PrebundledStreams;
+import com.metawiring.types.EntitySamplerService;
 
 public class PrebundledStreamsImpl implements PrebundledStreams {
 
     @Override
-    public SampleStreamProvider getRetailStreams() {
-        return RetailSampleStreamProvider.get();
+    public EntitySamplerService getRetailStreams() {
+        return new RetailEntitySamplerService();
     }
 }
