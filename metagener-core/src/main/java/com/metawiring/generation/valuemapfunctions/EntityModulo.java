@@ -9,7 +9,7 @@ import com.metawiring.types.EntityDefAware;
  * Remap the input long to an entity id within the population.
  */
 @FieldFunctionSignature(input=Long.class,output = Long.class)
-public class PopulationModulo implements FieldFunction<Long,Long>, EntityDefAware {
+public class EntityModulo implements FieldFunction<Long,Long>, EntityDefAware {
 
     private long moduloBy;
 

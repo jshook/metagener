@@ -36,7 +36,7 @@ public class RetailEntitySamplerService implements EntitySamplerService {
     public RetailEntitySamplerService() {
         DefBuilder defBuilder = new DefBuilder();
         defBuilder.entity("retail.brand").population(1000)
-                .field("brand").type("text").function("NamedNumberString");
+                .field("brand").type("text").function("NamedNumberString,suffix: street");
 
         defBuilder.sampleEntity("retail.brand");
 
