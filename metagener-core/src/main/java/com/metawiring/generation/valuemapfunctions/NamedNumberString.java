@@ -11,6 +11,11 @@ public class NamedNumberString implements FieldFunction<Long,String> {
 
     @Override
     public String apply(Long aLong) {
+
+        if (aLong.equals(0l)) {
+            return "zero";
+        }
+
         String result = formatter.format((int) aLong.longValue());
         return result;
     }

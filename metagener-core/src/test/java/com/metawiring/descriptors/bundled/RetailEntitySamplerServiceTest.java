@@ -51,12 +51,29 @@ public class RetailEntitySamplerServiceTest {
         EntitySamplerService ess = new RetailEntitySamplerService();
         SamplerDef des = ess.getDefinedEntitySamplers().get(0);
         EntitySampler sampleStream = ess.getSampleStream(des.getName());
+        EntitySample es;
+        es = sampleStream.getNextEntity();
+        Object[] vals = es.getFieldValues();
+        assertThat(vals.length,greaterThan(0));
+        Map<String, Object> vmap;
+        vmap = es.getPrettyFieldValues();
+        logger.info(vmap.toString());
+    }
+
+    @Test
+    public void testBrandNames() {
+        EntitySamplerService ess = new RetailEntitySamplerService();
+        ess.getSampleStream("retail.brand");
+
+        SamplerDef des = ess.getDefinedEntitySamplers().get(0);
+        EntitySampler sampleStream = ess.getSampleStream(des.getName());
         EntitySample es = sampleStream.getNextEntity();
         Object[] vals = es.getFieldValues();
         assertThat(vals.length,greaterThan(0));
         Map<String, Object> vmap = es.getPrettyFieldValues();
         logger.info(vmap.toString());
     }
+
 
 
 

@@ -5,10 +5,7 @@ import com.metawiring.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -16,6 +13,9 @@ import java.util.stream.Stream;
  * This is not designed to be thread-safe.
  */
 public class EntitySamplerImpl implements EntitySampler {
+
+    // TODO: Audit code for usages of "entityId" where it should actually be "sampleId"
+
     private static final Logger logger = LoggerFactory.getLogger(EntitySampler.class);
 
     private final SamplerDef samplerDef;
@@ -52,8 +52,8 @@ public class EntitySamplerImpl implements EntitySampler {
     }
 
     @Override
-    public EntitySample getEntity(long entityId) {
-        EntitySample es = entityGeneratorFunction.apply(entityId);
+    public EntitySample getEntity(long sampleId) {
+        EntitySample es = entityGeneratorFunction.apply(sampleId);
         return es;
     }
 
@@ -72,16 +72,13 @@ public class EntitySamplerImpl implements EntitySampler {
     @SuppressWarnings("unchecked")
     public <T> T getFieldValue(String fieldName, long sampleId) {
         FieldFunction<Long,T> fieldFunction = fieldFunctionMap.get(fieldName);
-        return null;
+        return fieldFunction.apply(sampleId);
     }
 
     @Override
     public Object[] getFieldValues(long sampleId) {
         Object[] values = new Object[fieldFunctions.length];
 
-        // TODO: Fix this. Field function functions need to be able to specify
-        // TODO: when they are monotonic and when they are pseudo-random
-        // TODO: as of now, they are all pseudo-random
         for (int idx=0;idx<fieldFunctions.length;idx++) {
             Object val = fieldFunctions[idx].apply(sampleId);
             values[idx]=val;
@@ -108,7 +105,7 @@ public class EntitySamplerImpl implements EntitySampler {
         fieldFunctions = new FieldFunction[entityDef.getFieldDefs().size()];
 
         // TODO: parameterize field function functions by stream type (monotone|PRNG)
-        // TODO: memoize PRNG data for subsequent field function cycles
+        // TODO: memoize PRNG data for subsequent field function cycles, if possible without veering too far from pure functions
         int defOffset = 0;
         for (FieldDef fieldDef : entityDef.getFieldDefs()) {
             try {
@@ -142,6 +139,14 @@ public class EntitySamplerImpl implements EntitySampler {
         FieldFunction f =  null;
         FieldFunction nextfunc=null;
         Class<?> yieldedType = Long.class;
+
+        // A field's function is a composite of the entity id mapping part (specified with the sampler's "distribution")
+        // and the field value mapping functions.
+        // If there is no distribution
+        List<String> funcs = new ArrayList<>();
+        Collections.addAll(funcs, samplerDef.getDistributionSpec().split(","));
+        Collections.addAll(funcs, fieldDef.getFunction().split(","));
+        funcs.addAll(funcs);
 
         for (String func : fieldDef.getFunction().split(",")) {
             try {

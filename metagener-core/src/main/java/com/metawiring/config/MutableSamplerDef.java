@@ -7,9 +7,9 @@ import com.metawiring.types.SamplerDef;
 import java.util.List;
 
 public class MutableSamplerDef implements SamplerDef {
-    private String entityName;
-    private String distributionSpec;
-    private String name;
+    private String entityName="";
+    private String distributionSpec="";
+    private String name="";
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;

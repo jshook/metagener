@@ -1,5 +1,6 @@
 package com.metawiring.descriptors.bundled;
 
+import com.metawiring.descriptors.DefBuilder;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntitySamplerService;
 import com.metawiring.types.SamplerDef;
@@ -35,14 +36,19 @@ public class RetailEntitySamplerService implements EntitySamplerService {
     public RetailEntitySamplerService() {
         DefBuilder defBuilder = new DefBuilder();
         defBuilder.entity("retail.brand").population(1000)
-                .field("brand").type("text").function("PopulationSampler,Identity,Identity,NamedNumberString");
+                .field("brand").type("text").function("NamedNumberString");
 
-        defBuilder.sampleEntity("retail.brand").distribution("gaussian:3").as("retail.brand");
+        defBuilder.sampleEntity("retail.brand");
 
-//        defBuilder.entity("retail.product").population(10000)
-//                .field("product").type("text").function("db:products")
-//                .field("product_variant").type("text").function("db:product_variants");
-//        defBuilder.sampleEntity("retail.product").distribution("uniform").as("retail.product");
+        defBuilder.sampleEntity("retail.brand").distribution("binomial").as("retail.brand binomial");
+
+//        // not graceful syntax yet, but the idea...
+//        defBuilder.sampleEntity("retail.brand manifest").distribution("manifest");
+
+        defBuilder.entity("retail.product").population(10000)
+                .field("product").type("text").function("db:products")
+                .field("product_variant").type("text").function("db:product_variants");
+        defBuilder.sampleEntity("retail.product").distribution("uniform").as("retail.product");
 //
 //        defBuilder.entity("address").population(10000)
 //                .field("street_number").type("int").function("hash,")

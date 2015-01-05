@@ -68,12 +68,17 @@ access to multiple threads.
 TODO: Explain that all samples are presumed to be "with replacement", meaning that sampling a specific entity id does not mean that it is no longer available for sampling. An exception to this would be a sampler that simply returns the population.
 Explain the caveats for int and long interoperability
 
-TODO: Explain how to gaurantee unique entity ids:
+TODO: Explain how to guarantee unique entity ids:
 - When sampling by distribution, this is not possible without including the sample id as part of the entity id
 - When sampling by hash, entity uniqueness will depend on key field values, and hence the generators for the user's notion of what a unique object/record is. In this case, using the sample id as a key field component can also guarantee uniqueness,
 but may not be important.
 
 TODO: Explain [inclusive, exclusive) ranges and how they apply to populations and valid entity ids.
+
+TODO: If you set the population to a finite value, but map your field values as if the population is much smaller or much larger, then the field values may not make sense.
+This can be particularly strange if you keep reading from the sample stream far after you've consumed the meaningful samples.
+For example, 1000 brand entities, with only 3 brand names probably doesn't make sense. Also, 100 well-constructed samples (according
+to the sampling method and field mappings) will stop making meaningful distinctions once you exhaust the field data.
 
 A prescribed range of entity ids is used to create a stream of entity ids within the range
 

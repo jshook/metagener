@@ -1,9 +1,8 @@
-package com.metawiring.descriptors.bundled;
+package com.metawiring.descriptors;
 
 import com.metawiring.config.MutableEntityDef;
 import com.metawiring.config.MutableFieldDef;
 import com.metawiring.config.MutableSamplerDef;
-import com.metawiring.generation.FieldType;
 import com.metawiring.types.ConfigDefs;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.SamplerDef;
@@ -50,8 +49,12 @@ public class DefBuilder implements ConfigDefs {
     }
 
     public DefBuilder sampleEntity(String samplerSpec) {
+        if (currentSamplerDef != null) {
+            samplerDefs.put(currentSamplerDef.getName(),currentSamplerDef);
+        }
         currentSamplerDef = new MutableSamplerDef();
         currentSamplerDef.setEntityName(samplerSpec);
+        currentSamplerDef.setName(samplerSpec);
         return this;
 
     }
