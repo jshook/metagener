@@ -12,7 +12,7 @@ public interface EntitySample {
      * Get the id of the named entity.
      * @return entity id
      */
-    public long getEntityId();
+    public long getSampleId();
 
     /**
      * Get the value of the named field of this entity instance.

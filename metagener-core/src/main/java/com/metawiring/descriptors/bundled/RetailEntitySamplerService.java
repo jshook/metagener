@@ -35,25 +35,26 @@ public class RetailEntitySamplerService implements EntitySamplerService {
     public RetailEntitySamplerService() {
         DefBuilder defBuilder = new DefBuilder();
         defBuilder.entity("retail.brand").population(1000)
-                .field("brand").type("text").generator("db:brands");
+                .field("brand").type("text").function("PopulationSampler,Identity,Identity,NamedNumberString");
+
         defBuilder.sampleEntity("retail.brand").distribution("gaussian:3").as("retail.brand");
 
-        defBuilder.entity("retail.product").population(10000)
-                .field("product").type("text").generator("db:products")
-                .field("product_variant").type("text").generator("db:product_variants");
-        defBuilder.sampleEntity("retail.product").distribution("uniform").as("retail.product");
-
-        defBuilder.entity("address").population(10000)
-                .field("street_number").type("int").generator("range:1000-9999")
-                .field("street_name").type("text").generator("db:auto")
-                .field("street_unit").type("text").generator("db:auto")
-                .field("city").type("text").generator("db:cities")
-                .field("state").type("text").generator("db:states")
-                .field("country").type("text").generator("db:countries")
-                .field("zip_code").type("int").generator("db:zipcodes")
-                .field("phone_number").type("int").generator("range:100000000-999999999");
-        defBuilder.sampleEntity("address").distribution("uniform").as("address");
-
+//        defBuilder.entity("retail.product").population(10000)
+//                .field("product").type("text").function("db:products")
+//                .field("product_variant").type("text").function("db:product_variants");
+//        defBuilder.sampleEntity("retail.product").distribution("uniform").as("retail.product");
+//
+//        defBuilder.entity("address").population(10000)
+//                .field("street_number").type("int").function("hash,")
+//                .field("street_name").type("text").function("db:auto")
+//                .field("street_unit").type("text").function("db:auto")
+//                .field("city").type("text").function("db:cities")
+//                .field("state").type("text").function("db:states")
+//                .field("country").type("text").function("db:countries")
+//                .field("zip_code").type("int").function("db:zipcodes")
+//                .field("phone_number").type("int").function("range:100000000-999999999");
+//        defBuilder.sampleEntity("address").distribution("uniform").as("address");
+//
         context.loadDefs(defBuilder);
     }
 

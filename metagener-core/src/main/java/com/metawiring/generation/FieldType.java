@@ -1,6 +1,6 @@
 package com.metawiring.generation;
 
-import com.metawiring.generation.fieldfunctions.*;
+import com.metawiring.generation.valuemapfunctions.*;
 import org.joda.time.DateTime;
 
 import java.math.BigInteger;

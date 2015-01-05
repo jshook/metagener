@@ -1,7 +1,7 @@
 package com.metawiring.types;
 
 /**
- * Some generator configurations can come pre-bundled, ready-to-use.
+ * Some function configurations can come pre-bundled, ready-to-use.
  */
 public interface PrebundledStreams {
     /**

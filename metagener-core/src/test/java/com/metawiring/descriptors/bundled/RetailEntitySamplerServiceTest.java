@@ -4,6 +4,8 @@ import com.metawiring.types.EntitySample;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntitySamplerService;
 import com.metawiring.types.SamplerDef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -17,6 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.testng.Assert.*;
 
 public class RetailEntitySamplerServiceTest {
+    private final static Logger logger = LoggerFactory.getLogger(RetailEntitySamplerServiceTest.class);
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -52,6 +55,7 @@ public class RetailEntitySamplerServiceTest {
         Object[] vals = es.getFieldValues();
         assertThat(vals.length,greaterThan(0));
         Map<String, Object> vmap = es.getPrettyFieldValues();
+        logger.info(vmap.toString());
     }
 
 

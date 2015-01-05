@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * You should only have one generator context per app
+ * You should only have one function context per app
  */
 public class GeneratorContext {
 

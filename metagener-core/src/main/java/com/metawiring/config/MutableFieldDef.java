@@ -6,7 +6,7 @@ import com.metawiring.types.FieldDef;
 public class MutableFieldDef implements FieldDef {
     private String fieldName;
     private FieldType fieldType;
-    private String generator;
+    private String function;
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
@@ -31,11 +31,11 @@ public class MutableFieldDef implements FieldDef {
         return (FieldDef) this;
     }
 
-    public void setGenerator(String generator) {
-        this.generator = generator;
+    public void setFunction(String function) {
+        this.function = function;
     }
 
-    public String getGenerator() {
-        return generator;
+    public String getFunction() {
+        return function;
     }
 }

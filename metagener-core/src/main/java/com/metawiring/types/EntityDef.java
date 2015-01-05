@@ -49,4 +49,19 @@ public interface EntityDef {
      */
     public FieldDef getFieldDef(String fieldName);
 
+    /**
+     * Returns the smallest population value.
+     * @return smallest entity id
+     */
+    default public long getMinId() {
+        return 0;
+    }
+
+    /**
+     * Returns the largest possible population value.
+     * @return largest entity id
+     */
+    default public long getMaxId() {
+        return getPopulationSize();
+    }
 }

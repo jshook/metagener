@@ -15,8 +15,22 @@ public class MutableEntityDef implements EntityDef {
 
     private long populationSize = 10;
 
-    public void setName(String name) {
+    public MutableEntityDef setName(String name) {
         this.name = name;
+        return this;
+    }
+    public MutableEntityDef setPopulationSize(long populationSize) {
+        this.populationSize = populationSize;
+        return this;
+    }
+    public MutableEntityDef addFieldDescriptor(FieldDef fieldDef) {
+        this.fieldDefMap.put(fieldDef.getFieldName(),fieldDef);
+        this.fieldDefs.add(fieldDef);
+        return this;
+    }
+
+    public FieldDef immutable() {
+        return (FieldDef) this;
     }
 
     @Override
@@ -24,17 +38,9 @@ public class MutableEntityDef implements EntityDef {
         return name;
     }
 
-    public void setPopulationSize(long populationSize) {
-        this.populationSize = populationSize;
-    }
     @Override
     public long getPopulationSize() {
         return populationSize;
-    }
-
-    public void addFieldDescriptor(FieldDef fieldDef) {
-        this.fieldDefMap.put(fieldDef.getFieldName(),fieldDef);
-        this.fieldDefs.add(fieldDef);
     }
 
     @Override
@@ -47,7 +53,4 @@ public class MutableEntityDef implements EntityDef {
         return fieldDefMap.get(fieldName);
     }
 
-    public FieldDef immutable() {
-        return (FieldDef) this;
-    }
 }

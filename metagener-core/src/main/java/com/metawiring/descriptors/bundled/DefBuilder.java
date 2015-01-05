@@ -44,8 +44,8 @@ public class DefBuilder implements ConfigDefs {
         return this;
     }
 
-    public DefBuilder generator(String generatorSpec) {
-        currentFieldDef.setGenerator(generatorSpec);
+    public DefBuilder function(String generatorSpec) {
+        currentFieldDef.setFunction(generatorSpec);
         return this;
     }
 

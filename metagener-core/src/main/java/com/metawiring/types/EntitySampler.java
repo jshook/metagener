@@ -36,32 +36,28 @@ public interface EntitySampler {
      */
     public SamplerDef getSamplerDef();
 
-
     /**
      * Return the generated field value of the named field, for the given entityId
      * @param fieldName The field name to sample
-     * @param entityId The entity id - to be used for monotonically increasing value generation
-     * @param hashedEntityId The hashed entity id - to be used for pseudo random value generation
+     * @param sampleId The entity id - to be used for monotonically increasing value generation
      * @param <T> The value type, according to the field type
      * @return An idempotent value for the (EntitySampler,fieldName,entityId) tuple
      */
-    public <T> T getFieldValue(String fieldName, long entityId, long hashedEntityId);
+    public <T> T getFieldValue(String fieldName, long sampleId);
 
     /**
      * Generate a list of ordered field values. This is the most efficient way to get all of the
      * field values for a specific entity id.
-     * @param entityId The entity Id
-     * @param hashedEntityId The hashed entity id
+     * @param sampleId The entity Id
      * @return an array of field values, in the order that the fields were defined in
      */
-    public Object[] getFieldValues(long entityId, long hashedEntityId);
+    public Object[] getFieldValues(long sampleId);
 
     /**
      * Generate a map of named field values. This is generally wasteful, but easy to read
      * for diagnostics if you aren't optimizing for speed.
-     * @param entityId The entity id
-     * @param hashedEntityId The hashed entity id
+     * @param sampleId The entity id
      * @return A map of named field values, in the order that the fields were defined in.
      */
-    public Map<String,Object> getFieldValueMap(long entityId, long hashedEntityId);
+    public Map<String,Object> getFieldValueMap(long sampleId);
 }

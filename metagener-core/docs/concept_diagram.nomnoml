@@ -23,9 +23,19 @@
  samplers
 ]
 
+[EntitySampler|
+ id_stream
+ id_hash_func
+]
+
+[EntitySample|
+ [sampleId]
+]
+
 [SamplerContext]->[EntityDef]
 [SamplerContext]->[EntitySampler]
 [SamplerContext]->[SamplerDef]
 [EntitySampler]->[EntityDef]
 [EntitySampler]->[SamplerDef]
 
+[EntitySample]->[EntitySampler]
