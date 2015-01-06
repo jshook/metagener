@@ -1,23 +1,24 @@
-package com.metawiring.generation.valuemapfunctions;
+package com.metawiring.generation;
 
-import com.metawiring.generation.FieldFunction;
+import com.metawiring.generation.valuemapfunctions.*;
 
-public enum FieldFunctionShortcuts {
+public enum NamedFieldFunctions {
     prefix(Prefix.class,"prefix:1-"),
     suffix(Suffix.class, "suffix: street"),
     modentity(EntityModulo.class,"modentity"),
     mod(Modulo.class,"mod:50"),
     identity(Identity.class,"identity"), // primarily for testing
-    extract(FileLineExtract.class,"extract:streetnames"),
+    file(FileLineExtract.class,"file:streetnames"),
     numbername(NamedNumberString.class,"numbername"),
-    modoverflow(LongModuloInt.class,"modoverflow");
+    intoverflow(IntOverflow.class,"intoverflow"),
+    dist(PopulationSampler.class,"dist:uniform");
 
 
     private final Class<? extends FieldFunction> implClass;
 
     private final String exampleString;
 
-    FieldFunctionShortcuts(Class<? extends FieldFunction> implClass, String exampleString) {
+    NamedFieldFunctions(Class<? extends FieldFunction> implClass, String exampleString) {
         this.implClass = implClass;
         this.exampleString = exampleString;
     }

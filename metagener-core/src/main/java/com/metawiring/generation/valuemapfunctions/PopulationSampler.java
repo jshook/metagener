@@ -1,7 +1,8 @@
-package com.metawiring.generation.entityhashfunctions;
+package com.metawiring.generation.valuemapfunctions;
 
 import com.metawiring.annotations.FieldFunctionSignature;
 import com.metawiring.generation.FieldFunction;
+import com.metawiring.generation.entityhashfunctions.PopulationDistributionMapper;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.EntityDefAware;
 import org.apache.commons.math3.distribution.IntegerDistribution;
@@ -17,6 +18,15 @@ public class PopulationSampler implements FieldFunction<Long,Long>, EntityDefAwa
     private EntityDef entityDef;
     private IntegerDistribution dist;
     private RandomGeneratorAdapter randomMapper;
+    private String distributionName;
+
+//    public PopulationSampler() {
+//        this.distributionName="uniform";
+//    }
+//
+    public PopulationSampler(String distributionName) {
+        this.distributionName=distributionName;
+    }
 
     @Override
     public void applyEntityDef(EntityDef entityDef) {
@@ -25,7 +35,7 @@ public class PopulationSampler implements FieldFunction<Long,Long>, EntityDefAwa
              throw new RuntimeException("For now, the maximum population value must be maximum of " + Integer.MAX_VALUE);
         }
         randomMapper = new RandomGeneratorAdapter();
-        Class<? extends IntegerDistribution> distClass = PopulationDistributionMapper.mapDistributionName("binomial");
+        Class<? extends IntegerDistribution> distClass = PopulationDistributionMapper.mapDistributionName(distributionName);
         dist = PopulationDistributionMapper.mapDistribution(distClass,entityDef,randomMapper);
         dist = new UniformIntegerDistribution(randomMapper,(int) entityDef.getMinId(),(int) entityDef.getMaxId());
     }

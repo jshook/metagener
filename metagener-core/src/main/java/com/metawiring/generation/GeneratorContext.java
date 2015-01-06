@@ -37,14 +37,20 @@ public class GeneratorContext {
         EntitySampler es;
         es = entitySamplerMap.get(entitySamplerName);
         if (es==null) {
-            SamplerDef sd = samplerDescriptorMap.get(entitySamplerName);
-            if (sd == null ) {
-                throw new SampleStreamException("could not compose sample stream for " + entitySamplerName + ": missing samplerDef");
-            }
             synchronized(this) {
                 es = entitySamplerMap.get(entitySamplerName);
                 if (es==null) {
-                    es = composeEntitySampler(sd);
+
+                    SamplerDef sd = samplerDescriptorMap.get(entitySamplerName);
+                    if (sd == null ) {
+                        throw new SampleStreamException("could not compose sample stream for " + entitySamplerName + ": missing samplerDef");
+                    }
+                    EntityDef ed = entityDescriptorMap.get(sd.getEntityName());
+                    if (ed == null ) {
+                        throw new SampleStreamException("could not compose sample stream for " + entitySamplerName + ": missing entityDef");
+                    }
+
+                    es = composeEntitySampler(sd,ed);
                     entitySamplerMap.put(sd.getName(),es);
                 }
             }
@@ -52,8 +58,8 @@ public class GeneratorContext {
         return es;
     }
 
-    private EntitySampler composeEntitySampler(SamplerDef sd) {
-        EntitySampler es = entitySamplerFactory.compose(this,sd);
+    private EntitySampler composeEntitySampler(SamplerDef sd,EntityDef ed) {
+        EntitySampler es = entitySamplerFactory.compose(this,sd,ed);
         return es;
     }
 

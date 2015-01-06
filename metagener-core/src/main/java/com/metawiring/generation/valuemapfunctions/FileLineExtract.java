@@ -22,6 +22,10 @@ public class FileLineExtract implements FieldFunction<Long,String> {
     private List<String> lines = new ArrayList<>();
     private IntegerDistribution itemDistribution;
 
+    public FileLineExtract(String filename) {
+        this.filename = filename;
+    }
+
     @Override
     public String apply(Long aLong) {
         return null;

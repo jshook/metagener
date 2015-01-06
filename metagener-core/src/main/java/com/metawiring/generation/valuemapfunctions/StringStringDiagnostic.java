@@ -17,6 +17,14 @@ public class StringStringDiagnostic implements FieldFunction<String,String>, Ent
 
     private long triggerModulo;
 
+    public StringStringDiagnostic(long triggerModulo) {
+        this.triggerModulo = triggerModulo;
+    }
+
+    public StringStringDiagnostic(String triggerModulo) {
+        this(Long.valueOf(triggerModulo));
+    }
+
     @Override
     public String apply(String string) {
         cycles++;

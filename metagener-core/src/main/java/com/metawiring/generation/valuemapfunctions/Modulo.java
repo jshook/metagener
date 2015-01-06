@@ -15,6 +15,10 @@ public class Modulo implements FieldFunction<Long,Long> {
         this.modulo = modulo;
     }
 
+    public Modulo(String modulo) {
+        this(Long.valueOf(modulo));
+    }
+
     @Override
     public Long apply(Long aLong) {
         return aLong % modulo;

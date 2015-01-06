@@ -36,19 +36,19 @@ public class RetailEntitySamplerService implements EntitySamplerService {
     public RetailEntitySamplerService() {
         DefBuilder defBuilder = new DefBuilder();
         defBuilder.entity("retail.brand").population(1000)
-                .field("brand").type("text").function("NamedNumberString,suffix: street");
+                .field("brand").type("text").function("NamedNumberString;suffix: street");
 
-        defBuilder.sampleEntity("retail.brand");
+        defBuilder.sampleEntity("retail.brand").distribution("dist:binomial");
 
-        defBuilder.sampleEntity("retail.brand").distribution("binomial").as("retail.brand binomial");
+        defBuilder.sampleEntity("retail.brand").distribution("dist:uniform").as("retail.brand binomial");
 
 //        // not graceful syntax yet, but the idea...
 //        defBuilder.sampleEntity("retail.brand manifest").distribution("manifest");
 
         defBuilder.entity("retail.product").population(10000)
-                .field("product").type("text").function("db:products")
-                .field("product_variant").type("text").function("db:product_variants");
-        defBuilder.sampleEntity("retail.product").distribution("uniform").as("retail.product");
+                .field("product").type("text").function("file:products")
+                .field("product_variant").type("text").function("file:product_variants");
+        defBuilder.sampleEntity("retail.product").distribution("dist:uniform").as("retail.product");
 //
 //        defBuilder.entity("address").population(10000)
 //                .field("street_number").type("int").function("hash,")

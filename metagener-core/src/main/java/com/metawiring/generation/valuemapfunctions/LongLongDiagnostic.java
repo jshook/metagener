@@ -16,6 +16,12 @@ public class LongLongDiagnostic implements FieldFunction<Long,Long>, EntityDefAw
     private long cycles;
 
     private long triggerModulo;
+    public LongLongDiagnostic(long triggerModulo) {
+        this.triggerModulo = triggerModulo;
+    }
+    public LongLongDiagnostic(String triggerModulo) {
+        this.triggerModulo = Long.valueOf(triggerModulo);
+    }
 
     @Override
     public Long apply(Long aLong) {

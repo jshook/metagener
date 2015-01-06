@@ -26,7 +26,7 @@ public class PopulationDistributionMapper {
         switch (distClass.getSimpleName()) {
 
             case "UniformIntegerDistribution":
-                return new UniformIntegerDistribution(rng, (int) entityDef.getMaxId(), (int) entityDef.getMaxId());
+                return new UniformIntegerDistribution(rng, (int) entityDef.getMinId(), (int) entityDef.getMaxId());
             case "BinomialDistribution":
                 return new BinomialDistribution(rng, (int) entityDef.getMaxId(), 0.5d);
 
@@ -52,6 +52,7 @@ public class PopulationDistributionMapper {
     public static Class<? extends IntegerDistribution> mapDistributionName(String distributionName) {
         switch (distributionName) {
             case "uniform":
+            case "random":
                 return UniformIntegerDistribution.class;
             case "binomial":
                 return BinomialDistribution.class;

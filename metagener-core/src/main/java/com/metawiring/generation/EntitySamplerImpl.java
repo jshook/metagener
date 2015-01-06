@@ -1,5 +1,6 @@
 package com.metawiring.generation;
 
+import com.metawiring.config.FormatConstants;
 import com.metawiring.generation.entityhashfunctions.Murmur3Hash;
 import com.metawiring.types.*;
 import org.slf4j.Logger;
@@ -120,7 +121,6 @@ public class EntitySamplerImpl implements EntitySampler {
         entityGeneratorFunction = new EntityGeneratorFunction<EntitySample>() {
             @Override
             public EntitySample apply(long value) {
-                long hashed = entityHashFunction.applyAsLong(value);
                 return new LazyEntitySample(value, EntitySamplerImpl.this);
             }
         };
@@ -143,14 +143,21 @@ public class EntitySamplerImpl implements EntitySampler {
         // A field's function is a composite of the entity id mapping part (specified with the sampler's "distribution")
         // and the field value mapping functions.
         // If there is no distribution
-        List<String> funcs = new ArrayList<>();
-        Collections.addAll(funcs, samplerDef.getDistributionSpec().split(","));
-        Collections.addAll(funcs, fieldDef.getFunction().split(","));
-        funcs.addAll(funcs);
+        List<String> functionSpecs = new ArrayList<>();
+        Collections.addAll(functionSpecs,
+                samplerDef.getDistributionSpec().split(FormatConstants.FUNC_DELIM)
+        );
+        Collections.addAll(
+                functionSpecs, fieldDef.getFunction().split(FormatConstants.FUNC_DELIM)
+        );
 
-        for (String func : fieldDef.getFunction().split(",")) {
+        for (String functionSpec : functionSpecs) {
+            if (functionSpec.isEmpty()) {
+                logger.debug("Empty function spec, for " + this);
+                continue;
+            }
             try {
-                nextfunc = FunctionFinder.find(func).newInstance();
+                nextfunc = FieldFunctionResolver.resolveFieldFunction(functionSpec);
             } catch (Exception e) {
                 logger.error("error instantiating function", e);
                 throw new RuntimeException(e);

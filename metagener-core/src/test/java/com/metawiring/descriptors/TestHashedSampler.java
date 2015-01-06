@@ -2,7 +2,7 @@ package com.metawiring.descriptors;
 
 import com.metawiring.config.MutableEntityDef;
 import com.metawiring.generation.entityhashfunctions.Murmur3Hash;
-import com.metawiring.generation.entityhashfunctions.PopulationSampler;
+import com.metawiring.generation.valuemapfunctions.PopulationSampler;
 import org.hamcrest.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class TestHashedSampler {
 
     @Test
     public void testUniformSamplingStride() {
-        PopulationSampler ps = new PopulationSampler();
+        PopulationSampler ps = new PopulationSampler("uniform");
         ps.applyEntityDef(new MutableEntityDef().setName("test").setPopulationSize(100));
 
         List<Long> sampled = new ArrayList<>();
@@ -49,7 +49,7 @@ public class TestHashedSampler {
     @Test
     public void testUniformSamplingHashed() {
 
-        PopulationSampler ps = new PopulationSampler();
+        PopulationSampler ps = new PopulationSampler("uniform");
         int popSize=1000000;
         int iterations=1000000;
         long distinctThreshold=600000;

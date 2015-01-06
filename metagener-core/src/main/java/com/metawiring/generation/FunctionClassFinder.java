@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 
-public class FunctionFinder {
-    private final static Logger logger = LoggerFactory.getLogger(FunctionFinder.class);
+public class FunctionClassFinder {
+    private final static Logger logger = LoggerFactory.getLogger(FunctionClassFinder.class);
 
     public static Package[] packages = new Package[] {
             Murmur3Hash.class.getPackage(),
@@ -16,6 +16,9 @@ public class FunctionFinder {
     };
 
     @SuppressWarnings("unchecked")
+    /**
+     * Find the class in one of the configured locations, or throw a runtime exception.
+     */
     public static Class<FieldFunction> find(String name) {
         if (name.contains(".")) {
             try {
