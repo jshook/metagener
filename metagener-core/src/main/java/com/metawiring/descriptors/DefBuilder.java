@@ -1,8 +1,8 @@
 package com.metawiring.descriptors;
 
-import com.metawiring.config.MutableEntityDef;
-import com.metawiring.config.MutableFieldDef;
-import com.metawiring.config.MutableSamplerDef;
+import com.metawiring.configdefs.MutableEntityDef;
+import com.metawiring.configdefs.MutableFieldDef;
+import com.metawiring.configdefs.MutableSamplerDef;
 import com.metawiring.types.ConfigDefs;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.SamplerDef;

@@ -15,23 +15,8 @@ import java.util.Map;
  */
 public class RetailEntitySamplerService implements EntitySamplerService {
 
-
-    // Most of the service methods are delegated to the context
+    // Many of the internal service methods are delegated to the context
     private GeneratorContext context = new GeneratorContext();
-
-//    // This is enforced as an ugly singleton, for now
-//    private static RetailSampleStreamService instance;
-//
-//    public static SampleStreamService get() {
-//        if (instance == null) {
-//            synchronized (RetailSampleStreamService.class) {
-//                if (instance == null) {
-//                    instance = new RetailSampleStreamService();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
 
     public RetailEntitySamplerService() {
         DefBuilder defBuilder = new DefBuilder();
@@ -46,8 +31,8 @@ public class RetailEntitySamplerService implements EntitySamplerService {
 //        defBuilder.sampleEntity("retail.brand manifest").distribution("manifest");
 
         defBuilder.entity("retail.product").population(10000)
-                .field("product").type("text").function("file:products")
-                .field("product_variant").type("text").function("file:product_variants");
+                .field("product").type("text").function("tostring;prefix:product ")
+                .field("product_variant").type("text").function("tostring;prefix: variant ");
         defBuilder.sampleEntity("retail.product").distribution("dist:uniform").as("retail.product");
 //
 //        defBuilder.entity("address").population(10000)

@@ -4,7 +4,7 @@ import com.metawiring.types.ConfigDefs;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.SamplerDef;
-import com.metawiring.generation.EntitySamplerImpl;
+import com.metawiring.generation.core.EntitySamplerImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

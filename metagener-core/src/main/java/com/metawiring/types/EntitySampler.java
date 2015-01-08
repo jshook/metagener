@@ -60,4 +60,6 @@ public interface EntitySampler {
      * @return A map of named field values, in the order that the fields were defined in.
      */
     public Map<String,Object> getFieldValueMap(long sampleId);
+
+    public EntityDef getEntityDef();
 }

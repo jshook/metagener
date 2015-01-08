@@ -1,7 +1,7 @@
 
 package com.metawiring.types;
 
-import com.metawiring.generation.FieldType;
+import com.metawiring.generation.core.FieldType;
 
 public interface FieldDef {
     public String getFieldName();
