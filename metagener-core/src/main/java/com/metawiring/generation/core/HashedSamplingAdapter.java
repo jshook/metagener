@@ -31,7 +31,7 @@ public class HashedSamplingAdapter {
      * At least it is contained here in its wicked collusion with the sampling adapter.
      * This is a loopback that is used ONLY for its side-effects, so it shouldn't
      * be used for anything except as an API work-around for the sampling adapter to
-     * use distributions from apache commons math with repeatable outputs for a given distribution.
+     * use distributions from apache commons math with repeatable outputs for a given samplerFunction.
      */
     public class RandomGeneratorAdapter extends AbstractRandomGenerator {
 

@@ -27,7 +27,7 @@ public class MutableFieldDef implements FieldDef {
         return fieldType;
     }
 
-    public FieldDef asImmutable() {
+    public FieldDef immutable() {
         return (FieldDef) this;
     }
 

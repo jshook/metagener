@@ -27,7 +27,7 @@ public class GeneratorContext {
     }
 
     public GeneratorContext addSamplerDef(SamplerDef samplerDef) {
-        String sampleName = samplerDef.getName();
+        String sampleName = samplerDef.getSamplerName();
         if (samplerDescriptorMap.containsKey(sampleName)) {
             throw new SampleStreamException("sampler definition " + sampleName + " is already defined");
         }
@@ -52,7 +52,7 @@ public class GeneratorContext {
                     }
 
                     es = composeEntitySampler(sd,ed);
-                    entitySamplerMap.put(sd.getName(),es);
+                    entitySamplerMap.put(sd.getSamplerName(),es);
                 }
             }
         }

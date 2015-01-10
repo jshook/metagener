@@ -5,9 +5,9 @@ import java.util.function.LongUnaryOperator;
 /**
  * Composable functions that work on primitive longs.
  * This is an explicit type to work around the problem with boxing and
- * inconsistent treatment of compose(...) and andThen(...)
+ * inconsistent treatment of compose(...) and andThen(...) in J8
  */
-public interface LongFieldFunction extends FieldFunction, LongUnaryOperator {
+public interface LongFieldFunction extends LongUnaryOperator {
 
     default LongFieldFunction compose(LongFieldFunction inner) {
         return (long input) -> applyAsLong(inner.applyAsLong(input));

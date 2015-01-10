@@ -1,6 +1,7 @@
 package com.metawiring.descriptors.bundled;
 
-import com.metawiring.descriptors.DefBuilder;
+import com.metawiring.defbuilder.DefBuilderTypes;
+import com.metawiring.defbuilder.ContextBuilder;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntitySamplerService;
 import com.metawiring.types.SamplerDef;
@@ -19,22 +20,22 @@ public class RetailEntitySamplerService implements EntitySamplerService {
     private GeneratorContext context = new GeneratorContext();
 
     public RetailEntitySamplerService() {
-        DefBuilder defBuilder = new DefBuilder();
-        defBuilder.entity("retail.brand").population(1000)
+     DefBuilderTypes builder = ContextBuilder.builder();
+     builder.entity("retail.brand").population(1000)
                 .field("brand").type("text").function("NamedNumberString;suffix: street");
 
-        defBuilder.sampleEntity("retail.brand").distribution("dist:binomial");
+     builder.sampler("retail.brand").entityFunction("dist:binomial");
 
-        defBuilder.sampleEntity("retail.brand").distribution("dist:uniform").as("retail.brand binomial");
+     builder.sampler("retail.brand binomial").entityFunction("dist:uniform");
 
 //        // not graceful syntax yet, but the idea...
-//        defBuilder.sampleEntity("retail.brand manifest").distribution("manifest");
+//        defBuilder.sampleEntity("retail.brand manifest").samplerFunction("manifest");
 
-        defBuilder.entity("retail.product").population(10000)
-                .field("product").type("text").function("tostring;prefix:product ")
-                .field("product_variant").type("text").function("tostring;prefix: variant ");
-        defBuilder.sampleEntity("retail.product").distribution("dist:uniform").as("retail.product");
-//
+     builder.entity("retail.product").population(10000)
+                .field("product").type("text").function("BoxedString;prefix:product ")
+                .field("product_variant").type("text").function("BoxedString;prefix: variant ");
+     builder.sampler("retail.product").entityFunction("dist:uniform");
+
 //        defBuilder.entity("address").population(10000)
 //                .field("street_number").type("int").function("hash,")
 //                .field("street_name").type("text").function("db:auto")
@@ -44,9 +45,9 @@ public class RetailEntitySamplerService implements EntitySamplerService {
 //                .field("country").type("text").function("db:countries")
 //                .field("zip_code").type("int").function("db:zipcodes")
 //                .field("phone_number").type("int").function("range:100000000-999999999");
-//        defBuilder.sampleEntity("address").distribution("uniform").as("address");
+//        defBuilder.sampleEntity("address").samplerFunction("uniform").as("address");
 //
-        context.loadDefs(defBuilder);
+        context.loadDefs(builder);
     }
 
     @Override

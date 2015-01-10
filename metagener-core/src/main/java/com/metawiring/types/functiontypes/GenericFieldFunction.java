@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface GenericFieldFunction<T,R> extends FieldFunction, Function<T,R> {
+public interface GenericFieldFunction<T,R> extends Function<T,R> {
 
     default Class<?> getOutputType() {
         FieldFunctionSignature fsThis = getClass().getAnnotation(FieldFunctionSignature.class);

@@ -4,27 +4,27 @@ import com.metawiring.types.SamplerDef;
 
 public class MutableSamplerDef implements SamplerDef {
     private String entityName="";
-    private String distributionSpec="";
-    private String name="";
+    private String samplerFunction ="";
+    private String samplerName ="";
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;
     }
 
-    public void setDistributionSpec(String distributionSpec) {
-        this.distributionSpec = distributionSpec;
+    public void setSamplerFunction(String samplerFunction) {
+        this.samplerFunction = samplerFunction;
     }
 
-    public String getDistributionSpec() {
-        return distributionSpec;
+    public String getSamplerFunction() {
+        return samplerFunction;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSamplerName(String samplerName) {
+        this.samplerName = samplerName;
     }
 
-    public String getName() {
-        return name;
+    public String getSamplerName() {
+        return samplerName;
     }
 
     @Override

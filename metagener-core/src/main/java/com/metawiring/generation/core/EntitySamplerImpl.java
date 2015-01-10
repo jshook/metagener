@@ -1,12 +1,13 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.types.functiontypes.FieldFunction;
+import com.metawiring.types.functiontypes.LongFieldFunction;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import com.metawiring.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.LongFunction;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -29,7 +30,7 @@ public class EntitySamplerImpl implements EntitySampler {
     private EntityGeneratorFunction<EntitySample> entityGeneratorFunction;
 
     // cached field functions, in array form
-    private TypedFieldFunction[] fieldFunctions;
+    private LongFunction[] fieldFunctions;
 
     // cached field functions, in map form, same as above, but accessible by name
     private Map<String, TypedFieldFunction> fieldFunctionMap = new HashMap<>();
@@ -69,8 +70,8 @@ public class EntitySamplerImpl implements EntitySampler {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getFieldValue(String fieldName, long sampleId) {
-        TypedFieldFunction genericFieldFunction = fieldFunctionMap.get(fieldName);
-        return (T) genericFieldFunction.apply(sampleId);
+        LongFunction function= fieldFunctionMap.get(fieldName);
+        return (T) function.apply(sampleId);
     }
 
     @Override
@@ -105,15 +106,15 @@ public class EntitySamplerImpl implements EntitySampler {
 
         identifierStream = LongStream.range(0l, Long.MAX_VALUE);
 
-        fieldFunctions = new TypedFieldFunction[entityDef.getFieldDefs().size()];
+        fieldFunctions = new LongFunction[entityDef.getFieldDefs().size()];
 
         // TODO: parameterize field function functions by stream type (monotone|PRNG)
         // TODO: memoize PRNG data for subsequent field function cycles, if possible without veering too far from pure functions
         int defOffset = 0;
         for (FieldDef fieldDef : entityDef.getFieldDefs()) {
             try {
-                FieldFunction fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(fieldDef.getFunction(), this);
-                fieldFunctions[defOffset] = (TypedFieldFunction) fieldSpecificFunction;
+                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(fieldDef.getFunction(), this);
+                fieldFunctions[defOffset] = (LongFunction<?>) fieldSpecificFunction;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

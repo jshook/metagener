@@ -39,7 +39,7 @@ public class LongLongDiagnostic implements LongFieldFunction, EntityDefAware, Sa
     public long applyAsLong(long operand) {
         cycles++;
         if ((cycles % triggerModulo) == 0) {
-            logger.debug("DIAG: entityDef:" + entityDef.getName() + ", samplerDef" + samplerDef.getName()
+            logger.debug("DIAG: entityDef:" + entityDef.getName() + ", samplerDef" + samplerDef.getSamplerName()
                     + "cycle:" + cycles + "/" + triggerModulo + ", input=" + operand);
         }
         return operand;

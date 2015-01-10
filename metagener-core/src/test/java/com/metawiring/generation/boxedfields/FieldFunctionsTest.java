@@ -119,9 +119,9 @@ public class FieldFunctionsTest {
 
     private void applySamplerDef(String samplerName, String entityName, String dist, SamplerDefAware ff) {
         MutableSamplerDef sd = new MutableSamplerDef();
-        sd.setName(samplerName);
+        sd.setSamplerName(samplerName);
         sd.setEntityName(entityName);
-        sd.setDistributionSpec(dist);
+        sd.setSamplerFunction(dist);
         ff.applySamplerDef(sd.immutable());
     }
 

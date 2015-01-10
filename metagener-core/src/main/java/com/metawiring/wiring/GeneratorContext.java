@@ -1,5 +1,7 @@
 package com.metawiring.wiring;
 
+import com.metawiring.defbuilder.DefBuilderTypes;
+import com.metawiring.defbuilder.ContextBuilder;
 import com.metawiring.types.ConfigDefs;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntityDef;
@@ -57,9 +59,10 @@ public class GeneratorContext {
         return sampleStream;
     }
 
-    public void loadDefs(ConfigDefs cb) {
+    public GeneratorContext loadDefs(ConfigDefs cb) {
         loadEntityDefs(cb.getEntityDefs());
         loadSamplerDefs(cb.getSamplerDefs());
+        return this;
     }
 
     private void loadEntityDefs(List<EntityDef> entityDefs) {
@@ -70,7 +73,7 @@ public class GeneratorContext {
 
     private void loadSamplerDefs(List<SamplerDef> samplerDefs) {
         for (SamplerDef samplerDef : samplerDefs) {
-            this.samplerDefMap.put(samplerDef.getName(), samplerDef);
+            this.samplerDefMap.put(samplerDef.getSamplerName(), samplerDef);
         }
     }
 
@@ -80,5 +83,9 @@ public class GeneratorContext {
 
     public List<SamplerDef> getDefinedEntitySamplers() {
         return new ArrayList<SamplerDef>(samplerDefMap.values());
+    }
+
+    public static DefBuilderTypes builder() {
+        return ContextBuilder.builder();
     }
 }

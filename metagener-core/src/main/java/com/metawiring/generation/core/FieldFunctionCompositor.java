@@ -1,8 +1,12 @@
 package com.metawiring.generation.core;
 
+import com.google.common.base.Strings;
 import com.metawiring.configdefs.FormatConstants;
+import com.metawiring.generation.entityid.Identity;
+import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.types.functiontypes.*;
 import com.metawiring.types.*;
+import com.metawiring.types.functiontypes.LongFieldFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,65 +21,89 @@ public class FieldFunctionCompositor {
 
     // There isn't a nice way to work around type-erasure and late-binding
     // Nor is there a nice way to work around autoboxing and composed functions...
+    // This class is mostly a way to achieve the specific type of function pipeline needed
+    // for the  long... -> type conversion -> decoration...  style of composition, without
+    // completely sacrificing the ability to use lambdas with primitive types.
+    // J8 really didn't solve this in a consistent way.
 
     /**
      * chain functions: one or more LongFieldFunctions, and a TypedFieldFunction, and optional GenericFieldFunctions
+     *
      * @param functionChain String specifier of function names and arguments, in the format "func1;func2:arg1,..."
-     * @param es The entity sampler which this composed function is associated to
+     * @param es            The entity sampler which this composed function is associated to
      * @return the composed function
      */
-    public static FieldFunction composeFieldFunction(String functionChain, EntitySampler es) {
-        FieldFunction f =  null;
-        FieldFunction nextfunc=null;
-        Class<?> yieldedType = Long.class;
+    @SuppressWarnings({"ConstantConditions", "unchecked"})
+    public static TypedFieldFunction<?> composeFieldFunction(String functionChain, EntitySampler es) {
+        LongFieldFunction longFuncs = null;
+        TypedFieldFunction<?> typedFuncs = null;
+        GenericFieldFunction<?, ?> genericFuncs = null;
 
-        // A field's function is a composite of the entity id mapping part (specified with the sampler's "distribution")
+        // A field's function is a composite of the entity id mapping part (specified with the sampler's "samplerFunction")
         // and the field value mapping functions.
-        // If there is no distribution
+        // If there is no samplerFunction
         List<String> functionSpecs = new ArrayList<>();
-        Collections.addAll(functionSpecs,
-                functionChain.split(FormatConstants.FUNC_DELIM)
-        );
 
-        for (String functionSpec : functionSpecs) {
+        if (!Strings.isNullOrEmpty(functionChain)) {
 
-            if (functionSpec.isEmpty()) {
-                logger.debug("Empty function spec, for " + es);
-                continue;
+            Collections.addAll(functionSpecs,
+                    functionChain.split(FormatConstants.FUNC_DELIM)
+            );
+
+            for (String functionSpec : functionSpecs) {
+
+                if (functionSpec.isEmpty()) {
+                    logger.debug("Empty function spec, for " + es);
+                    continue;
+                }
+
+                Object funcObject;
+                try {
+                    funcObject = FieldFunctionResolver.resolveFunctionObject(functionSpec);
+                } catch (Exception e) {
+                    logger.error("error instantiating function", e);
+                    throw new RuntimeException(e);
+                }
+
+
+                if (funcObject instanceof EntityDefAware) {
+                    ((EntityDefAware) funcObject).applyEntityDef(es.getEntityDef());
+                }
+
+                if (funcObject instanceof SamplerDefAware) {
+                    ((SamplerDefAware) funcObject).applySamplerDef(es.getSamplerDef());
+                }
+
+
+                if (funcObject instanceof LongFieldFunction) {
+                    LongFieldFunction ff = (LongFieldFunction) funcObject;
+                    longFuncs = (longFuncs == null) ? ff : longFuncs.andThen(ff);
+
+                } else if (funcObject instanceof TypedFieldFunction<?>) {
+                    TypedFieldFunction tff = (TypedFieldFunction) funcObject;
+
+                    if (longFuncs == null) {
+                        logger.warn("typed function [" + tff + "] follows zero long functions. This is probably wrong.");
+                    }
+
+                    typedFuncs = (longFuncs == null) ? tff : tff.compose(longFuncs);
+
+                } else if (funcObject instanceof GenericFieldFunction<?, ?>) {
+                    GenericFieldFunction gff = (GenericFieldFunction) funcObject;
+                    if (typedFuncs == null) {
+                        throw new RuntimeException("You may only use a generic function after a typed function.");
+                    }
+                    typedFuncs = typedFuncs.andThen(gff);
+                }
             }
-
-            try {
-                nextfunc = FieldFunctionResolver.resolveFieldFunction(functionSpec);
-            } catch (Exception e) {
-                logger.error("error instantiating function", e);
-                throw new RuntimeException(e);
-            }
-
-            if (nextfunc instanceof EntityDefAware) {
-                ((EntityDefAware) nextfunc).applyEntityDef(es.getEntityDef());
-            }
-
-            if (nextfunc instanceof SamplerDefAware) {
-                ((SamplerDefAware) nextfunc).applySamplerDef(es.getSamplerDef());
-            }
-
-            if (f == null) {
-                f = nextfunc;
-                continue;
-            }
-
-            // Double dispatch might be better for this
-            if (nextfunc instanceof LongFieldFunction && f instanceof LongFieldFunction) {
-                f = ((LongFieldFunction) f).andThen((LongFieldFunction)nextfunc);
-            } else if (nextfunc instanceof TypedFieldFunction && f instanceof LongFieldFunction) {
-                f = ((LongFieldFunction) f).andThen((TypedFieldFunction) nextfunc);
-            }
+            // TODO: Document why there is long, typed, and generic ordering and the pressures it creates
         }
 
-        if (nextfunc==null) {
-            throw new RuntimeException("Composed function was null");
+
+        if (typedFuncs == null) {
+            typedFuncs = (longFuncs==null) ? new BoxedString() : longFuncs.andThen(new BoxedString());
         }
 
-        return f;
+        return typedFuncs;
     }
 }

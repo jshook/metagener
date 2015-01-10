@@ -12,7 +12,7 @@ public interface SamplerDef {
      * The name of the sampler, possibly different than the name of the entity it samples
      * @return sampler name
      */
-    public String getName();
+    public String getSamplerName();
 
     /**
      * The name of the entity that this sampler is intended to sample from. The population of this
@@ -22,9 +22,8 @@ public interface SamplerDef {
     public String getEntityName();
 
     /**
-     * The statistical distribution name and parameters used to sample values from this population, in the format
-     * dist=gaussian,stddev=150,mean=500
-     * @return the distribution specification
+     * The statistical samplerFunction name and parameters used to sample values from this population
+     * @return the samplerFunction specification
      */
-    public String getDistributionSpec();
+    public String getSamplerFunction();
 }

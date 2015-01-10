@@ -1,9 +1,6 @@
 package com.metawiring.descriptors.bundled;
 
-import com.metawiring.types.EntitySample;
-import com.metawiring.types.EntitySampler;
-import com.metawiring.types.EntitySamplerService;
-import com.metawiring.types.SamplerDef;
+import com.metawiring.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
@@ -28,7 +25,8 @@ public class RetailEntitySamplerServiceTest {
 
     @Test
     public void testGet() throws Exception {
-        EntitySamplerService ess = new RetailEntitySamplerService();
+        PrebundledStreams pbs = new PrebundledStreamsImpl();
+        EntitySamplerService ess  = pbs.getRetailStreams();
         assertNotNull(ess);
     }
 
@@ -50,7 +48,7 @@ public class RetailEntitySamplerServiceTest {
     public void testGetEntitySamplerReturnsWorkingSampler() {
         EntitySamplerService ess = new RetailEntitySamplerService();
         SamplerDef des = ess.getDefinedEntitySamplers().get(0);
-        EntitySampler sampleStream = ess.getSampleStream(des.getName());
+        EntitySampler sampleStream = ess.getSampleStream(des.getSamplerName());
         EntitySample es;
         es = sampleStream.getNextEntity();
         Object[] vals = es.getFieldValues();
@@ -66,7 +64,7 @@ public class RetailEntitySamplerServiceTest {
         ess.getSampleStream("retail.brand");
 
         SamplerDef des = ess.getDefinedEntitySamplers().get(0);
-        EntitySampler sampleStream = ess.getSampleStream(des.getName());
+        EntitySampler sampleStream = ess.getSampleStream(des.getSamplerName());
         EntitySample es = sampleStream.getNextEntity();
         Object[] vals = es.getFieldValues();
         assertThat(vals.length,greaterThan(0));

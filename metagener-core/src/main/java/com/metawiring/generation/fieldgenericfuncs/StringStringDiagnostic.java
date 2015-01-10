@@ -29,7 +29,7 @@ public class StringStringDiagnostic implements GenericFieldFunction<String,Strin
     public String apply(String string) {
         cycles++;
         if ((cycles % triggerModulo) == 0 ) {
-            logger.debug("DIAG: entityDef:" + entityDef.getName() + ", samplerDef" + samplerDef.getName()
+            logger.debug("DIAG: entityDef:" + entityDef.getName() + ", samplerDef" + samplerDef.getSamplerName()
                     + "cycle:" + cycles + "/" + triggerModulo + ", input=" + string);
         }
         return string;

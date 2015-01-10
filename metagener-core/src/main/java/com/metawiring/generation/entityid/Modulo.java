@@ -1,6 +1,5 @@
 package com.metawiring.generation.entityid;
 
-import com.metawiring.types.functiontypes.GenericFieldFunction;
 import com.metawiring.types.functiontypes.LongFieldFunction;
 
 /**

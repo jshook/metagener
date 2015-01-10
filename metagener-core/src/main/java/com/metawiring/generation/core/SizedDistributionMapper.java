@@ -5,8 +5,8 @@ import org.apache.commons.math3.distribution.*;
 import org.apache.commons.math3.random.RandomGenerator;
 
 /**
- * Map a population and a distribution together to configure a new distribution instance.
- * For each distribution, the idea is to approximate what most users might do for the population.
+ * Map a population and a samplerFunction together to configure a new samplerFunction instance.
+ * For each samplerFunction, the idea is to approximate what most users might do for the population.
  * This is not meant to replace all methods of configuring distributions. It is simply the minimal
  * support for users who want a simply configuration. More advanced options may follow.
  */
@@ -39,7 +39,7 @@ public class SizedDistributionMapper {
 //            case "PoissonDistribution":
 //                break;
             default:
-                throw new RuntimeException("distribution " + distClass.getSimpleName() + " was not a supported distribution");
+                throw new RuntimeException("samplerFunction " + distClass.getSimpleName() + " was not a supported samplerFunction");
 
         }
 
@@ -64,7 +64,7 @@ public class SizedDistributionMapper {
                 return EnumeratedIntegerDistribution.class;
             case "normal":
             case "gaussian":
-                throw new RuntimeException("You probably want to use a discrete distribution for this, like binomial."
+                throw new RuntimeException("You probably want to use a discrete samplerFunction for this, like binomial."
                         + " Continuous distributions are not supported yet. When they are, they will only be for field values.");
             default:
                 throw new RuntimeException("Distribution name " + distributionName + " was not recognized");

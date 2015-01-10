@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.stream.LongStream;
 
 /**
- * Represents a single asImmutable entity sample.
+ * Represents a single immutable entity sample.
  */
 public interface EntitySample {
 
