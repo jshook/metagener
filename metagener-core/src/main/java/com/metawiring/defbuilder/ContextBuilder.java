@@ -51,16 +51,16 @@ public class ContextBuilder implements ConfigDefs, DefBuilderTypes {
 
     public SamplerDefBuilderTypes.wantsSamplerFunction sampler(String entityName, String samplerName) {
         currentSamplerDef = new MutableSamplerDef();
-        currentSamplerDef.setSamplerName(samplerName);
         currentSamplerDef.setEntityName(entityName);
+        currentSamplerDef.setSamplerName(samplerName);
         samplerDefs.put(currentSamplerDef.getSamplerName(),currentSamplerDef);
         return this;
     }
 
     public SamplerDefBuilderTypes.wantsSamplerFunction sampler(String entityName) {
         currentSamplerDef = new MutableSamplerDef();
-        currentSamplerDef.setSamplerName(entityName);
         currentSamplerDef.setEntityName(entityName);
+        currentSamplerDef.setSamplerName(entityName);
         samplerDefs.put(currentSamplerDef.getSamplerName(),currentSamplerDef);
         return this;
     }

@@ -21,20 +21,27 @@ public class RetailEntitySamplerService implements EntitySamplerService {
 
     public RetailEntitySamplerService() {
      DefBuilderTypes builder = ContextBuilder.builder();
-     builder.entity("retail.brand").population(1000)
-                .field("brand").type("text").function("NamedNumberString;suffix: street");
+     builder.entity("brand").population(100000)
+                .field("brand").type("text").function("tostring;prefix:BrandNo ");
 
-     builder.sampler("retail.brand").entityFunction("dist:binomial");
-
-     builder.sampler("retail.brand binomial").entityFunction("dist:uniform");
+     builder.sampler("brand", "brand binomial").entityFunction("murmur3;dist:binomial");
+     builder.sampler("brand", "brand").entityFunction("murmur3;dist:uniform");
 
 //        // not graceful syntax yet, but the idea...
 //        defBuilder.sampleEntity("retail.brand manifest").samplerFunction("manifest");
 
-     builder.entity("retail.product").population(10000)
+     builder.entity("product").population(10000)
                 .field("product").type("text").function("BoxedString;prefix:product ")
                 .field("product_variant").type("text").function("BoxedString;prefix: variant ");
-     builder.sampler("retail.product").entityFunction("dist:uniform");
+     builder.sampler("product").entityFunction("murmur3;dist:uniform");
+
+     builder.entity("retail.address").population(1000000)
+             .field("street_number").type("int").function("mod:100000")
+             .field("street_name").type("text").function("numbername;suffix: street")
+             .field("street_unit").type("text").function("mod:10000;prefix:unit ")
+             .field("city").type("text").function("db:cities");
+
+     builder.sampler("retail.address").entityFunction("murmur3");
 
 //        defBuilder.entity("address").population(10000)
 //                .field("street_number").type("int").function("hash,")

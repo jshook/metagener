@@ -23,7 +23,8 @@ public class Modulo implements LongFieldFunction {
 
     @Override
     public long applyAsLong(long operand) {
-        return operand % modulo;
+        long result = operand & modulo;
+        return result;
     }
 
 }

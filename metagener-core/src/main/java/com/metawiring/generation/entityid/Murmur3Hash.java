@@ -21,6 +21,7 @@ public class Murmur3Hash implements LongFieldFunction {
         bytes.putLong(value);
         bytes.flip();
         murmur3F.update(bytes.array());
-        return Math.abs(murmur3F.getValue());
+        long result= Math.abs(murmur3F.getValue());
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.metawiring.generation.core;
 
+import com.google.common.base.Strings;
 import com.metawiring.types.functiontypes.LongFieldFunction;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import com.metawiring.types.*;
@@ -111,9 +112,17 @@ public class EntitySamplerImpl implements EntitySampler {
         // TODO: parameterize field function functions by stream type (monotone|PRNG)
         // TODO: memoize PRNG data for subsequent field function cycles, if possible without veering too far from pure functions
         int defOffset = 0;
+
         for (FieldDef fieldDef : entityDef.getFieldDefs()) {
+            String fieldFuncChain = fieldDef.getFunction();
+            String samplerFuncChan = samplerDef.getSamplerFunction();
+            String funcChain = "";
+            funcChain += (Strings.isNullOrEmpty(samplerFuncChan)) ? "" : samplerFuncChan + ";";
+            funcChain += (Strings.isNullOrEmpty(fieldFuncChain)) ? "" : fieldFuncChain;
+            logger.debug("funcChain: " + funcChain);
+
             try {
-                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(fieldDef.getFunction(), this);
+                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(funcChain, this);
                 fieldFunctions[defOffset] = (LongFunction<?>) fieldSpecificFunction;
             } catch (Exception e) {
                 throw new RuntimeException(e);
