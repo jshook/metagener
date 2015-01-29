@@ -1,4 +1,4 @@
-package com.metawiring.generation.entityid;
+package com.metawiring.generation.longfuncs;
 
 import com.metawiring.generation.core.HashedSamplingAdapter;
 import com.metawiring.types.functiontypes.EntityDefAware;

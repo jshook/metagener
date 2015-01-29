@@ -2,7 +2,6 @@ package com.metawiring.generation.core;
 
 import com.google.common.base.Strings;
 import com.metawiring.configdefs.FormatConstants;
-import com.metawiring.generation.entityid.Identity;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.types.functiontypes.*;
 import com.metawiring.types.*;

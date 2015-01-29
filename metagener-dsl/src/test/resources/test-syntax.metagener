@@ -1,0 +1,14 @@
+entity user pop=1000
+ field user_id int
+ field firstlastname text func=entity;template:"${firstname} ${lastname}"
+ field username text func=entity;sample:usernames.csv,dist=uniform;
+ field join_date datetime func=entity;datetime:range=1990-1993,dist:binomial;
+ field firstname text func=entity;file:firstnames.csv,dist:uniform;
+ field lastname text func=entity;file:lastnames.csv,dist:uniform;
+
+entity message // no pop -- means Int.MAX_VALUE
+ field sender_id int func=entity;dist:binomial
+ field recip_id int func=entity;dist:binomial
+ field sent_at datetime func=stream;datetime:range=1990-1993,dist:pareto
+
+ // stretch goal, simulate replies

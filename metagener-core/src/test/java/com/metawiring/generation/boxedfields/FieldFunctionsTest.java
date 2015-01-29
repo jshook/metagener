@@ -2,10 +2,10 @@ package com.metawiring.generation.boxedfields;
 
 import com.metawiring.configdefs.MutableEntityDef;
 import com.metawiring.configdefs.MutableSamplerDef;
-import com.metawiring.generation.entityid.Identity;
-import com.metawiring.generation.entityid.IntModulo;
-import com.metawiring.generation.entityid.LongLongDiagnostic;
-import com.metawiring.generation.entityid.Modulo;
+import com.metawiring.generation.longfuncs.Identity;
+import com.metawiring.generation.longfuncs.IntModulo;
+import com.metawiring.generation.longfuncs.LongLongDiagnostic;
+import com.metawiring.generation.longfuncs.Modulo;
 import com.metawiring.generation.fieldgenfuncs.*;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
 import com.metawiring.generation.fieldgenericfuncs.StringStringDiagnostic;

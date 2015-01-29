@@ -1,8 +1,8 @@
 package com.metawiring.descriptors;
 
 import com.metawiring.configdefs.MutableEntityDef;
-import com.metawiring.generation.entityid.Murmur3Hash;
-import com.metawiring.generation.entityid.PopulationSampler;
+import com.metawiring.generation.longfuncs.Murmur3Hash;
+import com.metawiring.generation.longfuncs.PopulationSampler;
 import org.hamcrest.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
