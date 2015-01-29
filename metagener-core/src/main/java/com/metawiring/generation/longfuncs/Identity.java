@@ -1,4 +1,4 @@
-package com.metawiring.generation.entityid;
+package com.metawiring.generation.longfuncs;
 
 
 import com.metawiring.types.FieldFunctionSignature;

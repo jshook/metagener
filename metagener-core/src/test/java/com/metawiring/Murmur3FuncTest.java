@@ -1,6 +1,6 @@
 package com.metawiring;
 
-import com.metawiring.generation.entityid.Murmur3Hash;
+import com.metawiring.generation.longfuncs.Murmur3Hash;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

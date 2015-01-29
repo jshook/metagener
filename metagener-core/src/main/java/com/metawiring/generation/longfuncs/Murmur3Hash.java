@@ -1,4 +1,4 @@
-package com.metawiring.generation.entityid;
+package com.metawiring.generation.longfuncs;
 
 import com.metawiring.types.functiontypes.LongFieldFunction;
 import de.greenrobot.common.hash.Murmur3F;

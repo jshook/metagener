@@ -1,6 +1,6 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.generation.entityid.Identity;
+import com.metawiring.generation.longfuncs.Identity;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
 import com.metawiring.generation.fieldgenfuncs.EntityModulo;
 import com.metawiring.types.functiontypes.GenericFieldFunction;

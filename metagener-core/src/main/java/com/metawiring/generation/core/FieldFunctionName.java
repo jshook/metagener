@@ -1,6 +1,6 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.generation.entityid.*;
+import com.metawiring.generation.longfuncs.*;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.generation.fieldgenfuncs.*;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
@@ -20,7 +20,8 @@ public enum FieldFunctionName {
     dist(PopulationSampler.class),
     prefix(Prefix.class),
     suffix(Suffix.class),
-    tostring(BoxedString.class);
+    tostring(BoxedString.class),
+    daterange(DateRange.class);
 
 
     private final Class<?> implClass;
