@@ -11,6 +11,7 @@ Consider the function graph below. It introduces the functional syntax as well a
 ![Basic Function Graph](graph1.png "Basic Function Graph" "width:350px;float:left;")
 
 The arrows follow the order in which functions are applied to the inner-most data of a function. This representation also allows for the visual arrangement of a related set of functions which can map directly to a realized data source in the runtime. The function names represented by capital letters while the function signatures are captured by the (input)=>result notation. Notice that each function has the same input type as the result type of the function feeding it. All functions must have a compatible type signature with the other functions that they are composed with. 
+The arrows follow the order in which functions are applied to the innermost functions first. This representation also allows for the visual arrangement of a related set of functions which can map directly to a realized data source at runtime. The function names represented by capital letters while the function signatures are captured by the input=>result notation. Of course, all functions must have a compatible type signature. Notice that each function has the same input type as the result type of the function feeding it.
 
 Consider the composition of function __E(long)=>string__ around __A(long)=>long__. This results in the composed function function __E(A(long)) => string__. The graph shows 3 different end results, represented canonically as composed functions. They are __C(A(long))=>long__, __E(A(long))=>string__, and __D(B(long))=>string__. Each of these composed functions will be described as a ___function pipeline___. What each function actually does to yield its value is not covered. The focus here is in how they can be composed from the graph representation.
 
@@ -24,6 +25,7 @@ There are distinct phases of construction of a function graph and its associated
 2. resolved
 3. instantiated
 
+In practice, the initial function will be a basic sequence generator. This serves  to provide a default ordering that is well-understood by data consumers.
 
 
 #### Runtime Construction
@@ -35,6 +37,16 @@ As well, If all of the functions are pure, with no side-effects or internal stat
 ![Runtime Function Graph](graph2.png "Separated Function Graph" "width:450px;float:left;")
 
 Applying both of these ideas to the above graph yields the one shown here. This not only represents the logically separated function pipelines, but also the way that they will be composed at runtime.
+
+## Function Parameters
+
+So far, the examples are more about composed functions or processing pipelines, depending on your vantage point. These examples have not shown real functions that you might use in a practical function graph. The following example will show a practical generator graph. At this stage, the example syntax will drop the input type, since it is implicit in the result of the feeder function. More importantly, this one will show the initial parameters of each function.
+
+
+## Function Parameters
+
+So far, the examples are more about composed functions or processing pipelines, depending on your vantage point. These examples have not shown real functions that you might use in a practical function graph. The following example will show a practical generator graph. At this stage, the example syntax will drop the input type, since it is implicit in the result of the feeder function. More importantly, this one will show the initial parameters of each function.
+
 
 ## Goals
 
@@ -50,9 +62,25 @@ There are a few things going on here that we haven't seen before.
 
 First, there are some outputs which have names. Those have been marked with slanted boxes. These nodes represent variable names to which the results of each composed function will be assigned. They are called _fields_ in metagener.
 
+The four fields together might constitute the fields of an object, 
+Notice that the user_height field is produced by a function that does not have a primitive result type. A function can theoretically 
+
 ### Sampling
 
-By using a robust hash function as the RNG, it is possible to combine determinism with statistical distributions. To be fair, _deterministic sampling_ is an oxymoron. This ...
+By using a robust hash function in place of the usual RNG, it is possible to combine functional determinism with statistical distributions in a useful way. To be fair, _deterministic sampling_ is an oxymoron. There are specific reasons for combining these two elements, as well as some explanation as to how this works is below.
+
+Firstly, idempotent (as with pure functions) results for a given initial input allow for types of testing that can only happen when you can test knowable generator values against previous behavior. As well, it allows for work to be cleanly divided among systems when needed for scale testing.
+
+On the other hand, the ability to use well-known statistical language for describing data sets and behaviors is essential. It is necessary to be able to vary field values across entities or objects according to a known distribution.
+
+#### Sampling methods
+
+Most statistical libraries are built with the notion that you needn't have a say in the RNG input apart from providing an existing RNG implementation. In metagener, we take control of the inputs for statistical samplers, and configure the function pipeline for pseudo-random yet deterministic results as desired. This doesn't change the way that the statistical sampler works apart from exposing some of the plumbing. The values generated by a statistical sampler function will vary according to the distribution, so long as it is given a random distribution of inputs. In this case we use the result of a suitable hash function. Since well-behaved hash functions have high dispersion, the result of hashing over sequences still appers random enough for use in statistical samplers based on inverse CDF methods. However, the values generated for a particular input to the function graph will be idempotent. This allows for reproducible, deterministic, yet statistically defined data sets. It also allows you to do whatever you want with the input to the distribution function,  such as slewing proportionally over the range of possible inputs based on a population, producing samples which represent an even cross-section of the distribution. 
+
+#### Sampling Populations
+
+
+
 
 ### Flexible Structure
 
