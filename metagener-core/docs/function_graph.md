@@ -123,3 +123,22 @@ A named aggregation type in a metagener definition. Analogous to record, object,
 
 The configuration data which represents an entity.
 
+
+### syntax conventions
+
+Function pipelines may be specified without the trailing semicolon. However, individual functions which make the pipeline segment must be delimited with a semicolon.
+For now, there is no special treatment of escape characters.
+
+Function specs which are called with no arguments (taking the defaults for any parameters) can be called as _func;_ or _func();_. Function specs which are called with a single argument may pass it without naming the parameter. However, function specs which are called with multiple parameters must be called with named parameters. As well, functions must be able to receive a Map<String,String> in order to support this. The reason for the verbosity is two fold:
+1. To encourage the construction of finer-grained functions which can be combined in more flexibile and powerful ways.
+2. To avoid confusion when looking pipeline fragments in syntax.
+
+For example:
+
+    func joindate  entity; datetime(1997-2015); dateformat(%T)
+
+seems much clearer than
+
+    func joindate  entity; datetime(range=1997-2015, format=%T)
+
+While this is debatable, the first method follows a simple functional pattern that is also easy to follow visually. It also means that the dateformat(...) function can be used in other places.

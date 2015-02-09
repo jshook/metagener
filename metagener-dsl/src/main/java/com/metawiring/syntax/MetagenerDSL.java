@@ -1,9 +1,56 @@
 package com.metawiring.syntax;
 
-public class MetagenerDSL {
+import com.metawiring.generated.MetagenLexer;
+import com.metawiring.generated.MetagenParser;
+import com.metawiring.types.MetagenDef;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-//    public static ConfigDefs parse(String configFileName) {
-//        MetagenerParser metagenerParser = new MetagenerParser();
-//
-//    }
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.CharBuffer;
+
+public class MetagenerDSL {
+    private static Logger logger = LoggerFactory.getLogger(MetagenerDSL.class);
+
+    public static MetagenDef fromFile(String filename) {
+        try {
+            char[] filedata = readFile(filename);
+            ANTLRInputStream ais = new ANTLRInputStream(filedata, filedata.length);
+            MetagenLexer lexer = new MetagenLexer(ais);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            MetagenParser parser = new MetagenParser(tokens);
+            GenContextDefListener modelBuilder = new GenContextDefListener();
+            parser.addParseListener(modelBuilder);
+            MetagenParser.GencontextdefContext parseTree = parser.gencontextdef();
+            //System.out.println(parseTree.toStringTree(parser));
+            return modelBuilder.getGenContextDef();
+        } catch (Exception e) {
+            logger.error("Fatal error while trying to parse Metagener defs:" + e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static char[] readFile(String filename) {
+        BufferedReader sr = new BufferedReader(
+                new InputStreamReader(
+                        Thread.currentThread().getContextClassLoader().getResourceAsStream(filename)
+                )
+        );
+        CharBuffer cb = CharBuffer.allocate(1000000);
+        try {
+            while (sr.read(cb) > 0) {
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        cb.flip();
+        char[] cbimage = new char[cb.limit()];
+        cb.get(cbimage, 0, cb.limit());
+        return cbimage;
+    }
+
 }
