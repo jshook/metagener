@@ -17,16 +17,21 @@ Consider the composition of function __E(long)=>string__ around __A(long)=>long_
 
 The whole graph captures the relationships between different kinds of composed functions with a common starting input. It is easy to see the lineage and common branching points of function definitions in this form.  It mirrors the way that you can think of building generator functions with metagener. The importance of this will become more evident further on.
 
-## Configuration to Runtime
-
-There are distinct phases of construction of a function graph and its associated outputs, called ___samplers___. These are:
-0. defined
-1. parsed
-2. resolved
-3. instantiated
-
 In practice, the initial function will be a basic sequence generator. This serves  to provide a default ordering that is well-understood by data consumers.
 
+## Configuration to Runtime
+
+A definition of a generator function graph is separate from an instance of it. The act of building a function graph is a different sort of activity than that of consuming its generated data. The metagener runtime acknowledges this by decoupling the representation of a function and instance of it into separate phases. This is realized simply by using a distinct model to hold the graph definition. The configuration type is known as a 'MetagenDef', and all the constitutent types that make it follow the same naming convention.
+
+The runtime API that you read generated data from is constructed as a new GenContext with an instance of a MetagenDef. By default, the generator context will instantiate function pipelines only when they are accessed. In this way, it is possible to create a function library that has many definitions without paying a penalty for those that you do not use in a particular scenario.
+
+The separation of the configuration model from the runtime implementation has other benefits as well. You can create a generator context with any valid MetagenerDef, no matter how you created it. The configuratio methods provided by default include:
+
+- Programmatic (Fluent) API
+- Metagener DSL
+- YAML
+
+It may be desirable to allow the generator context to load and unload definitions at runtime, but this hasn't been implemented in the current toolset.
 
 #### Runtime Construction
 
@@ -42,12 +47,6 @@ Applying both of these ideas to the above graph yields the one shown here. This 
 
 So far, the examples are more about composed functions or processing pipelines, depending on your vantage point. These examples have not shown real functions that you might use in a practical function graph. The following example will show a practical generator graph. At this stage, the example syntax will drop the input type, since it is implicit in the result of the feeder function. More importantly, this one will show the initial parameters of each function.
 
-
-## Function Parameters
-
-So far, the examples are more about composed functions or processing pipelines, depending on your vantage point. These examples have not shown real functions that you might use in a practical function graph. The following example will show a practical generator graph. At this stage, the example syntax will drop the input type, since it is implicit in the result of the feeder function. More importantly, this one will show the initial parameters of each function.
-
-
 ## Goals
 
 So what does such a simple set of primitives give us? From basic functional principles, we arready know that the input for a given composed function will yield an idempotent result, so long as the functions are pure functions. So far, there is nothing really special going on here.
@@ -58,29 +57,40 @@ In order to explain the function graph approach, an example is in order:
 
 There are a few things going on here that we haven't seen before. 
 
-### Fields
+#### Fields
 
 First, there are some outputs which have names. Those have been marked with slanted boxes. These nodes represent variable names to which the results of each composed function will be assigned. They are called _fields_ in metagener.
 
 The four fields together might constitute the fields of an object, 
 Notice that the user_height field is produced by a function that does not have a primitive result type. A function can theoretically 
 
-### Sampling
+## Sampling & Determinism
 
-By using a robust hash function in place of the usual RNG, it is possible to combine functional determinism with statistical distributions in a useful way. To be fair, _deterministic sampling_ is an oxymoron. There are specific reasons for combining these two elements, as well as some explanation as to how this works is below.
+By using a robust hash function in place of the usual RNG, it is possible to combine functional determinism with statistical distributions in a useful way. To be fair, _deterministic sampling_ is an oxymoron. However, there are specific reasons for combining these two elements. The motives for this are explained below along with some explaination of how it works.
 
-Firstly, idempotent (as with pure functions) results for a given initial input allow for types of testing that can only happen when you can test knowable generator values against previous behavior. As well, it allows for work to be cleanly divided among systems when needed for scale testing.
+Firstly, idempotent generator results (as with pure functions) allows for a variety of approaches to testing, some of which have been difficult in the past.  You can easily determine if an object or record has changed without having to record the full state in the interim. The sampleid acts much like a handle to a memoized generator result, in the sense that it will always provide the same result for a given value. For example, it will be possible, easy even, to ask "Has user 72 been modified from the original value?" without actually knowing the before and after values. This encodes the expected state of a particular element simply with a number: the __sampleid__.
 
-On the other hand, the ability to use well-known statistical language for describing data sets and behaviors is essential. It is necessary to be able to vary field values across entities or objects according to a known distribution.
+As well, breaking the test space apart by sampleid will allows for work to be cleanly divided among systems when needed for scale testing. The coherent graph of possible output, in combination with the __sampleid__ access patterns, allows for a method of dividing a test into logical units which can be executed concurrently and in a coordinated fashion.
+
+On the other hand, the ability to use well-known statistical language for describing data sets and behaviors is essential. It is necessary to be able to vary field values across entities or objects according to a known distribution. There are various statistical libraries which provide distribution sampling functions, but they don't generally work the way we need for this approach.
 
 #### Sampling methods
 
-Most statistical libraries are built with the notion that you needn't have a say in the RNG input apart from providing an existing RNG implementation. In metagener, we take control of the inputs for statistical samplers, and configure the function pipeline for pseudo-random yet deterministic results as desired. This doesn't change the way that the statistical sampler works apart from exposing some of the plumbing. The values generated by a statistical sampler function will vary according to the distribution, so long as it is given a random distribution of inputs. In this case we use the result of a suitable hash function. Since well-behaved hash functions have high dispersion, the result of hashing over sequences still appers random enough for use in statistical samplers based on inverse CDF methods. However, the values generated for a particular input to the function graph will be idempotent. This allows for reproducible, deterministic, yet statistically defined data sets. It also allows you to do whatever you want with the input to the distribution function,  such as slewing proportionally over the range of possible inputs based on a population, producing samples which represent an even cross-section of the distribution. 
+Most statistical libraries are built with the notion that you needn't have a say in the RNG input apart from providing an existing RNG implementation. In metagener, we take control of the inputs for statistical samplers, and configure the function pipeline for pseudo-random yet deterministic results as desired. 
+
+This doesn't change the way that the statistical sampler works apart from exposing some of the plumbing. The values generated by a statistical sampler function will vary according to the distribution, so long as it is given a random distribution of inputs. If you are able to control the uniform input that is used by the distribution sampling function, then you can turn it into a composed function.
+
+In this case we use the result of a suitable hash function, converting it's result into a compatible RNG input for the distribution sampling function. This means scaling it to the unit interval 0.0 - 1.0. Since well-behaved hash functions have high dispersion, the result of hashing over sequences still appers random enough for use in statistical samplers based on inverse CDF methods. However, the values generated for a particular input to the function graph will be idempotent. This allows for reproducible, deterministic, yet statistically defined data sets. It also allows you to do whatever you want with the input to the distribution function, for better or worse. Generally speaking, you won't need to do much with this mechanism. It is built-in to the library functions that you use in the function graph.
 
 #### Sampling Populations
 
+The __sampleid__ is simply the input to each function pipeline when you need a result. When you access a generator value, you do it by asking a sampler for the next entity, which is just a way to memoize the sampleid for a given iteration. You can specify the sampleid if you like. If you do not specificy the sampleid, the sampler will automatically use the next value, incrementing by 1 each time.
 
+Each sampler is configured for a specific defined entity. That means that the sampler is aware of the entity's population. Each sampler can also have an associated pertubation function which is applied to the sampleid at the beginning of the function pipeline. This allows you to select a sampling distribution (without replacement) from the original population.
 
+# TODO:
+
+Put a visual explanation here showing sampling functions being injeted into the logical function pipeline.
 
 ### Flexible Structure
 
