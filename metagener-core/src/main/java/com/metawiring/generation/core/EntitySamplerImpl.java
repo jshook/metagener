@@ -1,7 +1,6 @@
 package com.metawiring.generation.core;
 
 import com.google.common.base.Strings;
-import com.metawiring.types.functiontypes.LongFieldFunction;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import com.metawiring.types.*;
 import org.slf4j.Logger;
@@ -115,7 +114,7 @@ public class EntitySamplerImpl implements EntitySampler {
 
         for (FieldDef fieldDef : entityDef.getFieldDefs()) {
             String fieldFuncChain = fieldDef.getFunction();
-            String samplerFuncChan = samplerDef.getSamplerFunction();
+            String samplerFuncChan = samplerDef.getSamplerFunc();
             String funcChain = "";
             funcChain += (Strings.isNullOrEmpty(samplerFuncChan)) ? "" : samplerFuncChan + ";";
             funcChain += (Strings.isNullOrEmpty(fieldFuncChain)) ? "" : fieldFuncChain;

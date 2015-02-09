@@ -5,6 +5,6 @@ public interface EntityDefBuilder extends
         EntityBuilderTypes.wantsEntityPop,
         EntityBuilderTypes.wantsEntityFields,
         EntityBuilderTypes.wantsFieldType,
-        EntityBuilderTypes.wantsFieldFunction {
-}
+        EntityBuilderTypes.wantsFieldFunction,
+        EntityBuilderTypes.canBuild {}
 

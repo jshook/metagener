@@ -2,18 +2,18 @@ package com.metawiring.configdefs;
 
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.FieldDef;
+import com.metawiring.types.FuncDef;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MutableEntityDef implements EntityDef {
     private String name;
     private List<FieldDef> fieldDefs = new ArrayList<FieldDef>();
-    private Map<String,FieldDef> fieldDefMap = new HashMap<>();
+    private List<FuncDef> funcDefs = new ArrayList<>();
+    private Map<String,FieldDef> fieldDefMap = new LinkedHashMap<String, FieldDef>();
+    private Map<String,FuncDef> funcDefMap = new LinkedHashMap<String,FuncDef>();
 
-    private long populationSize = 10;
+    private long populationSize = Long.MAX_VALUE;
 
     public MutableEntityDef setName(String name) {
         this.name = name;
@@ -26,6 +26,11 @@ public class MutableEntityDef implements EntityDef {
     public MutableEntityDef addFieldDescriptor(FieldDef fieldDef) {
         this.fieldDefMap.put(fieldDef.getFieldName(),fieldDef);
         this.fieldDefs.add(fieldDef);
+        return this;
+    }
+    public MutableEntityDef addFuncDef(FuncDef funcDef) {
+        this.funcDefMap.put(funcDef.getFuncName(), funcDef);
+        this.funcDefs.add(funcDef);
         return this;
     }
 
@@ -51,6 +56,16 @@ public class MutableEntityDef implements EntityDef {
     @Override
     public FieldDef getFieldDef(String fieldName) {
         return fieldDefMap.get(fieldName);
+    }
+
+    @Override
+    public FuncDef getFuncDef(String funcName) {
+        return funcDefMap.get(funcName);
+    }
+
+    @Override
+    public List<FuncDef> getFuncDefs() {
+        return funcDefs;
     }
 
 }

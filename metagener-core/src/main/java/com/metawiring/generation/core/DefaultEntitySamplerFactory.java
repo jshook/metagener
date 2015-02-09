@@ -7,7 +7,7 @@ import com.metawiring.types.SamplerDef;
 
 public class DefaultEntitySamplerFactory implements EntitySamplerFactory {
     @Override
-    public EntitySampler compose(GeneratorContext generatorContext, SamplerDef sd, EntityDef ed) {
+    public EntitySampler compose(UNUSEDMetagenerContext UNUSEDMetagenerContext, SamplerDef sd, EntityDef ed) {
         return new EntitySamplerImpl(sd,ed);
     }
 }

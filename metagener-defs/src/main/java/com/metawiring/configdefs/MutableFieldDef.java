@@ -1,7 +1,7 @@
 package com.metawiring.configdefs;
 
-import com.metawiring.generation.core.FieldType;
 import com.metawiring.types.FieldDef;
+import com.metawiring.types.FieldType;
 
 public class MutableFieldDef implements FieldDef {
     private String fieldName;

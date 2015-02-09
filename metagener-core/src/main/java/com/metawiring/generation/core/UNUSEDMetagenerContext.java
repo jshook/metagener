@@ -9,7 +9,7 @@ import com.metawiring.types.exceptions.SampleStreamException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GeneratorContext {
+public class UNUSEDMetagenerContext {
 
     private Map<String,EntityDef> entityDescriptorMap = new HashMap<>();
     private Map<String,SamplerDef> samplerDescriptorMap = new HashMap<>();
@@ -17,7 +17,7 @@ public class GeneratorContext {
 
     private EntitySamplerFactory entitySamplerFactory = new DefaultEntitySamplerFactory();
 
-    public GeneratorContext addEntityDef(EntityDef entityDef) {
+    public UNUSEDMetagenerContext addEntityDef(EntityDef entityDef) {
         String entityName = entityDef.getName();
         if (entityDescriptorMap.containsKey(entityName)) {
             throw new SampleStreamException("entity definition " + entityName + " is already defined");
@@ -26,7 +26,7 @@ public class GeneratorContext {
         return this;
     }
 
-    public GeneratorContext addSamplerDef(SamplerDef samplerDef) {
+    public UNUSEDMetagenerContext addSamplerDef(SamplerDef samplerDef) {
         String sampleName = samplerDef.getSamplerName();
         if (samplerDescriptorMap.containsKey(sampleName)) {
             throw new SampleStreamException("sampler definition " + sampleName + " is already defined");
@@ -34,7 +34,7 @@ public class GeneratorContext {
         return this;
     }
 
-    public EntitySampler getEntitySampler(String entitySamplerName) {
+    public EntitySampler getSampler(String entitySamplerName) {
         EntitySampler es;
         es = entitySamplerMap.get(entitySamplerName);
         if (es==null) {

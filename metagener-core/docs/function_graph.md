@@ -8,23 +8,37 @@ Each function graph has a logical representation which shows how data is transfo
 
 Consider the function graph below. It introduces the functional syntax as well as the data-flow-first representation which is favored in metagener.
 
-![Basic Function Graph](graph1.png)
+![Basic Function Graph](graph1.png "Basic Function Graph" "width:350px;float:left;")
 
-The arrows follow the order in which functions are applied to the inner-most data of a function. This representation also allows for the visual arrangement of a related set of functions which can map directly to a realized data source in the runtime. The function names represented by capital letters while the function signatures are captured by the input=>result notation. Of course, all functions must have a compatible type signature. Notice that each function has the same input type as the result type of the function feeding it.
+The arrows follow the order in which functions are applied to the inner-most data of a function. This representation also allows for the visual arrangement of a related set of functions which can map directly to a realized data source in the runtime. The function names represented by capital letters while the function signatures are captured by the (input)=>result notation. Notice that each function has the same input type as the result type of the function feeding it. All functions must have a compatible type signature with the other functions that they are composed with. 
 
-Consider the composition of function E(long)=>string around A(long)=>long. This results in the composed function function E(A(long)) => string. The graph shows 3 different end results, represented canonically as composed functions. They are C(A(long))=>long, E(A(long))=>string, and D(B(long))=>string. What each function actually does to yield its value is not covered here, only the relationship between the functions in the graph.
+Consider the composition of function __E(long)=>string__ around __A(long)=>long__. This results in the composed function function __E(A(long)) => string__. The graph shows 3 different end results, represented canonically as composed functions. They are __C(A(long))=>long__, __E(A(long))=>string__, and __D(B(long))=>string__. Each of these composed functions will be described as a ___function pipeline___. What each function actually does to yield its value is not covered. The focus here is in how they can be composed from the graph representation.
 
-The original source of data above is simply a sequence or stream of long values. To simplify, this will be represented by a function with an input type of unit, which represents an empty type. This means that every node in the function graph can be represented in terms of functions, even if we are stretching the definition a bit.
+The whole graph captures the relationships between different kinds of composed functions with a common starting input. It is easy to see the lineage and common branching points of function definitions in this form.  It mirrors the way that you can think of building generator functions with metagener. The importance of this will become more evident further on.
 
-As well, this graph represents the logical relationship between different kinds of mappings. If all of the functions are pure, with no side-effects or internal state, then we can build instances of the composed functions at run-time which are highly parallel. Applying both of these ideas to the above graph yields the one below:
+## Configuration to Runtime
 
-![Runtime Function Graph](graph2.png)
+There are distinct phases of construction of a function graph and its associated outputs, called ___samplers___. These are:
+0. defined
+1. parsed
+2. resolved
+3. instantiated
 
-In practice, the initial function will be a basic sequence generator.
+
+
+#### Runtime Construction
+
+The original source of data above is simply a sequence or stream of long values. To simplify, this will be represented by a function with an input type of unit, which represents an empty type. This means that every node in the function graph, even the common input, can be represented in terms of a function, although we are stretching the definition a bit.
+
+As well, If all of the functions are pure, with no side-effects or internal state, then we can build instances of the composed functions at run-time which are highly parallel.
+
+![Runtime Function Graph](graph2.png "Separated Function Graph" "width:450px;float:left;")
+
+Applying both of these ideas to the above graph yields the one shown here. This not only represents the logically separated function pipelines, but also the way that they will be composed at runtime.
 
 ## Goals
 
-So what does such a simple construct give us? From basic functional principles, we arready know that the input for a given composed function will yield an idempotent result, so long as the functions are pure functions. So far, there is nothing really special going on here.
+So what does such a simple set of primitives give us? From basic functional principles, we arready know that the input for a given composed function will yield an idempotent result, so long as the functions are pure functions. So far, there is nothing really special going on here.
 
 In order to explain the function graph approach, an example is in order:
 
@@ -82,3 +96,30 @@ The graph shows one field "join_date" as having a completely different composed 
     [func genheight(float)=>height] -> [<input> user_height]
     [func longs()=>long] -> [func gentimestamp(long)=>datetime]
     [func gentimestamp(long)=>datetime] -> [<input> join_date]
+
+### Terms
+
+#### function pipeline
+
+A set of functions which can be composed into a single function, found by following a directed function graph from the common input to one of the leaf nodes.
+
+#### context
+
+A context holds a metagener graph definition. From it, you can access samplers and the associated entitydef and samplerdef data.
+
+#### sampler
+
+The runtime object which is used to access values from a named output.
+
+#### samplerdef
+
+The configuration data which represents a sampler.
+
+#### entity
+
+A named aggregation type in a metagener definition. Analogous to record, object, struct, ...   The name entity was chosen because of it's similarity to the same term in database design, although it isn't exactly the same. For some users, it might actually be the same.
+
+#### entitydef
+
+The configuration data which represents an entity.
+

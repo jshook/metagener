@@ -1,8 +1,8 @@
 package com.metawiring.wiring;
 
 import com.metawiring.defbuilder.DefBuilderTypes;
-import com.metawiring.defbuilder.ContextBuilder;
-import com.metawiring.types.ConfigDefs;
+import com.metawiring.defbuilder.GenContextBuilder;
+import com.metawiring.types.MetagenDef;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.SamplerDef;
@@ -16,7 +16,10 @@ import java.util.Map;
 /**
  * You should only have one function context per app
  */
-public class GeneratorContext {
+public class GenContext {
+
+    // The configured generator context
+    private MetagenDef metagenDef;
 
     // The map of sampler implementations
     private Map<String, EntitySampler> entitySamplerMap = new HashMap<>();
@@ -27,6 +30,9 @@ public class GeneratorContext {
     // Samplers, defined
     private Map<String,SamplerDef> samplerDefMap = new HashMap<>();
 
+    public GenContext(MetagenDef metagenDef) {
+        loadDefs(metagenDef);
+    }
 
 
     public EntitySampler getEntitySampleStream(String entitySampleStreamName) {
@@ -59,7 +65,7 @@ public class GeneratorContext {
         return sampleStream;
     }
 
-    public GeneratorContext loadDefs(ConfigDefs cb) {
+    public GenContext loadDefs(MetagenDef cb) {
         loadEntityDefs(cb.getEntityDefs());
         loadSamplerDefs(cb.getSamplerDefs());
         return this;
@@ -86,6 +92,6 @@ public class GeneratorContext {
     }
 
     public static DefBuilderTypes builder() {
-        return ContextBuilder.builder();
+        return GenContextBuilder.builder();
     }
 }

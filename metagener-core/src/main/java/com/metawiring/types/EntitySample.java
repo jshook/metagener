@@ -26,7 +26,7 @@ public interface EntitySample {
      * Return an ordered map of field names and values, in the same order tha the fields were defined in.
      * @return a map of named values, in defined order
      */
-    public Map<String,Object> getPrettyFieldValues();
+    public Map<String,Object> getOrderedFieldMap();
 
     /**
      * Return just the generated values, in the same order that the fields were defined in.

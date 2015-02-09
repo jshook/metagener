@@ -4,19 +4,19 @@ import com.metawiring.types.SamplerDef;
 
 public class MutableSamplerDef implements SamplerDef {
     private String entityName="";
-    private String samplerFunction ="";
+    private String samplerFunc ="";
     private String samplerName ="";
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;
     }
 
-    public void setSamplerFunction(String samplerFunction) {
-        this.samplerFunction = samplerFunction;
+    public void setSamplerFunc(String samplerFunc) {
+        this.samplerFunc = samplerFunc;
     }
 
-    public String getSamplerFunction() {
-        return samplerFunction;
+    public String getSamplerFunc() {
+        return samplerFunc;
     }
 
     public void setSamplerName(String samplerName) {

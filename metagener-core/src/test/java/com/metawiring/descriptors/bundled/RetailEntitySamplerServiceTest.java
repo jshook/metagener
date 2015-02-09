@@ -55,7 +55,7 @@ public class RetailEntitySamplerServiceTest {
             Object[] vals = es.getFieldValues();
             assertThat(vals.length,greaterThan(0));
             Map<String, Object> vmap;
-            vmap = es.getPrettyFieldValues();
+            vmap = es.getOrderedFieldMap();
             logger.info(vmap.toString());
         }
     }
@@ -70,7 +70,7 @@ public class RetailEntitySamplerServiceTest {
         EntitySample es = sampleStream.getNextEntity();
         Object[] vals = es.getFieldValues();
         assertThat(vals.length,greaterThan(0));
-        Map<String, Object> vmap = es.getPrettyFieldValues();
+        Map<String, Object> vmap = es.getOrderedFieldMap();
         logger.info(vmap.toString());
     }
 

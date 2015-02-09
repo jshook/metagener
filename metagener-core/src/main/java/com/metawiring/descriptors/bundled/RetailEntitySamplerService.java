@@ -1,11 +1,11 @@
 package com.metawiring.descriptors.bundled;
 
 import com.metawiring.defbuilder.DefBuilderTypes;
-import com.metawiring.defbuilder.ContextBuilder;
+import com.metawiring.defbuilder.GenContextBuilder;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntitySamplerService;
 import com.metawiring.types.SamplerDef;
-import com.metawiring.wiring.GeneratorContext;
+import com.metawiring.wiring.GenContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,10 +17,10 @@ import java.util.Map;
 public class RetailEntitySamplerService implements EntitySamplerService {
 
     // Many of the internal service methods are delegated to the context
-    private GeneratorContext context = new GeneratorContext();
+    GenContext context;
 
     public RetailEntitySamplerService() {
-     DefBuilderTypes builder = ContextBuilder.builder();
+     DefBuilderTypes builder = GenContextBuilder.builder();
      builder.entity("brand").population(100000)
                 .field("brand").type("text").function("tostring;prefix:BrandNo ");
 
@@ -54,7 +54,7 @@ public class RetailEntitySamplerService implements EntitySamplerService {
 //                .field("phone_number").type("int").function("range:100000000-999999999");
 //        defBuilder.sampleEntity("address").samplerFunction("uniform").as("address");
 //
-        context.loadDefs(builder);
+        context = new GenContext(builder.build());
     }
 
     @Override

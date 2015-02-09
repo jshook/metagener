@@ -2,48 +2,44 @@ package com.metawiring.defbuilder;
 
 import com.metawiring.configdefs.MutableEntityDef;
 import com.metawiring.configdefs.MutableFieldDef;
+import com.metawiring.configdefs.MutableMetagenDef;
 import com.metawiring.configdefs.MutableSamplerDef;
-import com.metawiring.types.ConfigDefs;
-import com.metawiring.types.EntityDef;
-import com.metawiring.types.SamplerDef;
+import com.metawiring.types.MetagenDef;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class ContextBuilder implements ConfigDefs, DefBuilderTypes {
+public class GenContextBuilder implements DefBuilderTypes {
+    private MutableMetagenDef mutableMetagenDef;
     private MutableEntityDef currentEntityDef;
     private MutableFieldDef currentFieldDef;
     private MutableSamplerDef currentSamplerDef;
-    private Map<String,EntityDef> entityDefs = new HashMap<>();
-    private Map<String,SamplerDef> samplerDefs = new HashMap<>();
+//    private Map<String,EntityDef> entityDefs = new HashMap<>();
+//    private Map<String,SamplerDef> samplerDefs = new HashMap<>();
 
-    private ContextBuilder() {
+    private GenContextBuilder() {
+        mutableMetagenDef = new MutableMetagenDef();
     }
 
     public static DefBuilderTypes builder() {
-        return new ContextBuilder();
+        return new GenContextBuilder();
     }
 
-    public ContextBuilder population(int i) {
+    public GenContextBuilder population(int i) {
         currentEntityDef.setPopulationSize(i);
         return this;
     }
 
-    public ContextBuilder field(String fieldName) {
+    public GenContextBuilder field(String fieldName) {
         currentFieldDef = new MutableFieldDef();
         currentFieldDef.setFieldName(fieldName);
         currentEntityDef.addFieldDescriptor(currentFieldDef.immutable());
         return this;
     }
 
-    public ContextBuilder type(String fieldTypeName) {
+    public GenContextBuilder type(String fieldTypeName) {
         currentFieldDef.setFieldType(fieldTypeName);
         return this;
     }
 
-    public ContextBuilder function(String generatorSpec) {
+    public GenContextBuilder function(String generatorSpec) {
         currentFieldDef.setFunction(generatorSpec);
         return this;
     }
@@ -53,7 +49,7 @@ public class ContextBuilder implements ConfigDefs, DefBuilderTypes {
         currentSamplerDef = new MutableSamplerDef();
         currentSamplerDef.setEntityName(entityName);
         currentSamplerDef.setSamplerName(samplerName);
-        samplerDefs.put(currentSamplerDef.getSamplerName(),currentSamplerDef);
+        mutableMetagenDef.addSamplerDef(currentSamplerDef.immutable());
         return this;
     }
 
@@ -61,41 +57,33 @@ public class ContextBuilder implements ConfigDefs, DefBuilderTypes {
         currentSamplerDef = new MutableSamplerDef();
         currentSamplerDef.setEntityName(entityName);
         currentSamplerDef.setSamplerName(entityName);
-        samplerDefs.put(currentSamplerDef.getSamplerName(),currentSamplerDef);
+        mutableMetagenDef.addSamplerDef(currentSamplerDef.immutable());
         return this;
     }
 
-    public ContextBuilder samplerFunction(String distributionSpec) {
-        currentSamplerDef.setSamplerFunction(distributionSpec);
+    public GenContextBuilder samplerFunction(String distributionSpec) {
+        currentSamplerDef.setSamplerFunc(distributionSpec);
         return this;
     }
 
-    public ContextBuilder as(String entitySamplerAlias) {
+    public GenContextBuilder as(String entitySamplerAlias) {
         currentSamplerDef.setSamplerName(entitySamplerAlias);
-        samplerDefs.put(entitySamplerAlias,(SamplerDef) currentSamplerDef);
         return this;
-    }
-
-    @Override
-    public List<EntityDef> getEntityDefs() {
-        return new ArrayList<EntityDef>(entityDefs.values());
-    }
-
-    @Override
-    public List<SamplerDef> getSamplerDefs() {
-        return new ArrayList<SamplerDef>(samplerDefs.values());
     }
 
     public EntityBuilderTypes.wantsEntityPop entity(String entityName) {
         currentEntityDef = new MutableEntityDef();
         currentEntityDef.setName(entityName);
-        entityDefs.put(entityName, currentEntityDef);
+        mutableMetagenDef.addEntityDef(currentEntityDef.immutable());
         return this;
     }
 
-    @Override
     public SamplerDefBuilderTypes.wantsSamplerDefs entityFunction(String entitySamplerFunction) {
-        currentSamplerDef.setSamplerFunction(entitySamplerFunction);
+        currentSamplerDef.setSamplerFunc(entitySamplerFunction);
         return this;
+    }
+
+    public MetagenDef build() {
+        return mutableMetagenDef.immutable();
     }
 }

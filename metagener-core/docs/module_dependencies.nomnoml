@@ -1,0 +1,9 @@
+[<package> metagener-core]
+[<package> metagener-dsl]
+[<package> metagener-types]
+[<package> metagener-webapi]
+
+[metagener-webapi] --> [metagener-core]
+[metagener-core] --> [metagener-dsl]
+[metagener-core] --> [metagener-types]
+[metagener-dsl] --> [metagener-types]

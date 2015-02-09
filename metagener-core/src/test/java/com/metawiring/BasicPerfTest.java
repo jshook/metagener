@@ -1,12 +1,11 @@
 package com.metawiring;
 
-import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.metawiring.defbuilder.DefBuilderTypes;
 import com.metawiring.types.EntitySample;
 import com.metawiring.types.EntitySampler;
-import com.metawiring.wiring.GeneratorContext;
+import com.metawiring.wiring.GenContext;
 import org.testng.annotations.Test;
 
 public class BasicPerfTest {
@@ -16,10 +15,10 @@ public class BasicPerfTest {
     @Test(sequential = true,enabled = false)
     public void testMurmur3StringerSpeed() {
 
-        DefBuilderTypes b = GeneratorContext.builder();
+        DefBuilderTypes b = GenContext.builder();
         b.entity("stringrecord").population(1000).field("astring").type("text");
         b.sampler("stringrecord").entityFunction("murmur3");
-        GeneratorContext c = new GeneratorContext().loadDefs(b);
+        GenContext c = new GenContext(b.build());
         EntitySampler s = c.getEntitySampleStream("stringrecord");
 
         Timer stringsTimer = r.timer("strings");
@@ -45,10 +44,10 @@ public class BasicPerfTest {
     @Test(sequential = true, enabled=false)
     public void testRawStringerSpeed() {
 
-        DefBuilderTypes b = GeneratorContext.builder();
+        DefBuilderTypes b = GenContext.builder();
         b.entity("stringrecord").population(1000).field("astring").type("text");
         b.sampler("stringrecord");
-        GeneratorContext c = new GeneratorContext().loadDefs(b);
+        GenContext c = new GenContext(b.build());
         EntitySampler s = c.getEntitySampleStream("stringrecord");
 
         Timer stringsTimer = r.timer("strings");

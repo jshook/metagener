@@ -33,7 +33,7 @@ public class LazyEntitySample implements EntitySample {
     }
 
     @Override
-    public Map<String, Object> getPrettyFieldValues() {
+    public Map<String, Object> getOrderedFieldMap() {
         return originEntitySampler.getFieldValueMap(sampleId);
     }
 }

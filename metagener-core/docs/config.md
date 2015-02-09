@@ -15,17 +15,17 @@ Entities are configured as "entity definitions", or _EntityDef_s, and as "entity
 
 ## Fields
 Fields do not exist separate from an entity (for now, at least). Each field is a component of an
-entity type, but also has a field name, a field type, and an optional generator samplerFunction.
+entity type, but also has a field name, a field type, and an optional generator samplerFunc.
 
 ### Field Configuration
 Fields are configured as "field definitions", or _FieldDef_s, and as "field" in configuration files.
 
 ### Field Generator Functions
 Internally, fields values are generated using their assigned field generator functions. For every
-known field type, there is a default field generator samplerFunction which simply uses the hashed entity id
+known field type, there is a default field generator samplerFunc which simply uses the hashed entity id
 as an input and provides the simples rendering of it in the target object type. These are named
 'Boxed...'-- BoxedBoolean, for example. In some cases, it isn't actually autoboxing doing the work, but
-the name is symbolic of the default behavior, so it is used for all default field generator samplerFunction
+the name is symbolic of the default behavior, so it is used for all default field generator samplerFunc
 implementations. Just be aware that some of these field generator functions are doing slightly more than
 'auto boxing' as we know it in the JVM.
 

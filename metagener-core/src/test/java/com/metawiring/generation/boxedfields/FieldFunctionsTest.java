@@ -121,7 +121,7 @@ public class FieldFunctionsTest {
         MutableSamplerDef sd = new MutableSamplerDef();
         sd.setSamplerName(samplerName);
         sd.setEntityName(entityName);
-        sd.setSamplerFunction(dist);
+        sd.setSamplerFunc(dist);
         ff.applySamplerDef(sd.immutable());
     }
 

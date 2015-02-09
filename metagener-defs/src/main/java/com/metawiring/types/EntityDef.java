@@ -50,18 +50,17 @@ public interface EntityDef {
     public FieldDef getFieldDef(String fieldName);
 
     /**
-     * Returns the smallest population value.
-     * @return smallest entity id
+     * Get the function definition for the named function, or throw an exception
+     * if it doesn't exist.
+     * @param funcName The name of the function def to get
+     * @return a FuncDef for funcName
      */
-    default public long getMinId() {
-        return 0;
-    }
+    public FuncDef getFuncDef(String funcName);
 
     /**
-     * Returns the largest possible population value.
-     * @return largest entity id
+     * Get the function definitions, in the order that they were added
+     * @return function definitions list
      */
-    default public long getMaxId() {
-        return getPopulationSize();
-    }
+    public List<FuncDef> getFuncDefs();
+
 }

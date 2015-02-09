@@ -67,7 +67,7 @@ public class HashedSamplerTest {
         long distinct = sampled.stream().sorted().distinct().count();
 
         assertThat(distinct, Matchers.<Long>is(greaterThan(distinctThreshold)));
-        System.out.println("popsize:" + popSize + ", iterations" + iterations + ", distinct:" + distinct);
+        System.out.println("popsize:" + popSize + ", iterations:" + iterations + ", distinct:" + distinct);
         System.out.flush();
 
     }
