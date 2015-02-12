@@ -3,6 +3,7 @@ package com.metawiring.syntax;
 import com.metawiring.generated.MetagenLexer;
 import com.metawiring.generated.MetagenListener;
 import com.metawiring.generated.MetagenParser;
+import com.metawiring.types.MetagenDef;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.testng.annotations.Test;
@@ -24,7 +25,7 @@ public class MetagenDefListenerTest {
         MetagenParser.GencontextdefContext parseTree = parser.gencontextdef();
         System.out.println(parseTree.toStringTree(parser));
 
-        modelBuilder.getGenContextDef();
+        MetagenDef genContextDef = modelBuilder.getGenContextDef();
 
     }
 
