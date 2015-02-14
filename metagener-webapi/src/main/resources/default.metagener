@@ -1,0 +1,5 @@
+entity numbers pop=43234
+ field numberstring text
+ field numbers_id int <- entity
+
+sample numbers <- popsample

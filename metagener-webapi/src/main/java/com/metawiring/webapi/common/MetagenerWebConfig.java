@@ -4,26 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.List;
+import java.util.Map;
+
 public class MetagenerWebConfig extends Configuration {
 
     @NotEmpty
-    private String template;
+    private String defaultName = "metagener-webapi";
 
     @NotEmpty
-    private String defaultName = "MetagenerWeb";
-
-    @NotEmpty
-    private String metagenerConfig;
-
-    @JsonProperty
-    public String getTemplate() {
-        return template;
-    }
-
-    @JsonProperty
-    public void setTemplate(String template) {
-        this.template = template;
-    }
+    private Map<String,String> preload;
 
     @JsonProperty
     public String getDefaultName() {
@@ -36,12 +26,14 @@ public class MetagenerWebConfig extends Configuration {
     }
 
     @JsonProperty
-    public String getMetagenerConfig() {
-        return metagenerConfig;
+    public Map<String,String> getPreload() {
+        return preload;
     }
 
     @JsonProperty
-    public void setMetagenerConfig(String metagenerConfig) {
-        this.metagenerConfig = metagenerConfig;
+    public void setPreload(Map<String,String> preload) {
+        this.preload = preload;
     }
+
+
 }

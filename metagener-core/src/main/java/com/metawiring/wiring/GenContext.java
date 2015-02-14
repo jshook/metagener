@@ -53,11 +53,11 @@ public class GenContext {
     private EntitySampler createEntitySampler(String entitySampleStreamName) {
         SamplerDef essd = samplerDefMap.get(entitySampleStreamName);
         if (essd==null) {
-            throw new RuntimeException("attempt to access undefined samplerDef [" + entitySampleStreamName + "]");
+            throw new RuntimeException("Undefined samplerDef [" + entitySampleStreamName + "]");
         }
         EntityDef entityDef = entityDefMap.get(essd.getEntityName());
         if (entityDef==null) {
-            throw new RuntimeException("attempt to access undefined entityDef [" + essd.getEntityName() + "]");
+            throw new RuntimeException("Undefined entityDef [" + essd.getEntityName() + "]");
         }
 
         EntitySamplerImpl sampleStream = new EntitySamplerImpl(essd,entityDef);
@@ -93,5 +93,9 @@ public class GenContext {
 
     public static DefBuilderTypes builder() {
         return GenContextBuilder.builder();
+    }
+
+    public MetagenDef getMetagenDef() {
+        return metagenDef;
     }
 }

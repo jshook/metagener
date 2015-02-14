@@ -40,7 +40,7 @@ public class GenContextBuilder implements DefBuilderTypes {
     }
 
     public GenContextBuilder function(String generatorSpec) {
-        currentFieldDef.setFunction(generatorSpec);
+        currentFieldDef.setFieldFunc(generatorSpec);
         return this;
     }
 

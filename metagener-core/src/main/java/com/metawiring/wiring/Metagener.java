@@ -17,4 +17,15 @@ public class Metagener {
         GenContext genContext = new GenContext(metagenDef);
         return genContext;
     }
+
+    public static GenContext fromString(String metagenerConfigData) {
+        logger.info("loading from data, length:" + metagenerConfigData.length());
+        MetagenDef metagenDef = MetagenerDSL.fromSyntax(metagenerConfigData);
+        GenContext genContext = new GenContext(metagenDef);
+        return genContext;
+    }
+
+    public static String toSyntax(MetagenDef metagenDef) {
+        return MetagenerDSL.toSyntax(metagenDef);
+    }
 }

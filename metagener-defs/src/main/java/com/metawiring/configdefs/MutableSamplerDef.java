@@ -3,9 +3,9 @@ package com.metawiring.configdefs;
 import com.metawiring.types.SamplerDef;
 
 public class MutableSamplerDef implements SamplerDef {
-    private String entityName="";
-    private String samplerFunc ="";
-    private String samplerName ="";
+    private String entityName;
+    private String samplerFunc;
+    private String samplerName;
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;

@@ -56,7 +56,7 @@ public class GenContextDefListener extends MetagenBaseListener {
         mutableFieldDef.setFieldName(ctx.fieldName().getText());
         mutableFieldDef.setFieldType(ctx.fieldType().getText());
         if (ctx.composedFuncSpec()!=null) {
-            mutableFieldDef.setFunction(ctx.composedFuncSpec().getText());
+            mutableFieldDef.setFieldFunc(ctx.composedFuncSpec().getText());
         }
         mutableEntityDef.addFieldDescriptor(mutableFieldDef.immutable());
         mutableFieldDef=null;

@@ -1,6 +1,5 @@
 package com.metawiring.generation.core;
 
-import com.google.common.base.Strings;
 import com.metawiring.configdefs.FormatConstants;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.types.functiontypes.*;
@@ -43,7 +42,7 @@ public class FieldFunctionCompositor {
         // If there is no samplerFunction
         List<String> functionSpecs = new ArrayList<>();
 
-        if (!Strings.isNullOrEmpty(functionChain)) {
+        if (functionChain!=null && !functionChain.isEmpty()) {
 
             Collections.addAll(functionSpecs,
                     functionChain.split(FormatConstants.FUNC_DELIM)

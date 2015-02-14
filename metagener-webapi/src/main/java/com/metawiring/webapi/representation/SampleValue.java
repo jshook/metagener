@@ -10,8 +10,8 @@ public class SampleValue {
     private long sampleId;
     private Map<String,Object> fieldValues;
 
-    public SampleValue(long sampleId, EntitySample entitySample) {
-        this.sampleId = sampleId;
+    public SampleValue(EntitySample entitySample) {
+        this.sampleId = entitySample.getSampleId();
         this.fieldValues = entitySample.getOrderedFieldMap();
     }
 

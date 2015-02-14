@@ -4,36 +4,69 @@ import com.metawiring.types.EntitySample;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.webapi.representation.SampleValue;
 import com.metawiring.wiring.GenContext;
+import com.metawiring.wiring.GenContexts;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 
-@Path("/sample/{samplername}/{sampleid}")
-@Produces(MediaType.APPLICATION_JSON)
+@Path("/sample")
 public class SampleResource {
 
-    private GenContext metagenerContext;
+    private GenContexts metagenerContexts;
     private static Long ONE = 1l;
 
-    public SampleResource(GenContext metagenerContext) {
-        this.metagenerContext = metagenerContext;
+    public SampleResource(GenContexts metagenerContexts) {
+        this.metagenerContexts = metagenerContexts;
     }
 
-    public SampleValue getSampleValue(
-            @PathParam("samplername") String samplerName,
-            @PathParam("sampleid") Optional<Long> optionalSampleId
+    @GET
+    @Path("{contextName}/{samplername}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SampleValue getNextSampleValue(
+            @PathParam("contextName") String contextName,
+            @PathParam("samplername") String samplerName
     ) {
-        long sampleId=optionalSampleId.orElse(ONE);
-        EntitySampler entitySampleStream = metagenerContext.getEntitySampleStream(samplerName);
-        if (entitySampleStream!=null) {
-            EntitySample entitySample= entitySampleStream.getEntity(sampleId);
-            return new SampleValue(sampleId,entitySample);
+        GenContext genContext = metagenerContexts.get(contextName);
+        if (genContext==null) {
+            throw new NotFoundException("Undefined generator context:" + contextName);
         }
-        else {
-            throw new RuntimeException("sampler [" + samplerName + "] was not found.");
+
+        EntitySampler entitySampleStream = genContext.getEntitySampleStream(samplerName);
+        if (entitySampleStream==null) {
+            throw new NotFoundException("Undefined sampler: context=" + contextName + ", sampler=" + samplerName);
         }
+
+        EntitySample entitySample= entitySampleStream.getNextEntity();
+
+        return new SampleValue(entitySample);
+    }
+
+    @GET
+    @Path("{contextName}/{samplername}/{sampleid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SampleValue getSampleValue(
+            @PathParam("contextName") String contextName,
+            @PathParam("samplername") String samplerName,
+            @PathParam("sampleid") String optionalSampleId
+    ) {
+        String sampleIdString= optionalSampleId!=null ? optionalSampleId : "1";
+        long sampleId = Long.valueOf(sampleIdString);
+
+        GenContext genContext = metagenerContexts.get(contextName);
+        if (genContext==null) {
+            throw new NotFoundException("Undefined generator context:" + contextName);
+        }
+
+        EntitySampler entitySampleStream = genContext.getEntitySampleStream(samplerName);
+        if (entitySampleStream==null) {
+            throw new NotFoundException("Undefined sampler: context=" + contextName + ", sampler=" + samplerName);
+        }
+
+        EntitySample entitySample= entitySampleStream.getEntity(sampleId);
+
+        return new SampleValue(entitySample);
+
     }
 }
+

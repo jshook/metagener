@@ -16,11 +16,25 @@ import java.nio.CharBuffer;
 public class MetagenerDSL {
     private static Logger logger = LoggerFactory.getLogger(MetagenerDSL.class);
 
+    public static MetagenDef fromSyntax(String defdata) {
+        ANTLRInputStream ais = new ANTLRInputStream(defdata);
+        return fromANTLRStream(ais);
+    }
+
     public static MetagenDef fromFile(String filename) {
+        char[] filedata = readFile(filename);
+        ANTLRInputStream ais = new ANTLRInputStream(filedata, filedata.length);
+        return fromANTLRStream(ais);
+    }
+
+    public static String toSyntax(MetagenDef metagenDef) {
+        return MetagenDefStringer.toSyntax(metagenDef);
+
+    }
+
+    private static MetagenDef fromANTLRStream(ANTLRInputStream inputstream) {
         try {
-            char[] filedata = readFile(filename);
-            ANTLRInputStream ais = new ANTLRInputStream(filedata, filedata.length);
-            MetagenLexer lexer = new MetagenLexer(ais);
+            MetagenLexer lexer = new MetagenLexer(inputstream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             MetagenParser parser = new MetagenParser(tokens);
             GenContextDefListener modelBuilder = new GenContextDefListener();
@@ -33,6 +47,7 @@ public class MetagenerDSL {
             throw new RuntimeException(e);
         }
     }
+
 
     private static char[] readFile(String filename) {
         BufferedReader sr = new BufferedReader(
