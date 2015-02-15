@@ -8,9 +8,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.CharBuffer;
 
 public class MetagenerDSL {
@@ -50,11 +48,21 @@ public class MetagenerDSL {
 
 
     private static char[] readFile(String filename) {
-        BufferedReader sr = new BufferedReader(
-                new InputStreamReader(
-                        Thread.currentThread().getContextClassLoader().getResourceAsStream(filename)
-                )
-        );
+        InputStream resourceAsStream= null;
+        try {
+            resourceAsStream = new FileInputStream(filename);
+        } catch (Exception ignored) {
+        }
+
+        if (resourceAsStream==null) {
+            resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
+        }
+
+        if (resourceAsStream==null) {
+            throw new RuntimeException("Unable to find file in filesystem or in class path:" + filename);
+        }
+
+        BufferedReader sr = new BufferedReader(new InputStreamReader(resourceAsStream));
         CharBuffer cb = CharBuffer.allocate(1000000);
         try {
             while (sr.read(cb) > 0) {
