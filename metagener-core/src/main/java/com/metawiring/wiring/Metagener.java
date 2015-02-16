@@ -1,6 +1,7 @@
 package com.metawiring.wiring;
 
 import com.metawiring.syntax.MetagenerDSL;
+import com.metawiring.syntax.ParseResult;
 import com.metawiring.types.MetagenDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +14,21 @@ public class Metagener {
 
     public static GenContext fromFile(String metagenerConfig) {
         logger.info("loading from " + metagenerConfig);
-        MetagenDef metagenDef = MetagenerDSL.fromFile(metagenerConfig);
-        GenContext genContext = new GenContext(metagenDef);
+        ParseResult parseResult = MetagenerDSL.fromFile(metagenerConfig);
+        if (parseResult.hasErrors()) {
+            throw new RuntimeException(parseResult.getErrorSummary());
+        }
+        GenContext genContext = new GenContext(parseResult.getMetagenDef());
         return genContext;
     }
 
     public static GenContext fromString(String metagenerConfigData) {
         logger.info("loading from data, length:" + metagenerConfigData.length());
-        MetagenDef metagenDef = MetagenerDSL.fromSyntax(metagenerConfigData);
-        GenContext genContext = new GenContext(metagenDef);
+        ParseResult parseResult = MetagenerDSL.fromSyntax(metagenerConfigData);
+        if (parseResult.hasErrors()) {
+            throw new RuntimeException(parseResult.getErrorSummary());
+        }
+        GenContext genContext = new GenContext(parseResult.getMetagenDef());
         return genContext;
     }
 

@@ -1,6 +1,10 @@
 The Function Graph
 ==================
 
+# STATUS
+
+This documentation is in active development, so do not consider it ready for use at this time.
+
 Each function graph has a logical representation which shows how data is transformed from the original whole number value to the output. Each unique path from the start node to leaf node represents a composed function which maps a whole number to a value.
 
 
@@ -25,13 +29,13 @@ A definition of a generator function graph is separate from an instance of it. T
 
 The runtime API that you read generated data from is constructed as a new GenContext with an instance of a MetagenDef. By default, the generator context will instantiate function pipelines only when they are accessed. In this way, it is possible to create a function library that has many definitions without paying a penalty for those that you do not use in a particular scenario.
 
-The separation of the configuration model from the runtime implementation has other benefits as well. You can create a generator context with any valid MetagenerDef, no matter how you created it. The configuratio methods provided by default include:
+The separation of the configuration model from the runtime implementation has other benefits as well. You can create a generator context with any valid MetagenerDef, no matter how you created it. The configuration methods provided by default include:
 
 - Programmatic (Fluent) API
 - Metagener DSL
 - YAML
 
-It may be desirable to allow the generator context to load and unload definitions at runtime, but this hasn't been implemented in the current toolset.
+It may be desirable to allow the generator context to load and unload definitions dynamically at runtime, but this hasn't been implemented in the current toolset. This means that you have to have a whole MetagenDef in hand before acquiring a generator context.
 
 #### Runtime Construction
 
@@ -49,20 +53,29 @@ So far, the examples are more about composed functions or processing pipelines, 
 
 ## Goals
 
-So what does such a simple set of primitives give us? From basic functional principles, we arready know that the input for a given composed function will yield an idempotent result, so long as the functions are pure functions. So far, there is nothing really special going on here.
+So what does such a simple set of primitives give us? From basic functional principles, we already know that the input for a given composed function will yield an idempotent result, so long as the functions are pure functions. So far, there is nothing really special going on here.
 
-In order to explain the function graph approach, an example is in order:
+A practical function graph:
 
 ![Example graph](graph3.png)
 
-There are a few things going on here that we haven't seen before. 
+Runtime decoupling:
+If we take the pipelined function as they are shown from top to bottom, we have composed functions:
+
+- first_name = genfname(idhash(longs()))
+- last_name =  genlname(idhash(longs()))
+- user_height = genheight(gaussian(idhash(longs())))
+- join_date = gentimestamp(longs())
+
+Taken together, these outputs constitute the values associated with a 
+
+The point of looking at these as a graph is to see the outputs in terms of how they are related. The first three named outputs are derieved idempotently from something that has a common value. These are called field functions. If we designate idhash() as the function which provides an entity id, then we can treat theese downstream functions as field functions. Also, we can control the cardinality of the whole set of sampled data simply by controlling the cardinality of the input. If you get 57 different outputs from longs(), you will have 57 distinct values of the output fields sets. As well, since we are using a hash function with high dispersion, we do not have to rely on the randomness of outputs from longs() to have effective randomness at the entity level. We might as well use a sequence of numbers. In fact, that we can use such a sequence is part of the design of this particular graph, since we might want to go back and access the 54th entity many times and still get the same results.
+
+There are a few things going on here that we haven't seen before.
 
 #### Fields
 
 First, there are some outputs which have names. Those have been marked with slanted boxes. These nodes represent variable names to which the results of each composed function will be assigned. They are called _fields_ in metagener.
-
-The four fields together might constitute the fields of an object, 
-Notice that the user_height field is produced by a function that does not have a primitive result type. A function can theoretically 
 
 ## Sampling & Determinism
 
@@ -87,6 +100,16 @@ In this case we use the result of a suitable hash function, converting it's resu
 The __sampleid__ is simply the input to each function pipeline when you need a result. When you access a generator value, you do it by asking a sampler for the next entity, which is just a way to memoize the sampleid for a given iteration. You can specify the sampleid if you like. If you do not specificy the sampleid, the sampler will automatically use the next value, incrementing by 1 each time.
 
 Each sampler is configured for a specific defined entity. That means that the sampler is aware of the entity's population. Each sampler can also have an associated pertubation function which is applied to the sampleid at the beginning of the function pipeline. This allows you to select a sampling distribution (without replacement) from the original population.
+
+## Examples
+
+    entity sensor_event pop=1000000000
+     field ts:timestamp <- sample; daterange:2015:2017
+     sensor_id:
+
+## Function Names
+
+As of this release, all functions are located within the metagener-core runtime. For commonly accessed functions, the FieldFunctionName enum holds a terse name that is easier to work with syntactically. For example, instead of having to say _PopulationSampler_, you can simply use _dist_. In the future, the function library will be much more extensible, allowing you to provide your own functions via drop-in libraries.
 
 # TODO:
 

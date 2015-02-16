@@ -1,9 +1,3 @@
-/// set manual seed
-seed 2340
-
-/// or set seed from chksum
-seed chksum
-
 /// declare an entity with defaults
 entity testentity1
 
@@ -20,7 +14,7 @@ entity farmers pop=1000
  field name:text <- db:names
 
  // field name=zip, field type=int, generator name=zip, generator input=entityid
- field zip:int <- zip <- byentityid
+ field zip:int <- zip
 
  // field name=height, field type=float, generator =float, distribution=normal
  field height:float <- float <- normal <- byentityid

@@ -8,7 +8,7 @@ entitydef : 'entity' entityName
     (fielddef | funcdef)*;
 entityName : id;
 popSize : NUMBER;
-fielddef: 'field' fieldName fieldType (STORELEFT composedFuncSpec)? ;
+fielddef: 'field' fieldName COLON fieldType (STORELEFT composedFuncSpec)? ;
 fieldType : id;
 fieldName : id ;
 
@@ -44,6 +44,7 @@ NUMBER: [0-9]+ ( '.' [0-9]+ )? ;
 WS : [ \t\n]+ -> skip ;
 NEWLINE: '\r' ? '\n';
 STORELEFT: '<-';
+COLON: ':';
 
 //LINE_COMMENT: '//' ​.*? ​ '\r' ​? ​ '\n' ​ -> skip ;
 //COMMENT: ​ '/*' ​ .*? ​ '*/' ​ -> skip ; ​ // Match "/*" stuff "*/" ​

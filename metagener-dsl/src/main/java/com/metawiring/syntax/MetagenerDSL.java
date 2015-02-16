@@ -14,32 +14,35 @@ import java.nio.CharBuffer;
 public class MetagenerDSL {
     private static Logger logger = LoggerFactory.getLogger(MetagenerDSL.class);
 
-    public static MetagenDef fromSyntax(String defdata) {
+    public static ParseResult fromSyntax(String defdata) {
         ANTLRInputStream ais = new ANTLRInputStream(defdata);
         return fromANTLRStream(ais);
     }
 
-    public static MetagenDef fromFile(String filename) {
+    public static ParseResult fromFile(String filename) {
         char[] filedata = readFile(filename);
         ANTLRInputStream ais = new ANTLRInputStream(filedata, filedata.length);
         return fromANTLRStream(ais);
     }
 
     public static String toSyntax(MetagenDef metagenDef) {
-        return MetagenDefStringer.toSyntax(metagenDef);
+        throw new RuntimeException("This is not ready yet.");
+//        return MetagenDefStringer.toSyntax(metagenDef);
 
     }
 
-    private static MetagenDef fromANTLRStream(ANTLRInputStream inputstream) {
+    private static ParseResult fromANTLRStream(ANTLRInputStream inputstream) {
         try {
             MetagenLexer lexer = new MetagenLexer(inputstream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             MetagenParser parser = new MetagenParser(tokens);
             GenContextDefListener modelBuilder = new GenContextDefListener();
+            MetagenParserDiagnostic errorHandler = new MetagenParserDiagnostic();
             parser.addParseListener(modelBuilder);
+            parser.addErrorListener(errorHandler);
             MetagenParser.GencontextdefContext parseTree = parser.gencontextdef();
             //System.out.println(parseTree.toStringTree(parser));
-            return modelBuilder.getGenContextDef();
+            return new ParseResult(modelBuilder.getGenContextDef(),errorHandler);
         } catch (Exception e) {
             logger.error("Fatal error while trying to parse Metagener defs:" + e.getMessage(), e);
             throw new RuntimeException(e);

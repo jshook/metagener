@@ -8,6 +8,9 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GenContextDefListener extends MetagenBaseListener {
     private static Logger logger = LoggerFactory.getLogger(GenContextDefListener.class);
     private MutableMetagenDef mutableMetagenDef;
@@ -15,6 +18,8 @@ public class GenContextDefListener extends MetagenBaseListener {
     private MutableFieldDef mutableFieldDef;
     private MutableFuncDef mutableFuncDef;
     private MutableSamplerDef mutableSamplerDef;
+
+    private List<ErrorNode> errorNodes = new ArrayList<ErrorNode>();
 
     public MetagenDef getGenContextDef() {
         return mutableMetagenDef.immutable();
@@ -100,5 +105,17 @@ public class GenContextDefListener extends MetagenBaseListener {
     @Override
     public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);
+
+        errorNodes.add(node);
     }
+
+    public boolean hasErrors() {
+        return (errorNodes.size()>0);
+    }
+
+    public List<ErrorNode> getErrorNodes() {
+        return errorNodes;
+    }
+
+
 }
