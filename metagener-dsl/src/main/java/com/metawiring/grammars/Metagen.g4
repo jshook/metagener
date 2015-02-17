@@ -22,30 +22,33 @@ samplerFunc : composedFuncSpec ;
 
 composedFuncSpec : composedFuncPart (';' composedFuncPart)* ';'? ;
 composedFuncPart :  funcPartName ( '(' funcArgs ')' )? | funcPartName '(' ')' | funcPartName ;
-funcArgs : assignment (',' assignment)* | value (',' value) ;
+funcArgs : assignment (',' assignment)* | value (',' value)* ;
 assignment: parameter '=' value ;
 funcPartName : id ;
 parameter : id ;
-value : numericValue | stringValue | stringTemplate | nonComma ;
+value : stringTemplate | numericValue | nonCommaOrParen | stringValue;
 numericValue : NUMBER ;
-stringValue : '\'' ~'\'' '\'' ;
-stringTemplate : '"' templateSection+ '"' ;
+stringValue : SQUOTE ~SQUOTE*? SQUOTE ;
+//stringTemplate : DOUBLE_QUOTED ;
+stringTemplate : '"' templateSection*? '"' ;
 templateSection : templatePreamble templateVarname ;
-templatePreamble : ~('"'|'${')* ;
+templatePreamble : ~('"'|'${')*? ;
 templateVarname : '' | '${' id '}';
-nonComma : ((~(','))|('.'|'-'))+? ;
+nonComma : ((~(','))|('.'|'-'|'/'))+? ;
+nonCommaOrParen : ((~(','|')'))|('.'|'-'|'/'))+? ;
 //nonComma : .+? ;
 id : 'entity' | 'sampler' | ID;
 
-//DOUBLE_QUOTED: '"' ~'"'* '"';
+//DOUBLE_QUOTED: '"' ~'"'*? '"';
 LINE_COMMENT: '//' (~'\n')* NEWLINE -> skip ;
-ID:  [a-zA-Z] [0-9a-zA-Z_-]* ;
-NUMBER: [0-9]+ ( '.' [0-9]+ )? ;
+COMMENT: '/*' .*? '*/' -> skip;
 WS : [ \t\n]+ -> skip ;
 NEWLINE: '\r' ? '\n';
+ID:  [a-zA-Z] [0-9a-zA-Z_-]* ;
+NUMBER: [0-9]+ ( '.' [0-9]+ )? ;
 STORELEFT: '<-';
 COLON: ':';
+SQUOTE: '\'';
+DQUOTE: '"';
 
-//LINE_COMMENT: '//' ​.*? ​ '\r' ​? ​ '\n' ​ -> skip ;
-//COMMENT: ​ '/*' ​ .*? ​ '*/' ​ -> skip ; ​ // Match "/*" stuff "*/" ​
 

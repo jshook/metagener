@@ -11,8 +11,8 @@ entity user pop=1000
  field lastname:text <- entity;sample(file=lastnames.csv,dist=uniform);
 
 entity message // no pop -- means Int.MAX_VALUE
- field sender_id:int <- entity;dist:binomial
- field recip_id:int <- entity;dist:binomial
+ field sender_id:int <- entity;dist(binomial)
+ field recip_id:int <- entity;dist(binomial)
  field sent_at:timestamp <- stream;datetime(range=1990-1993,dist=pareto);
 
 // sampler with name=message entity=message, function=<default>
@@ -20,6 +20,6 @@ sampler message
 // sampler with name=message-sampler, entity=message, function=<default>
 sampler message-sampler:message
 //sampler with name=message-sampler, entity=message, function=dist:pareto
-sampler message-sampler:message dist(pareto)
+sampler message-sampler:message <- dist(pareto)
 
 // stretch goal, simulate replies
