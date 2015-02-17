@@ -17,10 +17,12 @@ public enum FieldFunctionName {
     filecycle(FileLineCycler.class),
     numbername(NamedNumberString.class),
     intmod(IntModulo.class),
+    multiply(Multiply.class),
     dist(PopulationSampler.class),
     prefix(Prefix.class),
     suffix(Suffix.class),
     tostring(BoxedString.class),
+    dateshift(DateShift.class),
     daterange(DateRange.class);
 
 

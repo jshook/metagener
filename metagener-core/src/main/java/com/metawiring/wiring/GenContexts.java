@@ -10,6 +10,7 @@ public class GenContexts {
     private final static Logger logger = LoggerFactory.getLogger(GenContexts.class);
 
     private Map<String,GenContext> contexts = new ConcurrentHashMap<>();
+    private String names;
 
     public GenContext get(String genContextName) {
         return contexts.get(genContextName);
@@ -33,5 +34,13 @@ public class GenContexts {
             logger.warn("Overwriting generator context [" + genContextName + "] with a new definition");
         }
         put(genContextName, genContext);
+    }
+
+    public String getNames() {
+        StringBuilder sb = new StringBuilder();
+        for (String s : contexts.keySet()) {
+            sb.append(s).append("\n");
+        }
+        return sb.toString();
     }
 }

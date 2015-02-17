@@ -1,5 +1,4 @@
-entity numbers pop=43234
- field numberstring text
- field numbers_id int <- entity
+entity item_scan
+ field scan_time:timestamp <- daterange(2013,2015);
 
-sample numbers <- popsample
+sampler item_scan

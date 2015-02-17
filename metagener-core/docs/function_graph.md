@@ -104,8 +104,8 @@ Each sampler is configured for a specific defined entity. That means that the sa
 ## Examples
 
     entity sensor_event pop=1000000000
-     field ts:timestamp <- sample; daterange:2015:2017
-     sensor_id:
+     field ts:timestamp <- sample; daterange(2015,2017)
+     sensor_id:int      <- entity; range(1-1000)
 
 ## Function Names
 

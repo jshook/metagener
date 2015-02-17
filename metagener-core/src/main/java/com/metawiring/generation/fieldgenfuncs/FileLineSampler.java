@@ -6,9 +6,7 @@ import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,8 +36,15 @@ public class FileLineSampler implements TypedFieldFunction<String> {
     private List<String> loadLines(String fileName) {
 
         List<String> lines = new ArrayList<>();
+        InputStream stream=null;
 
-        InputStream stream = FileLineSampler.class.getClassLoader().getResourceAsStream(filename);
+        try {
+            stream = new FileInputStream(fileName);
+        } catch (FileNotFoundException ignored) {
+        }
+        if (stream == null) {
+            stream = FileLineSampler.class.getClassLoader().getResourceAsStream(filename);
+        }
         if (stream == null) {
             throw new RuntimeException(filename + " was missing.");
         }

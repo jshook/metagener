@@ -39,6 +39,13 @@ public class GenContextResource {
     }
 
     @GET
+    @Path("/")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getContextList() {
+        return genContexts.getNames();
+    }
+
+    @GET
     @Path("/{contextName}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getContext(@PathParam("contextName") String contextName) {
