@@ -62,8 +62,9 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
         mutableFieldDef.setFieldName(ctx.fieldName().getText());
         mutableFieldDef.setFieldType(ctx.fieldType().getText());
         if (ctx.composedFuncSpec()!=null) {
-            mutableFieldDef.setFieldFuncDef(mutableFuncDef.immutable());
             mutableFieldDef.setFieldFunc(ctx.composedFuncSpec().getText());
+            mutableFieldDef.setFieldFuncDef(mutableFuncDef.immutable());
+            mutableFuncDef=null;
         }
         mutableEntityDef.addFieldDescriptor(mutableFieldDef.immutable());
         mutableFieldDef=null;

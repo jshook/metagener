@@ -48,4 +48,11 @@ public class MutableFieldDef implements FieldDef {
     public void setFieldFuncDef(FuncDef fieldFuncDef) {
         this.fieldFuncDef = fieldFuncDef;
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(fieldName).append(":").append(fieldType);
+        sb.append(" <- ").append(fieldFuncDef.toString());
+        return sb.toString();
+    }
 }

@@ -2,12 +2,15 @@ package com.metawiring.webapi.resource;
 
 import com.metawiring.types.EntitySample;
 import com.metawiring.types.EntitySampler;
+import com.metawiring.webapi.representation.BulkSampleValues;
 import com.metawiring.webapi.representation.SampleValue;
 import com.metawiring.wiring.GenContext;
 import com.metawiring.wiring.GenContexts;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Path("/sample")
@@ -21,7 +24,7 @@ public class SampleResource {
     }
 
     @GET
-    @Path("{contextName}/{samplername}")
+    @Path("/{contextName}/{samplername}")
     @Produces(MediaType.APPLICATION_JSON)
     public SampleValue getNextSampleValue(
             @PathParam("contextName") String contextName,
@@ -43,7 +46,7 @@ public class SampleResource {
     }
 
     @GET
-    @Path("{contextName}/{samplername}/{sampleid}")
+    @Path("/{contextName}/{samplername}/{sampleid}")
     @Produces(MediaType.APPLICATION_JSON)
     public SampleValue getSampleValue(
             @PathParam("contextName") String contextName,
@@ -68,5 +71,6 @@ public class SampleResource {
         return new SampleValue(entitySample);
 
     }
+
 }
 

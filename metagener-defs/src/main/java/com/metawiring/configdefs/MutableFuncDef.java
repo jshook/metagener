@@ -43,9 +43,21 @@ public class MutableFuncDef implements FuncDef {
     }
 
     public FuncDef addFuncCallDefs(FuncDef samplerFuncDef) {
+        if (samplerFuncDef==null) {
+            return this;
+        }
         for (FuncCallDef funcCallDef : samplerFuncDef.getFuncCallDefs()) {
             this.funcCallDefs.add(funcCallDef);
         }
         return this;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(funcName==null ? "NULL" : funcName + " ");
+        for (FuncCallDef funcCallDef : funcCallDefs) {
+            sb.append(funcCallDef.toString());
+        }
+        return sb.toString();
     }
 }

@@ -1,5 +1,6 @@
 package com.metawiring.webapi.common;
 
+import com.metawiring.webapi.resource.BulkSampleResource;
 import com.metawiring.webapi.resource.GenContextResource;
 import com.metawiring.webapi.resource.SampleResource;
 import com.metawiring.wiring.GenContext;
@@ -37,6 +38,9 @@ public class MetagenerWebApp extends Application<MetagenerWebConfig> {
 
         final SampleResource sampleResource = new SampleResource(genContexts);
         environment.jersey().register(sampleResource);
+
+        final BulkSampleResource bulkSampleResource = new BulkSampleResource(genContexts);
+        environment.jersey().register(bulkSampleResource);
 
         environment.healthChecks().register("presence",new PresenceHealthCheck());
     }

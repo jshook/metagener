@@ -34,4 +34,21 @@ public class MutableFuncCallDef implements FuncCallDef {
         return (FuncCallDef) this;
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(funcName == null ? "NULL" : funcName);
+        String separator = "";
+        if (funcArgs != null && funcArgs.size() > 0) {
+            sb.append("(");
+            for (String funcArg : funcArgs) {
+                sb.append(separator);
+                sb.append(funcArg);
+                separator = ",";
+            }
+            sb.append(")");
+        }
+
+        return sb.toString();
+    }
+
 }
