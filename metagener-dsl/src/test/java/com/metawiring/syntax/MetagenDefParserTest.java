@@ -9,9 +9,11 @@ import org.testng.annotations.Test;
 
 import java.io.*;
 import java.nio.CharBuffer;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 public class MetagenDefParserTest {
@@ -23,7 +25,7 @@ public class MetagenDefParserTest {
         MetagenLexer lexer = new MetagenLexer(ais);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MetagenParser parser = new MetagenParser(tokens);
-        GenContextDefListener modelBuilder = new GenContextDefListener();
+        MetagenerDSLModelBuilder modelBuilder = new MetagenerDSLModelBuilder();
         parser.addParseListener(modelBuilder);
         MetagenParser.GencontextdefContext parseTree = parser.gencontextdef();
         System.out.println(parseTree.toStringTree(parser));
@@ -85,7 +87,7 @@ public class MetagenDefParserTest {
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
         assertThat(samplerDef.getSamplerName(),is("somefood"));
         assertThat(samplerDef.getEntityName(),is("somefood"));
-        assertThat(samplerDef.getSamplerFunc(),is(nullValue()));
+        assertThat(samplerDef.getSamplerFuncDef(),is(nullValue()));
     }
     @Test
     public void testParseSamplerDefWithAlias() {
@@ -94,7 +96,7 @@ public class MetagenDefParserTest {
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
         assertThat(samplerDef.getSamplerName(),is("somefood"));
         assertThat(samplerDef.getEntityName(),is("foosball"));
-        assertThat(samplerDef.getSamplerFunc(),is(nullValue()));
+        assertThat(samplerDef.getSamplerFuncDef(),is(nullValue()));
     }
 
     @Test
@@ -104,7 +106,60 @@ public class MetagenDefParserTest {
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
         assertThat(samplerDef.getSamplerName(),is("somefood"));
         assertThat(samplerDef.getEntityName(),is("foosball"));
-        assertThat(samplerDef.getSamplerFunc(),is("lizardgills"));
+        assertThat(samplerDef.getSamplerFuncDef().getFuncName(),is(nullValue()));
+        assertThat(samplerDef.getSamplerFuncDef().getFuncCallDefs().get(0).getFuncName(),is("lizardgills"));
+    }
+
+
+    @Test
+    public void testParseEntityDefFieldWithFuncDef() {
+        MetagenDef md = parseString("entity foo\nfield bar:text <- funca(one,two)");
+        assertThat(md.getEntityDefs().size(),is(1));
+        EntityDef entityDef = md.getEntityDefs().get(0);
+        assertThat( entityDef.getFieldDefs().size(),is(1));
+        FieldDef fieldBar = entityDef.getFieldDef("bar");
+        assertThat(fieldBar,is(notNullValue()));
+        assertThat(fieldBar.getFieldFuncDef(),is(notNullValue()));
+        FuncDef fieldFuncDef = fieldBar.getFieldFuncDef();
+        assertThat(fieldFuncDef.getFuncCallDefs().size(),is(1));
+        List<FuncCallDef> funcCallDefs = fieldFuncDef.getFuncCallDefs();
+
+        FuncCallDef fcd0 = funcCallDefs.get(0);
+        assertThat(fcd0.getFuncName(),is("funca"));
+        assertThat(fcd0.getFuncArgs().size(),is(2));
+        assertThat(fcd0.getFuncArgs().get(0),is("one"));
+        assertThat(fcd0.getFuncArgs().get(1),is("two"));
+    }
+
+    @Test
+    public void testParseEntityDefFieldWithFuncDefs() {
+        MetagenDef md = parseString("entity foo\nfield bar:text <- funca;funcb(one,two);funcc(p1=v1,p2=v2)");
+        assertThat(md.getEntityDefs().size(),is(1));
+        EntityDef entityDef = md.getEntityDefs().get(0);
+        assertThat( entityDef.getFieldDefs().size(),is(1));
+        FieldDef fieldBar = entityDef.getFieldDef("bar");
+        assertThat(fieldBar,is(notNullValue()));
+        assertThat(fieldBar.getFieldFuncDef(),is(notNullValue()));
+        FuncDef fieldFuncDef = fieldBar.getFieldFuncDef();
+        assertThat(fieldFuncDef.getFuncCallDefs().size(),is(3));
+        List<FuncCallDef> funcCallDefs = fieldFuncDef.getFuncCallDefs();
+
+        FuncCallDef fcd0 = funcCallDefs.get(0);
+        assertThat(fcd0.getFuncName(),is("funca"));
+        assertThat(fcd0.getFuncArgs().size(),is(0));
+
+        FuncCallDef fcd1 = funcCallDefs.get(1);
+        assertThat(fcd1.getFuncName(),is("funcb"));
+        assertThat(fcd1.getFuncArgs().size(),is(2));
+        assertThat(fcd1.getFuncArgs().get(0),is("one"));
+        assertThat(fcd1.getFuncArgs().get(1),is("two"));
+
+        FuncCallDef fcd2 = funcCallDefs.get(2);
+        assertThat(fcd2.getFuncName(),is("funcc"));
+        assertThat(fcd2.getFuncArgs().size(),is(2));
+        assertThat(fcd2.getFuncArgs().get(0),is("p1=v1"));
+        assertThat(fcd2.getFuncArgs().get(1),is("p2=v2"));
+
     }
 
 
@@ -113,7 +168,7 @@ public class MetagenDefParserTest {
         MetagenLexer lexer = new MetagenLexer(ais);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MetagenParser parser = new MetagenParser(tokens);
-        GenContextDefListener modelBuilder = new GenContextDefListener();
+        MetagenerDSLModelBuilder modelBuilder = new MetagenerDSLModelBuilder();
         parser.addParseListener(modelBuilder);
         MetagenParser.GencontextdefContext parseTree = parser.gencontextdef();
         System.out.println(parseTree.toStringTree(parser));

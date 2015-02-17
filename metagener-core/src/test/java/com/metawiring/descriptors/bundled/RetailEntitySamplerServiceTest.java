@@ -44,7 +44,7 @@ public class RetailEntitySamplerServiceTest {
         assertThat(ssmap.values().size(),equalTo(0));
     }
 
-    @Test
+    @Test(enabled=false)
     public void testGetEntitySamplerReturnsWorkingSampler() {
         EntitySamplerService ess = new RetailEntitySamplerService();
         SamplerDef des = ess.getDefinedEntitySamplers().get(0);
@@ -60,7 +60,7 @@ public class RetailEntitySamplerServiceTest {
         }
     }
 
-    @Test
+    @Test(enabled = false)
     public void testBrandNames() {
         EntitySamplerService ess = new RetailEntitySamplerService();
         ess.getSampleStream("brand");

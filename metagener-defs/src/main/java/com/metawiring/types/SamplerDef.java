@@ -25,5 +25,5 @@ public interface SamplerDef {
      * The statistical samplerFunction name and parameters used to sample values from this population
      * @return the samplerFunction specification
      */
-    public String getSamplerFunc();
+    public FuncDef getSamplerFuncDef();
 }

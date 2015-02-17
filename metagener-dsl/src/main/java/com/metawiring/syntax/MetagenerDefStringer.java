@@ -4,7 +4,7 @@ import com.metawiring.types.EntityDef;
 import com.metawiring.types.MetagenDef;
 import com.metawiring.types.SamplerDef;
 
-public class MetagenDefStringer {
+public class MetagenerDefStringer {
 
     public static String toSyntax(MetagenDef metagenDef) {
         StringBuilder sb = new StringBuilder();

@@ -1,6 +1,7 @@
 package com.metawiring.generation.core;
 
 import com.metawiring.configdefs.FormatConstants;
+import com.metawiring.configdefs.MutableFuncDef;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.types.functiontypes.*;
 import com.metawiring.types.*;
@@ -27,12 +28,12 @@ public class FieldFunctionCompositor {
     /**
      * chain functions: one or more LongFieldFunctions, and a TypedFieldFunction, and optional GenericFieldFunctions
      *
-     * @param functionChain String specifier of function names and arguments, in the format "func1;func2:arg1,..."
-     * @param es            The entity sampler which this composed function is associated to
+     * @param funcDef String specifier of function names and arguments, in the format "func1;func2:arg1,..."
+     * @param es      The entity sampler which this composed function is associated to
      * @return the composed function
      */
     @SuppressWarnings({"ConstantConditions", "unchecked"})
-    public static TypedFieldFunction<?> composeFieldFunction(String functionChain, EntitySampler es) {
+    public static TypedFieldFunction<?> composeFieldFunction(FuncDef funcDef, EntitySampler es) {
         LongFieldFunction longFuncs = null;
         TypedFieldFunction<?> typedFuncs = null;
         GenericFieldFunction<?, ?> genericFuncs = null;
@@ -40,18 +41,13 @@ public class FieldFunctionCompositor {
         // A field's function is a composite of the entity id mapping part (specified with the sampler's "samplerFunction")
         // and the field value mapping functions.
         // If there is no samplerFunction
-        List<String> functionSpecs = new ArrayList<>();
 
-        if (functionChain!=null && !functionChain.isEmpty()) {
+        if (funcDef.getFuncCallDefs().size() > 0) {
 
-            Collections.addAll(functionSpecs,
-                    functionChain.split(FormatConstants.FUNC_DELIM)
-            );
+            for (FuncCallDef functionSpec : funcDef.getFuncCallDefs()) {
 
-            for (String functionSpec : functionSpecs) {
-
-                if (functionSpec.isEmpty()) {
-                    logger.debug("Empty function spec, for " + es);
+                if (functionSpec.getFuncName().isEmpty()) {
+                    logger.debug("Empty function name for funcDef:" + funcDef + ", in entity sampler:" + es);
                     continue;
                 }
 
@@ -99,7 +95,7 @@ public class FieldFunctionCompositor {
 
 
         if (typedFuncs == null) {
-            typedFuncs = (longFuncs==null) ? new BoxedString() : longFuncs.andThen(new BoxedString());
+            typedFuncs = (longFuncs == null) ? new BoxedString() : longFuncs.andThen(new BoxedString());
         }
 
         return typedFuncs;

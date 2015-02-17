@@ -1,5 +1,6 @@
 package com.metawiring.generation.core;
 
+import com.metawiring.configdefs.MutableFuncDef;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import com.metawiring.types.*;
 import org.slf4j.Logger;
@@ -112,15 +113,15 @@ public class EntitySamplerImpl implements EntitySampler {
         int defOffset = 0;
 
         for (FieldDef fieldDef : entityDef.getFieldDefs()) {
-            String fieldFuncChain = fieldDef.getFieldFunc();
-            String samplerFuncChan = samplerDef.getSamplerFunc();
-            String funcChain = "";
-            funcChain += (samplerFuncChan==null || samplerFuncChan.isEmpty()) ? "" : samplerFuncChan + ";";
-            funcChain += (fieldFuncChain==null || fieldFuncChain.isEmpty()) ? "" : fieldFuncChain;
-            logger.debug("funcChain: " + funcChain);
+            MutableFuncDef funcDef = new MutableFuncDef();
+            funcDef.setFuncName(entityDef.getName() + ":" + fieldDef.getFieldName());
+
+            funcDef.addFuncCallDefs(samplerDef.getSamplerFuncDef());
+            funcDef.addFuncCallDefs(fieldDef.getFieldFuncDef());
+            logger.debug("funcChain: " + funcDef.toString());
 
             try {
-                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(funcChain, this);
+                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(funcDef, this);
                 fieldFunctions[defOffset] = (LongFunction<?>) fieldSpecificFunction;
             } catch (Exception e) {
                 throw new RuntimeException(e);

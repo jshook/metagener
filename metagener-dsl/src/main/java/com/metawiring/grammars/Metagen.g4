@@ -22,7 +22,7 @@ samplerFunc : composedFuncSpec ;
 
 composedFuncSpec : composedFuncPart (';' composedFuncPart)* ';'? ;
 composedFuncPart :  funcPartName ( '(' funcArgs ')' )? | funcPartName '(' ')' | funcPartName ;
-funcArgs : assignment (',' assignment)* | value ;
+funcArgs : assignment (',' assignment)* | value (',' value) ;
 assignment: parameter '=' value ;
 funcPartName : id ;
 parameter : id ;

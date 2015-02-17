@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetagenParserDiagnostic extends BaseErrorListener {
+public class MetagenerDSLErrorHandler extends BaseErrorListener {
     private List<String> diagnosticLog = new ArrayList<String>();
     private List<SyntaxError> syntaxErrors = new ArrayList<SyntaxError>();
 

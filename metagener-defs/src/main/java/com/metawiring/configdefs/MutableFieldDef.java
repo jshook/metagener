@@ -2,11 +2,13 @@ package com.metawiring.configdefs;
 
 import com.metawiring.types.FieldDef;
 import com.metawiring.types.FieldType;
+import com.metawiring.types.FuncDef;
 
 public class MutableFieldDef implements FieldDef {
     private String fieldName;
     private FieldType fieldType;
     private String fieldFunc;
+    private FuncDef fieldFuncDef;
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
@@ -37,5 +39,13 @@ public class MutableFieldDef implements FieldDef {
 
     public String getFieldFunc() {
         return fieldFunc;
+    }
+
+    public FuncDef getFieldFuncDef() {
+        return fieldFuncDef;
+    }
+
+    public void setFieldFuncDef(FuncDef fieldFuncDef) {
+        this.fieldFuncDef = fieldFuncDef;
     }
 }
