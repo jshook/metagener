@@ -1,0 +1,17 @@
+[MetagenDef]
+[EntityDef]
+[SamplerDef|name;entity;samplerFunc]
+[FieldDef|name;type;fieldfunc]
+[FuncCallDef|assignment?;name;args?]
+[FuncDef]
+
+[MetagenDef] ->* [EntityDef]
+[MetagenDef] ->* [SamplerDef]
+
+[EntityDef] ->* [FieldDef]
+[EntityDef] ->* [Function]
+[Function] ->* [FuncDef]
+[FuncDef] ->* [FuncCallDef]
+[FieldDef] ->* [FuncDef]
+
+[SamplerDef] -> [FuncDef]
