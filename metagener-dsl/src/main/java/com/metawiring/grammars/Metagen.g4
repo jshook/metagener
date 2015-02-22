@@ -21,9 +21,11 @@ samplerName : id;
 samplerFunc : composedFuncSpec ;
 
 composedFuncSpec : composedFuncPart (';' composedFuncPart)* ';'? ;
-composedFuncPart :  funcPartName ( '(' funcArgs ')' )? | funcPartName '(' ')' | funcPartName ;
-funcArgs : assignment (',' assignment)* | value (',' value)* ;
-assignment: parameter '=' value ;
+composedFuncPart :  assignment? funcPartName ( '(' funcArgs? ')' )? | funcPartName ;
+assignment : assignTo EQUALS ;
+assignTo : id;
+funcArgs : funcArg (',' funcArg)* ;
+funcArg : assignment? value ;
 funcPartName : id ;
 parameter : id ;
 value : stringTemplate | numericValue | nonCommaOrParen | stringValue;
@@ -50,5 +52,6 @@ STORELEFT: '<-';
 COLON: ':';
 SQUOTE: '\'';
 DQUOTE: '"';
+EQUALS: '=';
 
 

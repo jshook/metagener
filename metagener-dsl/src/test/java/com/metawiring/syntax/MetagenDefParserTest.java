@@ -80,6 +80,17 @@ public class MetagenDefParserTest {
         assertThat(color.getFieldFunc(),is("entity"));
     }
 
+    // This probably neeeds to be rewritten after function calls are added
+    @Test(enabled=false)
+    public void testParseEntityFieldWithFunctionAssignment() {
+        MetagenDef md = parseString("entity carrots pop=42343\nfield color:text <- fassign=entity()\n");
+        EntityDef entityDef = md.getEntityDefs().get(0);
+        FieldDef color = entityDef.getFieldDefs().get(0);
+        assertThat(color.getFieldName(),is("color"));
+        assertThat(color.getFieldType(),is(FieldType.type_text));
+        assertThat(color.getFieldFunc(),is("fassign=entity()"));
+    }
+
     @Test
     public void testParseSamplerDef() {
         MetagenDef md = parseString("sampler somefood");

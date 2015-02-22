@@ -1,6 +1,5 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.configdefs.FormatConstants;
 import com.metawiring.types.FuncCallDef;
 import com.metawiring.types.functiontypes.LongFieldFunction;
 import org.apache.commons.lang3.reflect.ConstructorUtils;

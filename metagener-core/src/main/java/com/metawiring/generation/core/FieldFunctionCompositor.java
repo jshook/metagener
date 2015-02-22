@@ -1,6 +1,5 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.configdefs.FormatConstants;
 import com.metawiring.configdefs.MutableFuncDef;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.types.functiontypes.*;
