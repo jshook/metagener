@@ -72,12 +72,14 @@ public class MetagenDefParserTest {
 
     @Test
     public void testParseEntityFieldWithFunction() {
-        MetagenDef md = parseString("entity carrots pop=42343\nfield color:text <- entity\n");
+        MetagenDef md = parseString("entity carrots pop=42343\nfield color:text <- entity()\n");
         EntityDef entityDef = md.getEntityDefs().get(0);
         FieldDef color = entityDef.getFieldDefs().get(0);
         assertThat(color.getFieldName(),is("color"));
         assertThat(color.getFieldType(),is(FieldType.type_text));
-        assertThat(color.getFieldFunc(),is("entity"));
+        assertThat(color.getFieldFunc(),is("entity()"));
+        assertThat(color.getFieldFuncDef().getFuncName(),is(nullValue()));
+
     }
 
     // This probably neeeds to be rewritten after function calls are added
@@ -112,7 +114,7 @@ public class MetagenDefParserTest {
 
     @Test
     public void testParseSamplerDefWithAliasAndFunction() {
-        MetagenDef md = parseString("sampler somefood:foosball <- lizardgills");
+        MetagenDef md = parseString("sampler somefood:foosball <- lizardgills()");
         assertThat(md.getSamplerDefs().size(),is(1));
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
         assertThat(samplerDef.getSamplerName(),is("somefood"));
@@ -144,7 +146,7 @@ public class MetagenDefParserTest {
 
     @Test
     public void testParseEntityDefFieldWithFuncDefs() {
-        MetagenDef md = parseString("entity foo\nfield bar:text <- funca;funcb(one,two);funcc(p1=v1,p2=v2)");
+        MetagenDef md = parseString("entity foo\nfield bar:text <- funca();funcb(one,two);funcc(p1=v1,p2=v2)");
         assertThat(md.getEntityDefs().size(),is(1));
         EntityDef entityDef = md.getEntityDefs().get(0);
         assertThat( entityDef.getFieldDefs().size(),is(1));

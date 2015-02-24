@@ -1,14 +1,11 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.configdefs.MutableFuncDef;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.types.functiontypes.*;
 import com.metawiring.types.*;
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * Parses function specs, composes functions.
@@ -33,7 +30,7 @@ public class FieldFunctionCompositor {
      */
     @SuppressWarnings({"ConstantConditions", "unchecked"})
     public static TypedFieldFunction<?> composeFieldFunction(FuncDef funcDef, EntitySampler es) {
-        LongFieldFunction longFuncs = null;
+        LongUnaryFieldFunction longFuncs = null;
         TypedFieldFunction<?> typedFuncs = null;
         GenericFieldFunction<?, ?> genericFuncs = null;
 
@@ -68,8 +65,8 @@ public class FieldFunctionCompositor {
                 }
 
 
-                if (funcObject instanceof LongFieldFunction) {
-                    LongFieldFunction ff = (LongFieldFunction) funcObject;
+                if (funcObject instanceof LongUnaryFieldFunction) {
+                    LongUnaryFieldFunction ff = (LongUnaryFieldFunction) funcObject;
                     longFuncs = (longFuncs == null) ? ff : longFuncs.andThen(ff);
 
                 } else if (funcObject instanceof TypedFieldFunction<?>) {

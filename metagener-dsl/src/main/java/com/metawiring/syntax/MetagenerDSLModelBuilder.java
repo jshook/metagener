@@ -83,21 +83,13 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     @Override
     public void exitComposedFuncPart(MetagenParser.ComposedFuncPartContext ctx) {
         mutableFuncCallDef = new MutableFuncCallDef();
-        mutableFuncCallDef.setFuncName(ctx.funcPartName().getText());
-
-        if (ctx.funcArgs() != null) {
-            if (ctx.assignment() != null) {
-                mutableFuncCallDef.setAssignTo(ctx.assignment().assignTo().getText());
-            }
-
-            for (MetagenParser.FuncArgContext funcArgContext : ctx.funcArgs().funcArg()) {
-                if (funcArgContext.assignment() != null) {
-                    mutableFuncCallDef.getFuncArgs().add(
-                            funcArgContext.assignment().assignTo().getText()
-                                    + "="
-                                    + funcArgContext.value().getText());
-                } else {
-                    mutableFuncCallDef.getFuncArgs().add(funcArgContext.value().getText());
+        if (ctx.functionCall() != null) {
+            mutableFuncCallDef.setFuncName(ctx.functionCall().functionName().id().getText());
+            for (MetagenParser.FuncArgContext funcArgContext : ctx.functionCall().funcArgs().funcArg()) {
+                if (funcArgContext.assignment()!=null) {
+                    mutableFuncCallDef.getFuncArgs().add(funcArgContext.assignment().assignTo().id().getText()
+                    +"="
+                    +funcArgContext.value().getText());
                 }
             }
         }
@@ -147,7 +139,6 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     @Override
     public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);
-
         errorNodes.add(node);
     }
 
@@ -158,6 +149,7 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     public List<ErrorNode> getErrorNodes() {
         return errorNodes;
     }
+
 
 
 }

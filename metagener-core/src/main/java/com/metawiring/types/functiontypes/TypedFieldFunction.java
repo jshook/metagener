@@ -25,7 +25,7 @@ import java.util.function.LongUnaryOperator;
  */
 public interface TypedFieldFunction<R> extends LongFunction<R> {
 
-    default <T> TypedFieldFunction compose(LongFieldFunction before) {
+    default <T> TypedFieldFunction compose(LongUnaryFieldFunction before) {
         Objects.requireNonNull(before);
         return (long input) -> apply(before.applyAsLong(input));
     }

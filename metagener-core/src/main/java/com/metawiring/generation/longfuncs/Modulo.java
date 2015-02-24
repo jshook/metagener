@@ -1,11 +1,11 @@
 package com.metawiring.generation.longfuncs;
 
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 
 /**
  * Simple modulo by a number.
  */
-public class Modulo implements LongFieldFunction {
+public class Modulo implements LongUnaryFieldFunction {
 
     private final long modulo;
 

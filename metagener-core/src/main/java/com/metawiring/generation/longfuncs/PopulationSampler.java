@@ -2,14 +2,14 @@ package com.metawiring.generation.longfuncs;
 
 import com.metawiring.generation.core.HashedSamplingAdapter;
 import com.metawiring.types.functiontypes.EntityDefAware;
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import com.metawiring.types.EntityDef;
 import org.apache.commons.math3.distribution.IntegerDistribution;
 
 /**
  * This is *NOT* threadsafe. It will be reworked to provide a more functional integration with apache commons math, if possible.
  */
-public class PopulationSampler implements LongFieldFunction, EntityDefAware {
+public class PopulationSampler implements LongUnaryFieldFunction, EntityDefAware {
 
     private EntityDef entityDef;
     private IntegerDistribution dist;

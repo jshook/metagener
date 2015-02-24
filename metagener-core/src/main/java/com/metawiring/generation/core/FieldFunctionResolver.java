@@ -1,12 +1,10 @@
 package com.metawiring.generation.core;
 
 import com.metawiring.types.FuncCallDef;
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 
 
 public class FieldFunctionResolver {
@@ -35,7 +33,7 @@ public class FieldFunctionResolver {
         try {
             @SuppressWarnings("unchecked")
             Object fieldFunction = ConstructorUtils.invokeConstructor(
-                    (Class<LongFieldFunction>) functionClass,
+                    (Class<LongUnaryFieldFunction>) functionClass,
                     (java.lang.Object[]) functionSpec.getFuncArgs().toArray()
             );
             return fieldFunction;

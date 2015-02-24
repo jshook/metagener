@@ -51,17 +51,17 @@ public class MutableFuncCallDef implements FuncCallDef {
         if (assignTo!=null) {
             sb.append(assignTo).append("=");
         }
-        sb.append(funcName == null ? "NULL" : funcName);
+        sb.append(funcName == null ? "<unset>" : funcName);
         String separator = "";
+        sb.append("(");
         if (funcArgs != null && funcArgs.size() > 0) {
-            sb.append("(");
             for (String funcArg : funcArgs) {
                 sb.append(separator);
                 sb.append(funcArg);
                 separator = ",";
             }
-            sb.append(")");
         }
+        sb.append(")");
 
         return sb.toString();
     }

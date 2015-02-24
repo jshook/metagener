@@ -1,6 +1,6 @@
 package com.metawiring.generation.longfuncs;
 
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import de.greenrobot.common.hash.Murmur3F;
 import java.nio.ByteBuffer;
 
@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  * It doesn't bother pushing the high-64 bits of input, since it only uses the lower 64 bits of output.
  * It does, however, return the absolute value. This is to make it play nice with users and other libraries.
  */
-public class Murmur3Hash implements LongFieldFunction {
+public class Murmur3Hash implements LongUnaryFieldFunction {
 
     private ByteBuffer bytes = ByteBuffer.allocate(Long.BYTES);
     private Murmur3F murmur3F= new Murmur3F();

@@ -4,7 +4,7 @@ import com.metawiring.configdefs.MutableEntityDef;
 import com.metawiring.configdefs.MutableSamplerDef;
 import com.metawiring.generation.longfuncs.Identity;
 import com.metawiring.generation.longfuncs.IntModulo;
-import com.metawiring.generation.longfuncs.LongLongDiagnostic;
+import com.metawiring.generation.longfuncs.LongLongUnaryDiagnostic;
 import com.metawiring.generation.longfuncs.Modulo;
 import com.metawiring.generation.fieldgenfuncs.*;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
@@ -57,7 +57,7 @@ public class FieldFunctionsTest {
 
     @Test
     public void testLongLongDiagnostic() {
-        LongLongDiagnostic lld = new LongLongDiagnostic("3");
+        LongLongUnaryDiagnostic lld = new LongLongUnaryDiagnostic("3");
         applyEntityDef("lldiag",234l,lld);
         applySamplerDef("samplerName","entityName","binomial",lld);
         Long result102=lld.applyAsLong(102l);
