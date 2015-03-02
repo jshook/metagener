@@ -17,13 +17,9 @@ public class Modulo implements LongUnaryFieldFunction {
         this(Long.valueOf(modulo));
     }
 
-    public Long apply(Long aLong) {
-        return aLong % modulo;
-    }
-
     @Override
     public long applyAsLong(long operand) {
-        long result = operand & modulo;
+        long result = operand % modulo;
         return result;
     }
 

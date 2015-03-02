@@ -125,7 +125,7 @@ public class EntitySamplerImpl implements EntitySampler {
                 startFunc = fieldDef.getFieldFuncDef().getFuncCallDefs().get(0).getFuncName();
             }
 
-            if (startFunc==null || !startFunc.equals("sampleid()")) {
+            if (startFunc==null || !startFunc.equals("sampleid")) {
                 funcDef.addFuncCallDefs(samplerDef.getSamplerFuncDef());
             }
 

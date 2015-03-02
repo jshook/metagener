@@ -1,5 +1,7 @@
 package com.metawiring.generation.core;
 
+import com.metawiring.generation.fieldgenericfuncs.LeftString;
+import com.metawiring.generation.fieldgenericfuncs.RightString;
 import com.metawiring.generation.longfuncs.*;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.generation.fieldgenfuncs.*;
@@ -12,6 +14,7 @@ public enum FieldFunctionName {
     murmur3(Murmur3Hash.class),
     modentity(EntityModulo.class),
     mod(Modulo.class),
+    modulopop(ModuloPop.class),
 
     numbname(NumbNamer.class),
     filesample(FileLineSampler.class),
@@ -26,7 +29,10 @@ public enum FieldFunctionName {
     dateshift(DateShift.class),
     daterange(DateRange.class),
     rangedrandom(RangedRandom.class),
-    scaleddouble(ToScaledDouble.class);
+    scaleddouble(ToScaledDouble.class),
+
+    leftstring(LeftString.class),
+    rightstring(RightString.class);
 
     private final Class<?> implClass;
 

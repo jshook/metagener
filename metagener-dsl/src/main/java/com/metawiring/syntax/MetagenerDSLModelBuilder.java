@@ -86,13 +86,22 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
         if (ctx.functionCall() != null) {
             mutableFuncCallDef.setFuncName(ctx.functionCall().functionName().id().getText());
             for (MetagenParser.FuncArgContext funcArgContext : ctx.functionCall().funcArgs().funcArg()) {
+                StringBuilder sb = new StringBuilder();
                 if (funcArgContext.assignment()!=null) {
-                    mutableFuncCallDef.getFuncArgs().add(funcArgContext.assignment().assignTo().id().getText()
-                    +"="
-                    +funcArgContext.value().getText());
-                } else {
-                    mutableFuncCallDef.getFuncArgs().add(funcArgContext.value().getText());
+                    sb.append(funcArgContext.assignment().assignTo().id().getText())
+                            .append("=");
                 }
+                MetagenParser.ValueContext cvalue = funcArgContext.value();
+                String valueText = funcArgContext.getText();
+
+                if (cvalue.stringValue()!=null) {
+                    String text = funcArgContext.value().stringValue().SQUOTESTRING().getText();
+                    sb.append(text.substring(1,text.length()-1));
+                } else {
+                    sb.append(cvalue.getText());
+                }
+
+                mutableFuncCallDef.getFuncArgs().add(sb.toString());
             }
         }
         mutableFuncDef.getFuncCallDefs().add(mutableFuncCallDef);

@@ -95,9 +95,9 @@ public class FieldFunctionsTest {
     @Test
     public void testModulo() {
         Modulo modulo = new Modulo("3");
-        Long modulo3by3 = modulo.apply(3l);
+        Long modulo3by3 = modulo.applyAsLong(3l);
         assertThat(modulo3by3,is(0l));
-        Long modulo3by5 = modulo.apply(5l);
+        Long modulo3by5 = modulo.applyAsLong(5l);
         assertThat(modulo3by5,is(2l));
     }
 

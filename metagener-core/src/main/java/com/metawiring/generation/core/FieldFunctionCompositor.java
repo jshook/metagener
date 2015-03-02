@@ -45,6 +45,9 @@ public class FieldFunctionCompositor {
 
             for (FuncCallDef funcCallDef : funcDef.getFuncCallDefs()) {
 
+                if (funcCallDef.getFuncName().equals("sampleid")) {
+                    continue;
+                }
                 if (funcCallDef.getFuncName().isEmpty()) {
                     logger.debug("Empty function name for funcDef:" + funcDef + ", in entity sampler:" + es);
                     continue;
