@@ -107,4 +107,15 @@ public class RetailEntitySamplerServiceTest {
             System.out.println(nextEntity);
         }
     }
+
+    @Test
+    public void verifyValuesForPayments() throws Exception {
+        EntitySamplerService retail = new RetailEntitySamplerService();
+        EntitySampler payments = retail.getEntitySampleStream("retail.payments");
+        EntitySample nextEntity;
+        for (int i = 0; i < 10; i++) {
+            nextEntity = payments.getNextEntity();
+            System.out.println(nextEntity);
+        }
+    }
 }

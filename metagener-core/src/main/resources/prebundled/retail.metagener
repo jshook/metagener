@@ -30,3 +30,12 @@ entity retail.employees pop=600000
   field first_name:text    <- filesample(first_names.txt,uniform);
   field last_name:text     <- filesample(last_names.txt,uniform);
   field last_initial:text  <- filesample(last_names.txt,uniform); leftstring(1);
+
+sampler retail.payments <- murmur3();
+entity retail.payments
+ field payment_type:text    <- select('AMEX,VISA,MC,DISC,CASH')
+ field first_name:text      <- filesample(first_names.txt,uniform);
+ field middle_initial:text  <- index(ABCDEFGHIJKLMNOPQRSTUVWXYZ);
+ field last_name:text       <- filesample(last_names.txt,uniform);
+ field month:int            <- rangedrandom(1,12);
+ field year:int             <- rangedrandom(15,20);

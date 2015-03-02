@@ -16,10 +16,16 @@ public enum FieldFunctionName {
     mod(Modulo.class),
     modulopop(ModuloPop.class),
 
+
+    prefix(Prefix.class),
+    suffix(Suffix.class),
+    index(StringIndex.class),
+    select(StringSelection.class),
     numbname(NumbNamer.class),
     filesample(FileLineSampler.class),
     filecycle(FileLineCycler.class),
     numbername(NamedNumberString.class),
+    imodulo(LongModulo.class),
     intmod(IntModulo.class),
     multiply(Multiply.class),
     pdist(PopulationSampler.class), // Population/long distribution sampling
@@ -27,8 +33,6 @@ public enum FieldFunctionName {
     cclamp(ContinuousRangeClamp.class),
     idist(DiscreteDistributionSampler.class), // Discrete/Int distribution sampling
     iclamp(DiscreteRangeClamp.class),
-    prefix(Prefix.class),
-    suffix(Suffix.class),
     tostring(BoxedString.class),
     dateshift(DateShift.class),
     daterange(DateRange.class),
