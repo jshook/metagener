@@ -32,10 +32,9 @@ public class FieldFunctionResolver {
 
         try {
             @SuppressWarnings("unchecked")
-            Object fieldFunction = ConstructorUtils.invokeConstructor(
-                    (Class<LongUnaryFieldFunction>) functionClass,
-                    (java.lang.Object[]) functionSpec.getFuncArgs().toArray()
-            );
+            Object[] args = (Object[]) functionSpec.getFuncArgs().toArray();
+            Class<LongUnaryFieldFunction> funcClass = (Class<LongUnaryFieldFunction>) functionClass;
+            Object fieldFunction = ConstructorUtils.invokeConstructor(funcClass,args);
             return fieldFunction;
         } catch (Exception e) {
             logger.error("Unable to instantiate class [" + functionClass + "] for function call:" + functionSpec, e);

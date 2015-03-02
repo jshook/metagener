@@ -22,7 +22,11 @@ public enum FieldFunctionName {
     numbername(NamedNumberString.class),
     intmod(IntModulo.class),
     multiply(Multiply.class),
-    dist(PopulationSampler.class),
+    pdist(PopulationSampler.class), // Population/long distribution sampling
+    cdist(ContinuousDistributionSampler.class), // Continuous/Real distribution sampling
+    cclamp(ContinuousRangeClamp.class),
+    idist(DiscreteDistributionSampler.class), // Discrete/Int distribution sampling
+    iclamp(DiscreteRangeClamp.class),
     prefix(Prefix.class),
     suffix(Suffix.class),
     tostring(BoxedString.class),
@@ -31,8 +35,12 @@ public enum FieldFunctionName {
     rangedrandom(RangedRandom.class),
     scaleddouble(ToScaledDouble.class),
 
+    mindouble(MinDouble.class),
+    maxdouble(MaxDouble.class),
+
     leftstring(LeftString.class),
     rightstring(RightString.class);
+
 
     private final Class<?> implClass;
 

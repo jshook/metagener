@@ -14,16 +14,14 @@
 */
 package com.metawiring.generation.longfuncs;
 
-import com.metawiring.generation.core.HashedSamplingAdapter;
+import com.metawiring.generation.core.HashedDiscreteSamplingAdapter;
 import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
-
-import java.util.Random;
 
 public class RangedRandom implements LongUnaryFieldFunction{
 
     private final int minInclusive;
     private final int maxInclusive;
-    private HashedSamplingAdapter samplingAdapter;
+    private HashedDiscreteSamplingAdapter samplingAdapter;
 
     public RangedRandom(String minInclusive, String maxInclusive) {
         this(Integer.valueOf(minInclusive),Integer.valueOf(maxInclusive));
@@ -32,7 +30,7 @@ public class RangedRandom implements LongUnaryFieldFunction{
     public RangedRandom(int minInclusive, int maxInclusive) {
         this.minInclusive = minInclusive;
         this.maxInclusive = maxInclusive;
-        this.samplingAdapter = new HashedSamplingAdapter(minInclusive,maxInclusive,"uniform");
+        this.samplingAdapter = new HashedDiscreteSamplingAdapter(minInclusive,maxInclusive,"uniform");
     }
 
     @Override

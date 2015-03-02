@@ -1,6 +1,6 @@
 package com.metawiring.generation.fieldgenfuncs;
 
-import com.metawiring.generation.core.HashedSamplingAdapter;
+import com.metawiring.generation.core.HashedDiscreteSamplingAdapter;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ public class FileLineSampler implements TypedFieldFunction<String> {
 
     private final String filename;
     private final String distname;
-    private HashedSamplingAdapter samplingAdapter;
+    private HashedDiscreteSamplingAdapter samplingAdapter;
 
     private IntegerDistribution itemDistribution;
     private List<String> loadedLines = new ArrayList<>();
@@ -30,7 +30,7 @@ public class FileLineSampler implements TypedFieldFunction<String> {
         this.filename = filename;
         this.distname = distname;
         loadedLines = loadLines(filename);
-        samplingAdapter = new HashedSamplingAdapter(0, loadedLines.size() - 1, this.distname);
+        samplingAdapter = new HashedDiscreteSamplingAdapter(0, loadedLines.size() - 1, this.distname);
     }
 
     private List<String> loadLines(String fileName) {
