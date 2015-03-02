@@ -8,20 +8,20 @@ entitydef : 'entity' entityName
     (fielddef | funcdef)*;
 entityName : id;
 popSize : NUMBER;
-fielddef: 'field' fieldName COLON fieldType (STORELEFT composedFuncSpec)? ;
+fielddef: 'field' fieldName COLON fieldType (STORELEFT chainedFuncSpec)? ;
 fieldType : id;
 fieldName : id ;
 
-funcdef: 'func' funcName composedFuncSpec;
+funcdef: 'func' funcName STORELEFT chainedFuncSpec;
 funcName : id;
 
 samplerdef : 'sampler' samplerName (':' samplerEntity)? (STORELEFT samplerFunc)? ;
 samplerEntity: id;
 samplerName : id;
-samplerFunc : composedFuncSpec ;
+samplerFunc : chainedFuncSpec ;
 
-composedFuncSpec : composedFuncPart (';' composedFuncPart)* ';'? ;
-composedFuncPart :  assignment? functionCall ;
+chainedFuncSpec : chainedFuncPart (';' chainedFuncPart)* ';'? ;
+chainedFuncPart :  assignment? functionCall ;
 functionCall : functionName LPAREN funcArgs RPAREN ;
 assignment : assignTo EQUALS ;
 assignTo : id;
@@ -39,7 +39,8 @@ templateSection : templateVarname | templatePreamble templateVarname | templateP
 templatePreamble : ~('${')+ ;
 templateVarname : LSUBST id RSUBST;
 nonComma : ((~(','))|('.'|'-'|'/'))+? ;
-nonCommaOrParen : ((~(','|')'))|('.'|'-'|'/'))+? ;
+nonCommaOrParen : (~(','|')'))+;
+//nonCommaOrParen : ((~(','|')'))|('.'|'-'|'/'|'%'))+ ;
 //nonComma : .+? ;
 id : 'entity' | 'sampler' | ID;
 

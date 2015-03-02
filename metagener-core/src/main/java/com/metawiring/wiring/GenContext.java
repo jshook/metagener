@@ -2,21 +2,15 @@ package com.metawiring.wiring;
 
 import com.metawiring.defbuilder.DefBuilderTypes;
 import com.metawiring.defbuilder.GenContextBuilder;
-import com.metawiring.types.MetagenDef;
-import com.metawiring.types.EntitySampler;
-import com.metawiring.types.EntityDef;
-import com.metawiring.types.SamplerDef;
+import com.metawiring.types.*;
 import com.metawiring.generation.core.EntitySamplerImpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * You should only have one function context per app
  */
-public class GenContext {
+public class GenContext implements EntitySamplerService {
 
     // The configured generator context
     private MetagenDef metagenDef;
@@ -85,6 +79,11 @@ public class GenContext {
 
     public Map<? extends String, ? extends EntitySampler> getEntitySamplerMap() {
         return entitySamplerMap;
+    }
+
+    @Override
+    public Map<String, SamplerDef> getSampleStreamMap() {
+        return Collections.unmodifiableMap(samplerDefMap);
     }
 
     public List<SamplerDef> getDefinedEntitySamplers() {

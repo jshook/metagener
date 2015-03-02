@@ -1,6 +1,0 @@
-entity item_scan
- field scan_time:timestamp <- multiply(1000); dateshift(2013);
- field product_id:text      <- murmur3; filesample(/cache/product_ids.txt,uniform);
-
-sampler item_scan
-

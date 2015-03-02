@@ -36,17 +36,22 @@ public class FileLineSampler implements TypedFieldFunction<String> {
     private List<String> loadLines(String fileName) {
 
         List<String> lines = new ArrayList<>();
-        InputStream stream=null;
+        InputStream stream = null;
 
-        try {
-            stream = new FileInputStream(fileName);
-        } catch (FileNotFoundException ignored) {
+        for (String filePath : new String[]{fileName, "data/" + fileName}) {
+            try {
+                stream = new FileInputStream(filePath);
+            } catch (FileNotFoundException ignored) {
+            }
+            if (stream == null) {
+                stream = FileLineSampler.class.getClassLoader().getResourceAsStream(filePath);
+            }
+            if (stream !=null) {
+                break;
+            }
         }
         if (stream == null) {
-            stream = FileLineSampler.class.getClassLoader().getResourceAsStream(filename);
-        }
-        if (stream == null) {
-            throw new RuntimeException(filename + " was missing.");
+            throw new RuntimeException(filename + " was missing, both in the file system and the classpath, directly, or in data/");
         }
 
         CharBuffer linesImage;

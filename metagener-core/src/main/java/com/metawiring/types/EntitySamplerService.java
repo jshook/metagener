@@ -9,12 +9,7 @@ import java.util.Map;
  */
 public interface EntitySamplerService {
 
-    /**
-     * Get a map of all the sample streams, by name. This is useful
-     * for interrogating the streams available and their metadata.
-     * @return sample stream map
-     */
-    public Map<String,EntitySampler> getSampleStreamMap();
+    public Map<String,SamplerDef> getSampleStreamMap();
 
     /**
      * Get the named sample stream. This is more direct for clients
@@ -23,7 +18,7 @@ public interface EntitySamplerService {
      * @return The named stream
      * @throws com.metawiring.types.exceptions.SampleStreamException if the named stream doesn't exist
      */
-    public EntitySampler getSampleStream(String name);
+    public EntitySampler getEntitySampleStream(String name);
 
     /**
      * Get the list of defined samplers. This may be different than the configured and running

@@ -13,6 +13,7 @@ public enum FieldFunctionName {
     modentity(EntityModulo.class),
     mod(Modulo.class),
 
+    numbname(NumbNamer.class),
     filesample(FileLineSampler.class),
     filecycle(FileLineCycler.class),
     numbername(NamedNumberString.class),
@@ -23,8 +24,9 @@ public enum FieldFunctionName {
     suffix(Suffix.class),
     tostring(BoxedString.class),
     dateshift(DateShift.class),
-    daterange(DateRange.class);
-
+    daterange(DateRange.class),
+    rangedrandom(RangedRandom.class),
+    scaleddouble(ToScaledDouble.class);
 
     private final Class<?> implClass;
 

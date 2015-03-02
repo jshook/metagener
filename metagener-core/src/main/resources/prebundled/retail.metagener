@@ -1,0 +1,32 @@
+// define a sampler named "item_scan" which samples from the item_scan entity type
+sampler retail.item_scans : retail.item_scans
+entity retail.item_scans pop=1000000000 // define a data type of item_scan, with 10E9 unique samples
+
+ // create a timestamp, advancing by sampleid * 1000 (1000 millis)
+ //  with the beginning starting in year 2015
+ field scantime : timestamp <- multiply(1000); dateshift(2015);
+
+ // Hash the sampleid, sample from product_ids with uniform distribution
+ field product_id:text      <- murmur3(); filesample(product_ids.txt,uniform);
+
+sampler retail.stores : retail.stores
+entity retail.stores pop=10000
+  field store_id : int          <- dist(uniform)
+  field tax_rate : decimal      <- scaleddouble(0.055,0.085);
+  field express_registers : int <- rangedrandom(2,6)
+  field full_registers: int     <- rangedrandom(10,20)
+
+  field street : text           <- filesample(streetnames.txt); suffix( Street);
+  field city : text             <- filesample(city_names.txt);
+  field zip_code : text         <- rangedrandom(11111,99999);
+//  func threes  <- rangedrandom(111,999)
+//  func fours   <- rangedrandom(1111,9999)
+//  field phone : text            <- template("${threes}-${threes}-${fours}")
+
+sampler retail.employees
+entity retail.employees pop=200000
+  field employee_id: int
+  field store_id:int       <- rangedrandom(1,10000)
+  field first_name:text    <- filesample(first_names.txt,uniform);
+  field last_name:text     <- numbname();prefix(last-);
+  field last_initial:text  <- numbname();prefix(initial-);

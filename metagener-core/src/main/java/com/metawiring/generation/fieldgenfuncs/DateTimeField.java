@@ -9,7 +9,7 @@ public class DateTimeField implements TypedFieldFunction<String> {
     private DateTimeFormatter dateTimeFormatter;
 
     public DateTimeField(String format) {
-        this.dateTimeFormatter = DateTimeFormat.forPattern(format);
+        this.dateTimeFormatter = DateTimeFormat.forPattern(format).withZoneUTC();
     }
 
     @Override

@@ -116,7 +116,19 @@ public class EntitySamplerImpl implements EntitySampler {
             MutableFuncDef funcDef = new MutableFuncDef();
             funcDef.setFuncName(entityDef.getName() + ":" + fieldDef.getFieldName());
 
-            funcDef.addFuncCallDefs(samplerDef.getSamplerFuncDef());
+            // If the field function def is empty, or does not specifically call sampleid(),
+            // then implicitly call entityid() before applying field function chain.
+            // entityid() is the result of the entity sampler function, as defined on the sampler definition
+
+            String startFunc = null;
+            if (fieldDef.getFieldFuncDef() !=null && fieldDef.getFieldFuncDef().getFuncCallDefs()!=null) {
+                startFunc = fieldDef.getFieldFuncDef().getFuncCallDefs().get(0).getFuncName();
+            }
+
+            if (startFunc==null || !startFunc.equals("sampleid()")) {
+                funcDef.addFuncCallDefs(samplerDef.getSamplerFuncDef());
+            }
+
             funcDef.addFuncCallDefs(fieldDef.getFieldFuncDef());
             logger.debug("funcChain: " + funcDef.toString());
 
@@ -141,4 +153,10 @@ public class EntitySamplerImpl implements EntitySampler {
 
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("EntitySampler{ ");
+        sb.append("samplerDef=").append(samplerDef).append(";");
+        return sb.toString();
+    }
 }

@@ -61,8 +61,8 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     public void exitFielddef(MetagenParser.FielddefContext ctx) {
         mutableFieldDef.setFieldName(ctx.fieldName().getText());
         mutableFieldDef.setFieldType(ctx.fieldType().getText());
-        if (ctx.composedFuncSpec() != null) {
-            mutableFieldDef.setFieldFunc(ctx.composedFuncSpec().getText());
+        if (ctx.chainedFuncSpec() != null) {
+            mutableFieldDef.setFieldFunc(ctx.chainedFuncSpec().getText());
             mutableFieldDef.setFieldFuncDef(mutableFuncDef.immutable());
             mutableFuncDef = null;
         }
@@ -71,17 +71,17 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     }
 
     @Override
-    public void exitComposedFuncSpec(MetagenParser.ComposedFuncSpecContext ctx) {
+    public void exitChainedFuncSpec(MetagenParser.ChainedFuncSpecContext ctx) {
         mutableFuncDef.setFuncSpec(ctx.getText());
     }
 
     @Override
-    public void enterComposedFuncSpec(MetagenParser.ComposedFuncSpecContext ctx) {
+    public void enterChainedFuncSpec(MetagenParser.ChainedFuncSpecContext ctx) {
         mutableFuncDef = new MutableFuncDef();
     }
 
     @Override
-    public void exitComposedFuncPart(MetagenParser.ComposedFuncPartContext ctx) {
+    public void exitChainedFuncPart(MetagenParser.ChainedFuncPartContext ctx) {
         mutableFuncCallDef = new MutableFuncCallDef();
         if (ctx.functionCall() != null) {
             mutableFuncCallDef.setFuncName(ctx.functionCall().functionName().id().getText());
@@ -90,6 +90,8 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
                     mutableFuncCallDef.getFuncArgs().add(funcArgContext.assignment().assignTo().id().getText()
                     +"="
                     +funcArgContext.value().getText());
+                } else {
+                    mutableFuncCallDef.getFuncArgs().add(funcArgContext.value().getText());
                 }
             }
         }
@@ -106,7 +108,7 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     @Override
     public void exitFuncdef(MetagenParser.FuncdefContext ctx) {
         mutableFuncDef.setFuncName(ctx.funcName().getText());
-        mutableFuncDef.setFuncSpec(ctx.composedFuncSpec().getText());
+        mutableFuncDef.setFuncSpec(ctx.chainedFuncSpec().getText());
         mutableEntityDef.addFuncDef(mutableFuncDef);
         mutableFuncDef = null;
     }

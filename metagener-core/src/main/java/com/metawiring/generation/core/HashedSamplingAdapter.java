@@ -14,8 +14,8 @@ public class HashedSamplingAdapter {
 
     public HashedSamplingAdapter(int minValue, int maxValue, String distributionName, String... distributionParams) {
         randomMapper = new RandomGeneratorAdapter();
-        Class<? extends IntegerDistribution> distClass = SizedDistributionMapper.mapDistributionName(distributionName);
-        dist = SizedDistributionMapper.mapDistribution(distClass, minValue, maxValue, randomMapper, distributionParams);
+        Class<? extends IntegerDistribution> distClass = SizedDistributionMapper.mapIntegerDistributionClass(distributionName);
+        dist = SizedDistributionMapper.mapIntegerDistribution(distClass, minValue, maxValue, randomMapper, distributionParams);
     }
 
     public long sample(long sampleId) {

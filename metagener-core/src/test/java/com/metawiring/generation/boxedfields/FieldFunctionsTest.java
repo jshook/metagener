@@ -12,6 +12,8 @@ import com.metawiring.generation.fieldgenericfuncs.StringStringDiagnostic;
 import com.metawiring.generation.fieldgenericfuncs.Suffix;
 import com.metawiring.types.functiontypes.EntityDefAware;
 import com.metawiring.types.functiontypes.SamplerDefAware;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,8 +53,10 @@ public class FieldFunctionsTest {
     @Test
     public void testDateTimeField() {
         DateTimeField dtf = new DateTimeField("YYYY-MM-dd-HH-mm-ss.mmm");
-        String result = dtf.apply(1234512345l);
-        assertThat(result,is("1970-01-15-00-55-12.055"));
+        long instantAt = new DateTime(2015,11,5,2,6,7, DateTimeZone.UTC).getMillis();
+        String result = dtf.apply(instantAt);
+        // Haven't clearly identified the millisecond offset yet
+        assertThat(result,is("2015-11-05-02-06-07.006"));
     }
 
     @Test

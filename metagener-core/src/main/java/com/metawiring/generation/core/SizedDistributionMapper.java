@@ -12,7 +12,7 @@ import org.apache.commons.math3.random.RandomGenerator;
  */
 public class SizedDistributionMapper {
 
-    public static IntegerDistribution mapDistribution(
+    public static IntegerDistribution mapIntegerDistribution(
             Class<? extends IntegerDistribution> distClass,
             int minValue, int maxValue,
             RandomGenerator rng,
@@ -45,7 +45,7 @@ public class SizedDistributionMapper {
 
     }
 
-    public static Class<? extends IntegerDistribution> mapDistributionName(String distributionName) {
+    public static Class<? extends IntegerDistribution> mapIntegerDistributionClass(String distributionName) {
         switch (distributionName) {
             case "uniform":
             case "random":
@@ -64,6 +64,7 @@ public class SizedDistributionMapper {
                 return EnumeratedIntegerDistribution.class;
             case "normal":
             case "gaussian":
+//                return NormalDistribution.class;
                 throw new RuntimeException("You probably want to use a discrete samplerFunction for this, like binomial."
                         + " Continuous distributions are not supported yet. When they are, they will only be for field values.");
             default:
