@@ -10,8 +10,9 @@ public class MutableFieldDef implements FieldDef {
     private String fieldFunc;
     private FuncDef fieldFuncDef;
 
-    public void setFieldName(String fieldName) {
+    public MutableFieldDef setFieldName(String fieldName) {
         this.fieldName = fieldName;
+        return this;
     }
 
     @Override
@@ -20,8 +21,9 @@ public class MutableFieldDef implements FieldDef {
     }
 
 
-    public void setFieldType(String fieldTypeName) {
+    public MutableFieldDef setFieldType(String fieldTypeName) {
         this.fieldType = FieldType.typeOf(fieldTypeName);
+        return this;
     }
 
     @Override
@@ -33,8 +35,9 @@ public class MutableFieldDef implements FieldDef {
         return (FieldDef) this;
     }
 
-    public void setFieldFunc(String function) {
+    public MutableFieldDef setFieldFunc(String function) {
         this.fieldFunc = function;
+        return this;
     }
 
     public String getFieldFunc() {
@@ -45,8 +48,9 @@ public class MutableFieldDef implements FieldDef {
         return fieldFuncDef;
     }
 
-    public void setFieldFuncDef(FuncDef fieldFuncDef) {
+    public MutableFieldDef setFieldFuncDef(FuncDef fieldFuncDef) {
         this.fieldFuncDef = fieldFuncDef;
+        return this;
     }
 
     public String toString() {

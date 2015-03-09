@@ -3,6 +3,7 @@ package com.metawiring.syntax;
 import com.metawiring.configdefs.*;
 import com.metawiring.generated.MetagenBaseListener;
 import com.metawiring.generated.MetagenParser;
+import com.metawiring.types.FuncCallDef;
 import com.metawiring.types.MetagenDef;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.slf4j.Logger;
@@ -24,6 +25,10 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
 
     public MetagenDef getGenContextDef() {
         return mutableMetagenDef.immutable();
+    }
+
+    public FuncCallDef getFuncCallDef() {
+        return mutableFuncCallDef.immutable();
     }
 
     @Override

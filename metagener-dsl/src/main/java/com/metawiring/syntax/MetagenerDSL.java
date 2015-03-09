@@ -2,6 +2,7 @@ package com.metawiring.syntax;
 
 import com.metawiring.generated.MetagenLexer;
 import com.metawiring.generated.MetagenParser;
+import com.metawiring.types.FuncCallDef;
 import com.metawiring.types.MetagenDef;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -14,12 +15,12 @@ import java.nio.CharBuffer;
 public class MetagenerDSL {
     private static Logger logger = LoggerFactory.getLogger(MetagenerDSL.class);
 
-    public static MetagenerDSLParserResult fromSyntax(String defdata) {
+    public static MetagenerDSLParserResult<MetagenDef> fromSyntax(String defdata) {
         ANTLRInputStream ais = new ANTLRInputStream(defdata);
         return fromANTLRStream(ais);
     }
 
-    public static MetagenerDSLParserResult fromFile(String filename) {
+    public static MetagenerDSLParserResult<MetagenDef> fromFile(String filename) {
         char[] filedata = readFile(filename);
         ANTLRInputStream ais = new ANTLRInputStream(filedata, filedata.length);
         return fromANTLRStream(ais);
@@ -31,7 +32,30 @@ public class MetagenerDSL {
 
     }
 
-    private static MetagenerDSLParserResult fromANTLRStream(ANTLRInputStream inputstream) {
+    public static MetagenerDSLParserResult chainedFunctionFromSyntax(String chainedFunctionSpec) {
+        ANTLRInputStream ais = new ANTLRInputStream(chainedFunctionSpec);
+        return chainedFunctionFromANTLRStream(ais);
+    }
+
+    private static MetagenerDSLParserResult chainedFunctionFromANTLRStream(ANTLRInputStream ais) {
+        try {
+            MetagenLexer lexer = new MetagenLexer(ais);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            MetagenParser parser = new MetagenParser(tokens);
+            MetagenerDSLModelBuilder modelBuilder = new MetagenerDSLModelBuilder();
+            MetagenerDSLErrorHandler errorHandler = new MetagenerDSLErrorHandler();
+            parser.addParseListener(modelBuilder);
+            parser.addErrorListener(errorHandler);
+            MetagenParser.ChainedFuncSpecContext parseTree = parser.chainedFuncSpec();
+            //System.out.println(parseTree.toStringTree(parser));
+            return new MetagenerDSLParserResult<FuncCallDef>(modelBuilder.getFuncCallDef(),errorHandler);
+        } catch (Exception e) {
+            logger.error("Fatal error while trying to parse Metagener defs:" + e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static MetagenerDSLParserResult<MetagenDef> fromANTLRStream(ANTLRInputStream inputstream) {
         try {
             MetagenLexer lexer = new MetagenLexer(inputstream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -42,7 +66,7 @@ public class MetagenerDSL {
             parser.addErrorListener(errorHandler);
             MetagenParser.GencontextdefContext parseTree = parser.gencontextdef();
             //System.out.println(parseTree.toStringTree(parser));
-            return new MetagenerDSLParserResult(modelBuilder.getGenContextDef(),errorHandler);
+            return new MetagenerDSLParserResult<MetagenDef>(modelBuilder.getGenContextDef(),errorHandler);
         } catch (Exception e) {
             logger.error("Fatal error while trying to parse Metagener defs:" + e.getMessage(), e);
             throw new RuntimeException(e);

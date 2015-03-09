@@ -9,20 +9,23 @@ public class MutableSamplerDef implements SamplerDef {
     private String samplerName;
     private FuncDef samplerFuncDef;
 
-    public void setEntityName(String entityName) {
+    public MutableSamplerDef setEntityName(String entityName) {
         this.entityName = entityName;
+        return this;
     }
 
-    public void setSamplerFunc(String samplerFunc) {
+    public MutableSamplerDef setSamplerFunc(String samplerFunc) {
         this.samplerFunc = samplerFunc;
+        return this;
     }
 
     public String getSamplerFunc() {
         return samplerFunc;
     }
 
-    public void setSamplerName(String samplerName) {
+    public MutableSamplerDef setSamplerName(String samplerName) {
         this.samplerName = samplerName;
+        return this;
     }
 
     public String getSamplerName() {
@@ -39,8 +42,9 @@ public class MutableSamplerDef implements SamplerDef {
     }
 
 
-    public void setSamplerFuncDef(FuncDef samplerFuncDef) {
+    public MutableSamplerDef setSamplerFuncDef(FuncDef samplerFuncDef) {
         this.samplerFuncDef = samplerFuncDef;
+        return this;
     }
 
     public FuncDef getSamplerFuncDef() {

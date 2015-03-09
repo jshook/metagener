@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 /**
  * A stream of entity samples, and ways of learning about
- * the entity structure.
+ * the definitions that created it.
  */
 public interface EntitySampler {
 

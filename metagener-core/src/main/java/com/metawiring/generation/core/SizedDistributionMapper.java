@@ -1,7 +1,6 @@
 package com.metawiring.generation.core;
 
 import com.metawiring.types.EntityDef;
-import com.sun.jmx.snmp.Enumerated;
 import org.apache.commons.math3.distribution.*;
 import org.apache.commons.math3.random.RandomGenerator;
 

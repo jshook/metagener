@@ -20,7 +20,7 @@ public enum FieldFunctionName {
     prefix(Prefix.class),
     suffix(Suffix.class),
     index(StringIndex.class),
-    select(StringSelection.class),
+    oneof(StringSelection.class),
     numbname(NumbNamer.class),
     filesample(FileLineSampler.class),
     filecycle(FileLineCycler.class),

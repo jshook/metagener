@@ -14,7 +14,7 @@ public class Metagener {
 
     public static GenContext fromFile(String metagenerConfig) {
         logger.info("loading from " + metagenerConfig);
-        MetagenerDSLParserResult metagenerDSLParserResult = MetagenerDSL.fromFile(metagenerConfig);
+        MetagenerDSLParserResult<MetagenDef> metagenerDSLParserResult = MetagenerDSL.fromFile(metagenerConfig);
         if (metagenerDSLParserResult.hasErrors()) {
             throw new RuntimeException(metagenerDSLParserResult.getErrorSummary());
         }
@@ -24,7 +24,7 @@ public class Metagener {
 
     public static GenContext fromString(String metagenerConfigData) {
         logger.info("loading from data, length:" + metagenerConfigData.length());
-        MetagenerDSLParserResult metagenerDSLParserResult = MetagenerDSL.fromSyntax(metagenerConfigData);
+        MetagenerDSLParserResult<MetagenDef> metagenerDSLParserResult = MetagenerDSL.fromSyntax(metagenerConfigData);
         if (metagenerDSLParserResult.hasErrors()) {
             throw new RuntimeException(metagenerDSLParserResult.getErrorSummary());
         }
