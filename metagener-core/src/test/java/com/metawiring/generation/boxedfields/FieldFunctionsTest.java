@@ -4,7 +4,7 @@ import com.metawiring.configdefs.MutableEntityDef;
 import com.metawiring.configdefs.MutableSamplerDef;
 import com.metawiring.generation.longfuncs.Identity;
 import com.metawiring.generation.longfuncs.IntModulo;
-import com.metawiring.generation.longfuncs.LongLongDiagnostic;
+import com.metawiring.generation.longfuncs.LongLongUnaryDiagnostic;
 import com.metawiring.generation.longfuncs.Modulo;
 import com.metawiring.generation.fieldgenfuncs.*;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
@@ -12,6 +12,8 @@ import com.metawiring.generation.fieldgenericfuncs.StringStringDiagnostic;
 import com.metawiring.generation.fieldgenericfuncs.Suffix;
 import com.metawiring.types.functiontypes.EntityDefAware;
 import com.metawiring.types.functiontypes.SamplerDefAware;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,13 +53,15 @@ public class FieldFunctionsTest {
     @Test
     public void testDateTimeField() {
         DateTimeField dtf = new DateTimeField("YYYY-MM-dd-HH-mm-ss.mmm");
-        String result = dtf.apply(1234512345l);
-        assertThat(result,is("1970-01-15-00-55-12.055"));
+        long instantAt = new DateTime(2015,11,5,2,6,7, DateTimeZone.UTC).getMillis();
+        String result = dtf.apply(instantAt);
+        // Haven't clearly identified the millisecond offset yet
+        assertThat(result,is("2015-11-05-02-06-07.006"));
     }
 
     @Test
     public void testLongLongDiagnostic() {
-        LongLongDiagnostic lld = new LongLongDiagnostic("3");
+        LongLongUnaryDiagnostic lld = new LongLongUnaryDiagnostic("3");
         applyEntityDef("lldiag",234l,lld);
         applySamplerDef("samplerName","entityName","binomial",lld);
         Long result102=lld.applyAsLong(102l);
@@ -91,9 +95,9 @@ public class FieldFunctionsTest {
     @Test
     public void testModulo() {
         Modulo modulo = new Modulo("3");
-        Long modulo3by3 = modulo.apply(3l);
+        Long modulo3by3 = modulo.applyAsLong(3l);
         assertThat(modulo3by3,is(0l));
-        Long modulo3by5 = modulo.apply(5l);
+        Long modulo3by5 = modulo.applyAsLong(5l);
         assertThat(modulo3by5,is(2l));
     }
 

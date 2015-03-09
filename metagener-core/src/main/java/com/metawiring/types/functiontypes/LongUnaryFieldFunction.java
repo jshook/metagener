@@ -7,13 +7,13 @@ import java.util.function.LongUnaryOperator;
  * This is an explicit type to work around the problem with boxing and
  * inconsistent treatment of compose(...) and andThen(...) in J8
  */
-public interface LongFieldFunction extends LongUnaryOperator {
+public interface LongUnaryFieldFunction extends LongUnaryOperator {
 
-    default LongFieldFunction compose(LongFieldFunction inner) {
+    default LongUnaryFieldFunction compose(LongUnaryFieldFunction inner) {
         return (long input) -> applyAsLong(inner.applyAsLong(input));
     }
 
-    default LongFieldFunction andThen(LongFieldFunction outer) {
+    default LongUnaryFieldFunction andThen(LongUnaryFieldFunction outer) {
         return (long input) -> outer.applyAsLong(applyAsLong(input));
     }
 

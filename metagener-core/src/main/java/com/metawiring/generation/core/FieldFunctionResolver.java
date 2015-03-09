@@ -1,13 +1,10 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.configdefs.FormatConstants;
 import com.metawiring.types.FuncCallDef;
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 
 
 public class FieldFunctionResolver {
@@ -35,10 +32,9 @@ public class FieldFunctionResolver {
 
         try {
             @SuppressWarnings("unchecked")
-            Object fieldFunction = ConstructorUtils.invokeConstructor(
-                    (Class<LongFieldFunction>) functionClass,
-                    (java.lang.Object[]) functionSpec.getFuncArgs().toArray()
-            );
+            Object[] args = (Object[]) functionSpec.getFuncArgs().toArray();
+            Class<LongUnaryFieldFunction> funcClass = (Class<LongUnaryFieldFunction>) functionClass;
+            Object fieldFunction = ConstructorUtils.invokeConstructor(funcClass,args);
             return fieldFunction;
         } catch (Exception e) {
             logger.error("Unable to instantiate class [" + functionClass + "] for function call:" + functionSpec, e);

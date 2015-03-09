@@ -1,19 +1,22 @@
 entity user pop=1000
  field user_id:int
  // free func with just a name
- func usertype testbasicfuncname;
+ func usertype <- testbasicfuncname();
  // field func with malformed params
- field firstlastname:text <- entity;template("${firstname} ${lastname}");
+ field firstlastname:text <- entity();template("${firstname} ${lastname}");
+ field joindate:timestamp <- entityid();multiply(1000);
+ field joindate:timestamp <- sampleid();multiply(1000);
+
 // A random comment here
- field username:text <-entity;sample(file=usernames.csv,dist=uniform);
- field join_date:timestamp<-entity;datetime(range=1990-1993,dist=binomial); // another random comment
- field firstname:text <- entity;sample(file=firstnames.csv,dist=uniform);
- field lastname:text <- entity;sample(file=lastnames.csv,dist=uniform);
+ field username:text <-entity();sample(file=usernames.csv,dist=uniform);
+ field join_date:timestamp<-entity();timestamp(range=1990-1993,dist=binomial); // another random comment
+ field firstname:text <- entity();sample(file=firstnames.csv,dist=uniform);
+ field lastname:text <- entity();sample(file=lastnames.csv,dist=uniform);
 
 entity message // no pop -- means Int.MAX_VALUE
- field sender_id:int <- entity;dist(binomial)
- field recip_id:int <- entity;dist(binomial)
- field sent_at:timestamp <- stream;datetime(range=1990-1993,dist=pareto);
+ field sender_id:int <- entity();dist(binomial)
+ field recip_id:int <- entity();dist(binomial)
+ field sent_at:timestamp <- stream();timestamp(range=1990-1993,dist=pareto);
 
 // sampler with name=message entity=message, function=<default>
 sampler message
@@ -22,4 +25,6 @@ sampler message-sampler:message
 //sampler with name=message-sampler, entity=message, function=dist:pareto
 sampler message-sampler:message <- dist(pareto)
 
+sampler sample_users1 : user <- dist(uniform)
+sampler sample_users2 : user <- dist(binomial)
 // stretch goal, simulate replies

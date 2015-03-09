@@ -1,15 +1,15 @@
 package com.metawiring.generation.longfuncs;
 
 import com.metawiring.types.functiontypes.EntityDefAware;
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.SamplerDef;
 import com.metawiring.types.functiontypes.SamplerDefAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LongLongDiagnostic implements LongFieldFunction, EntityDefAware, SamplerDefAware {
-    private static final Logger logger = LoggerFactory.getLogger(LongLongDiagnostic.class);
+public class LongLongUnaryDiagnostic implements LongUnaryFieldFunction, EntityDefAware, SamplerDefAware {
+    private static final Logger logger = LoggerFactory.getLogger(LongLongUnaryDiagnostic.class);
 
     private EntityDef entityDef;
     private SamplerDef samplerDef;
@@ -17,11 +17,11 @@ public class LongLongDiagnostic implements LongFieldFunction, EntityDefAware, Sa
 
     private long triggerModulo;
 
-    public LongLongDiagnostic(long triggerModulo) {
+    public LongLongUnaryDiagnostic(long triggerModulo) {
         this.triggerModulo = triggerModulo;
     }
 
-    public LongLongDiagnostic(String triggerModulo) {
+    public LongLongUnaryDiagnostic(String triggerModulo) {
         this.triggerModulo = Long.valueOf(triggerModulo);
     }
 

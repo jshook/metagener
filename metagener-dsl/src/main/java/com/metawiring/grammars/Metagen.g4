@@ -8,47 +8,58 @@ entitydef : 'entity' entityName
     (fielddef | funcdef)*;
 entityName : id;
 popSize : NUMBER;
-fielddef: 'field' fieldName COLON fieldType (STORELEFT composedFuncSpec)? ;
+fielddef: 'field' fieldName COLON fieldType (STORELEFT chainedFuncSpec)? ;
 fieldType : id;
 fieldName : id ;
 
-funcdef: 'func' funcName composedFuncSpec;
+funcdef: 'func' funcName STORELEFT chainedFuncSpec;
 funcName : id;
 
 samplerdef : 'sampler' samplerName (':' samplerEntity)? (STORELEFT samplerFunc)? ;
 samplerEntity: id;
 samplerName : id;
-samplerFunc : composedFuncSpec ;
+samplerFunc : chainedFuncSpec ;
 
-composedFuncSpec : composedFuncPart (';' composedFuncPart)* ';'? ;
-composedFuncPart :  funcPartName ( '(' funcArgs ')' )? | funcPartName '(' ')' | funcPartName ;
-funcArgs : assignment (',' assignment)* | value (',' value)* ;
-assignment: parameter '=' value ;
-funcPartName : id ;
+chainedFuncSpec : chainedFuncPart (';' chainedFuncPart)* ';'? ;
+chainedFuncPart :  assignment? functionCall ;
+functionCall : functionName LPAREN funcArgs RPAREN ;
+assignment : assignTo EQUALS ;
+assignTo : id;
+funcArgs : (funcArg (',' funcArg)* )* ;
+funcArg : assignment? value ;
+functionName : id ;
 parameter : id ;
-value : stringTemplate | numericValue | nonCommaOrParen | stringValue;
+expression: functionCall | value ;
+value : stringValue | stringTemplate | numericValue | nonCommaOrParen ;
 numericValue : NUMBER ;
-stringValue : SQUOTE ~SQUOTE*? SQUOTE ;
+stringValue : SQUOTESTRING ;
 //stringTemplate : DOUBLE_QUOTED ;
-stringTemplate : '"' templateSection*? '"' ;
-templateSection : templatePreamble templateVarname ;
-templatePreamble : ~('"'|'${')*? ;
-templateVarname : '' | '${' id '}';
+stringTemplate : '"' templateSection+ '"' ;
+templateSection : templateVarname | templatePreamble templateVarname | templatePreamble ;
+templatePreamble : ~('${')+ ;
+templateVarname : LSUBST id RSUBST;
 nonComma : ((~(','))|('.'|'-'|'/'))+? ;
-nonCommaOrParen : ((~(','|')'))|('.'|'-'|'/'))+? ;
+nonCommaOrParen : (~(','|')'))+;
+//nonCommaOrParen : ((~(','|')'))|('.'|'-'|'/'|'%'))+ ;
 //nonComma : .+? ;
 id : 'entity' | 'sampler' | ID;
 
-//DOUBLE_QUOTED: '"' ~'"'*? '"';
 LINE_COMMENT: '//' (~'\n')* NEWLINE -> skip ;
 COMMENT: '/*' .*? '*/' -> skip;
 WS : [ \t\n]+ -> skip ;
 NEWLINE: '\r' ? '\n';
-ID:  [a-zA-Z] [0-9a-zA-Z_-]* ;
+ID: IDPART ('.' IDPART)* ;
+IDPART:  [a-zA-Z] [0-9a-zA-Z_-]* ;
 NUMBER: [0-9]+ ( '.' [0-9]+ )? ;
 STORELEFT: '<-';
 COLON: ':';
 SQUOTE: '\'';
+SQUOTESTRING: '\'' .*? '\'' ;
 DQUOTE: '"';
+EQUALS: '=';
+LSUBST: '${';
+RSUBST: '}';
+LPAREN: '(';
+RPAREN: ')';
 
 

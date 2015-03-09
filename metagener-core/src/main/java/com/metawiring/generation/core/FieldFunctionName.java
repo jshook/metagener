@@ -1,5 +1,7 @@
 package com.metawiring.generation.core;
 
+import com.metawiring.generation.fieldgenericfuncs.LeftString;
+import com.metawiring.generation.fieldgenericfuncs.RightString;
 import com.metawiring.generation.longfuncs.*;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.generation.fieldgenfuncs.*;
@@ -12,18 +14,36 @@ public enum FieldFunctionName {
     murmur3(Murmur3Hash.class),
     modentity(EntityModulo.class),
     mod(Modulo.class),
+    modulopop(ModuloPop.class),
 
+
+    prefix(Prefix.class),
+    suffix(Suffix.class),
+    index(StringIndex.class),
+    select(StringSelection.class),
+    numbname(NumbNamer.class),
     filesample(FileLineSampler.class),
     filecycle(FileLineCycler.class),
     numbername(NamedNumberString.class),
+    imodulo(LongModulo.class),
     intmod(IntModulo.class),
     multiply(Multiply.class),
-    dist(PopulationSampler.class),
-    prefix(Prefix.class),
-    suffix(Suffix.class),
+    pdist(PopulationSampler.class), // Population/long distribution sampling
+    cdist(ContinuousDistributionSampler.class), // Continuous/Real distribution sampling
+    cclamp(ContinuousRangeClamp.class),
+    idist(DiscreteDistributionSampler.class), // Discrete/Int distribution sampling
+    iclamp(DiscreteRangeClamp.class),
     tostring(BoxedString.class),
     dateshift(DateShift.class),
-    daterange(DateRange.class);
+    daterange(DateRange.class),
+    rangedrandom(RangedRandom.class),
+    scaleddouble(ToScaledDouble.class),
+
+    mindouble(MinDouble.class),
+    maxdouble(MaxDouble.class),
+
+    leftstring(LeftString.class),
+    rightstring(RightString.class);
 
 
     private final Class<?> implClass;

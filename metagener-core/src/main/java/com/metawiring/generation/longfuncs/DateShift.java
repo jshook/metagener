@@ -14,7 +14,7 @@
 */
 package com.metawiring.generation.longfuncs;
 
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -28,7 +28,7 @@ import java.util.List;
  * starting from yyyyMMdd'T'HHmmssZ, all the way to just yyyy. (This is only parsed at
  * setup time) All timezones are UTC
  */
-public class DateShift implements LongFieldFunction {
+public class DateShift implements LongUnaryFieldFunction {
 
     private long min;
     private String minSpec;

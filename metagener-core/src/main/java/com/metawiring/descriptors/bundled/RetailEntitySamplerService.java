@@ -1,388 +1,44 @@
+/*
+*   Copyright 2015 jshook
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*       http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
+*/
 package com.metawiring.descriptors.bundled;
 
-import com.metawiring.defbuilder.DefBuilderTypes;
-import com.metawiring.defbuilder.GenContextBuilder;
 import com.metawiring.types.EntitySampler;
 import com.metawiring.types.EntitySamplerService;
 import com.metawiring.types.SamplerDef;
 import com.metawiring.wiring.GenContext;
+import com.metawiring.wiring.Metagener;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * An assortment of retail entities and same-named samplers.
- */
 public class RetailEntitySamplerService implements EntitySamplerService {
 
-    // Many of the internal service methods are delegated to the context
-    GenContext context;
+    private GenContext retailContext = Metagener.fromFile("prebundled/retail.metagener");
 
-    public RetailEntitySamplerService() {
-     DefBuilderTypes builder = GenContextBuilder.builder();
-     builder.entity("brand").population(100000)
-                .field("brand").type("text").function("tostring;prefix:BrandNo ");
-
-     builder.sampler("brand", "brand binomial").entityFunction("murmur3;dist:binomial");
-     builder.sampler("brand", "brand").entityFunction("murmur3;dist:uniform");
-
-//        // not graceful syntax yet, but the idea...
-//        defBuilder.sampleEntity("retail.brand manifest").samplerFunction("manifest");
-
-     builder.entity("product").population(10000)
-                .field("product").type("text").function("BoxedString;prefix:product ")
-                .field("product_variant").type("text").function("BoxedString;prefix: variant ");
-     builder.sampler("product").entityFunction("murmur3;dist:uniform");
-
-     builder.entity("retail.address").population(1000000)
-             .field("street_number").type("int").function("mod:100000")
-             .field("street_name").type("text").function("numbername;suffix: street")
-             .field("street_unit").type("text").function("mod:10000;prefix:unit ")
-             .field("city").type("text").function("db:cities");
-
-     builder.sampler("retail.address").entityFunction("murmur3");
-
-//        defBuilder.entity("address").population(10000)
-//                .field("street_number").type("int").function("hash,")
-//                .field("street_name").type("text").function("db:auto")
-//                .field("street_unit").type("text").function("db:auto")
-//                .field("city").type("text").function("db:cities")
-//                .field("state").type("text").function("db:states")
-//                .field("country").type("text").function("db:countries")
-//                .field("zip_code").type("int").function("db:zipcodes")
-//                .field("phone_number").type("int").function("range:100000000-999999999");
-//        defBuilder.sampleEntity("address").samplerFunction("uniform").as("address");
-//
-        context = new GenContext(builder.build());
+    @Override
+    public Map<String, SamplerDef> getSampleStreamMap() {
+        return retailContext.getSampleStreamMap();
     }
 
     @Override
-    public Map<String, EntitySampler> getSampleStreamMap() {
-        return Collections.unmodifiableMap(context.getEntitySamplerMap());
-    }
-
-    @Override
-    public EntitySampler getSampleStream(String name) {
-        return context.getEntitySampleStream(name);
+    public EntitySampler getEntitySampleStream(String name) {
+        return retailContext.getEntitySampleStream(name);
     }
 
     @Override
     public List<SamplerDef> getDefinedEntitySamplers() {
-        return context.getDefinedEntitySamplers();
+        return retailContext.getDefinedEntitySamplers();
     }
-
-    /**
-     CREATE TABLE IF NOT EXISTS retail.employees (
-     employee_id int,
-     input_time timestamp,
-
-     first_name text,
-     last_name text,
-     middle_initial text,
-     drivers_license text,
-
-     home_address address,
-     emergency_contact address,
-
-     country_id int,
-     state_id int,
-     region_id int,
-     store_id int,
-
-     PRIMARY KEY (
-     employee_id,
-     input_time
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.products (
-     product_id uuid,
-
-     brand text,
-     product text,
-     product_variant text,
-     cost decimal,
-     chain_price decimal,
-     msrp decimal,
-
-     PRIMARY KEY (
-     product_id
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.shelves (
-     store_id int,
-     product_id uuid,
-
-     brand text,
-     product text,
-     product_variant text,
-     cost decimal,
-     chain_price decimal,
-     msrp decimal,
-     price decimal,
-
-     unit_space int,
-     floor_stock int,
-     back_stock int,
-     ordered_stock int,
-
-     PRIMARY KEY (
-     store_id,
-     product_id
-     )
-     );
-
-     /**
-     *      CREATE TABLE IF NOT EXISTS retail.stores (
-     country_id int,
-     state_id int,
-     region_id int,
-     store_id int,
-
-     tax_rate decimal,
-
-     store_address address,
-     manager_id int,
-
-     PRIMARY KEY (
-     country_id,
-     state_id,
-     region_id,
-     store_id
-     )
-     );
-
-     */
-
-
-
-    /**
-
-     CREATE TABLE IF NOT EXISTS retail.brand (
-     brand text,
-     PRIMARY KEY brand
-     );
-
-     CREATE TABLE IF NOT EXISTS retail.product (
-     product text,
-     product_variant text,
-     PRIMARY KEY (product, product_variant)
-     );
-
-
-     CREATE TYPE payment (
-     amount decimal,
-
-     cash boolean,
-
-     card_type text,
-     name text,
-     card_hash text,
-     expiration_hash text,
-     zip_code int
-     );
-
-     CREATE TYPE address (
-     street_number int,
-     street_name text,
-     street_unit text,
-
-     city text,
-     state text,
-     country text,
-     zip_code int,
-     phone_number int
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.stores (
-     country_id int,
-     state_id int,
-     region_id int,
-     store_id int,
-
-     tax_rate decimal,
-
-     store_address address,
-     manager_id int,
-
-     PRIMARY KEY (
-     country_id,
-     state_id,
-     region_id,
-     store_id
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.employees (
-     employee_id int,
-     input_time timestamp,
-
-     first_name text,
-     last_name text,
-     middle_initial text,
-     drivers_license text,
-
-     home_address address,
-     emergency_contact address,
-
-     country_id int,
-     state_id int,
-     region_id int,
-     store_id int,
-
-     PRIMARY KEY (
-     employee_id,
-     input_time
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.products (
-     product_id uuid,
-
-     brand text,
-     product text,
-     product_variant text,
-     cost decimal,
-     chain_price decimal,
-     msrp decimal,
-
-     PRIMARY KEY (
-     product_id
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.shelves (
-     store_id int,
-     product_id uuid,
-
-     brand text,
-     product text,
-     product_variant text,
-     cost decimal,
-     chain_price decimal,
-     msrp decimal,
-     price decimal,
-
-     unit_space int,
-     floor_stock int,
-     back_stock int,
-     ordered_stock int,
-
-     PRIMARY KEY (
-     store_id,
-     product_id
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.quarterly (
-     store_id int,
-     fiscal_year int,
-     quarter int,
-     product_id uuid,
-     scan_time timestamp,
-
-     unit_space int,
-     floor_stock int,
-     back_stock int,
-     ordered_stock int,
-     damaged int,
-     shrinkage int,
-
-     PRIMARY KEY (
-     (store_id, fiscal_year, quarter),
-     product_id,
-     scan_time
-     )
-     );
-
-
-
-     CREATE TABLE IF NOT EXISTS retail.register (
-     store_id int,
-     register_id int,
-     receipt_id timeuuid,
-     scan_time timestamp,
-
-     quantity decimal,
-
-     product_id uuid,
-     brand text,
-     product text,
-     product_variant text,
-     price decimal,
-     msrp decimal,
-     savings decimal,
-
-     PRIMARY KEY (
-     store_id,
-     register_id,
-     receipt_id,
-     scan_time
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.receipt_close (
-     receipt_id timeuuid,
-
-     country_id int,
-     state_id int,
-     region_id int,
-     store_id int,
-     employee_id int,
-
-     close_time timestamp,
-     subtotal decimal,
-     tax_rate decimal,
-     tax decimal,
-     total decimal,
-
-     rewards_id int,
-
-     payments set<payment>,
-
-     PRIMARY KEY (
-     receipt_id
-     )
-     );
-
-
-
-     CREATE TABLE IF NOT EXISTS retail.personal_history (
-     rewards_id int,
-     receipt_id timeuuid,
-
-     PRIMARY KEY (
-     receipt_id,
-     receipt_id
-     )
-     );
-
-
-     CREATE TABLE IF NOT EXISTS retail.rewards_program (
-     rewards_id int,
-
-     first_name text,
-     last_name text,
-     middle_initial text,
-
-     home_address address,
-
-     PRIMARY KEY (
-     rewards_id
-     )
-     );
-
-
-     */
-
 }

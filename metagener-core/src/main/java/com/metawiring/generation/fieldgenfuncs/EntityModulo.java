@@ -1,13 +1,13 @@
 package com.metawiring.generation.fieldgenfuncs;
 
 import com.metawiring.types.functiontypes.EntityDefAware;
-import com.metawiring.types.functiontypes.LongFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import com.metawiring.types.EntityDef;
 
 /**
  * Remap the input long to an entity id within the population.
  */
-public class EntityModulo implements LongFieldFunction, EntityDefAware {
+public class EntityModulo implements LongUnaryFieldFunction, EntityDefAware {
 
     private long moduloBy;
 

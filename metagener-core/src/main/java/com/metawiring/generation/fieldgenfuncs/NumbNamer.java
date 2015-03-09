@@ -42,11 +42,18 @@ public class NumbNamer implements GenericFieldFunction<Long, String> {
     }
 
 
-    private String[] stack = new String[10];
-    private StringBuilder numbName= new StringBuilder();
+    private ThreadLocal<StringBuilder> tlsb = new ThreadLocal<StringBuilder>() {
+        @Override
+        protected StringBuilder initialValue() {
+            return new StringBuilder();
+        }
+    };
 
     @Override
     public String apply(Long aLong) {
+        if (aLong==0) { return "zero"; }
+        String[] stack = new String[1+(int)Math.log10(aLong)];
+        StringBuilder numbName = tlsb.get();
         numbName.setLength(0);
         long accum= aLong;
         int pos = -1;

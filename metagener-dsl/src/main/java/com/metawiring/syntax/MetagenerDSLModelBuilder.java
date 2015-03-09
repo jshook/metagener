@@ -45,11 +45,11 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     @Override
     public void exitEntitydef(MetagenParser.EntitydefContext ctx) {
         mutableEntityDef.setName(ctx.entityName().getText());
-        if (ctx.popSize()!=null) {
+        if (ctx.popSize() != null) {
             mutableEntityDef.setPopulationSize(Long.valueOf(ctx.popSize().getText()));
         }
         mutableMetagenDef.addEntityDef(mutableEntityDef.immutable());
-        mutableEntityDef=null;
+        mutableEntityDef = null;
     }
 
     @Override
@@ -61,39 +61,47 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     public void exitFielddef(MetagenParser.FielddefContext ctx) {
         mutableFieldDef.setFieldName(ctx.fieldName().getText());
         mutableFieldDef.setFieldType(ctx.fieldType().getText());
-        if (ctx.composedFuncSpec()!=null) {
-            mutableFieldDef.setFieldFunc(ctx.composedFuncSpec().getText());
+        if (ctx.chainedFuncSpec() != null) {
+            mutableFieldDef.setFieldFunc(ctx.chainedFuncSpec().getText());
             mutableFieldDef.setFieldFuncDef(mutableFuncDef.immutable());
-            mutableFuncDef=null;
+            mutableFuncDef = null;
         }
         mutableEntityDef.addFieldDescriptor(mutableFieldDef.immutable());
-        mutableFieldDef=null;
+        mutableFieldDef = null;
     }
 
     @Override
-    public void exitComposedFuncSpec(MetagenParser.ComposedFuncSpecContext ctx) {
+    public void exitChainedFuncSpec(MetagenParser.ChainedFuncSpecContext ctx) {
         mutableFuncDef.setFuncSpec(ctx.getText());
     }
 
     @Override
-    public void enterComposedFuncSpec(MetagenParser.ComposedFuncSpecContext ctx) {
+    public void enterChainedFuncSpec(MetagenParser.ChainedFuncSpecContext ctx) {
         mutableFuncDef = new MutableFuncDef();
     }
 
     @Override
-    public void exitComposedFuncPart(MetagenParser.ComposedFuncPartContext ctx) {
+    public void exitChainedFuncPart(MetagenParser.ChainedFuncPartContext ctx) {
         mutableFuncCallDef = new MutableFuncCallDef();
-        mutableFuncCallDef.setFuncName(ctx.funcPartName().getText());
-        if (ctx.funcArgs() != null) {
-            if (ctx.funcArgs().assignment()!=null) {
-                for (MetagenParser.AssignmentContext assignmentContext : ctx.funcArgs().assignment()) {
-                    mutableFuncCallDef.getFuncArgs().add(assignmentContext.parameter().getText()+"="+assignmentContext.value().getText());
+        if (ctx.functionCall() != null) {
+            mutableFuncCallDef.setFuncName(ctx.functionCall().functionName().id().getText());
+            for (MetagenParser.FuncArgContext funcArgContext : ctx.functionCall().funcArgs().funcArg()) {
+                StringBuilder sb = new StringBuilder();
+                if (funcArgContext.assignment()!=null) {
+                    sb.append(funcArgContext.assignment().assignTo().id().getText())
+                            .append("=");
                 }
-            }
-            if (ctx.funcArgs().value()!=null) {
-                for (MetagenParser.ValueContext valueContext : ctx.funcArgs().value()) {
-                    mutableFuncCallDef.getFuncArgs().add(valueContext.getText());
+                MetagenParser.ValueContext cvalue = funcArgContext.value();
+                String valueText = funcArgContext.getText();
+
+                if (cvalue.stringValue()!=null) {
+                    String text = funcArgContext.value().stringValue().SQUOTESTRING().getText();
+                    sb.append(text.substring(1,text.length()-1));
+                } else {
+                    sb.append(cvalue.getText());
                 }
+
+                mutableFuncCallDef.getFuncArgs().add(sb.toString());
             }
         }
         mutableFuncDef.getFuncCallDefs().add(mutableFuncCallDef);
@@ -109,29 +117,29 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     @Override
     public void exitFuncdef(MetagenParser.FuncdefContext ctx) {
         mutableFuncDef.setFuncName(ctx.funcName().getText());
-        mutableFuncDef.setFuncSpec(ctx.composedFuncSpec().getText());
+        mutableFuncDef.setFuncSpec(ctx.chainedFuncSpec().getText());
         mutableEntityDef.addFuncDef(mutableFuncDef);
-        mutableFuncDef=null;
+        mutableFuncDef = null;
     }
 
     @Override
     public void enterSamplerdef(MetagenParser.SamplerdefContext ctx) {
-        mutableSamplerDef=new MutableSamplerDef();
+        mutableSamplerDef = new MutableSamplerDef();
     }
 
     @Override
     public void exitSamplerdef(MetagenParser.SamplerdefContext ctx) {
         mutableSamplerDef.setSamplerName(ctx.samplerName().getText());
-        if (ctx.samplerEntity()!=null) {
+        if (ctx.samplerEntity() != null) {
             mutableSamplerDef.setEntityName(ctx.samplerEntity().getText());
         } else {
             mutableSamplerDef.setEntityName(ctx.samplerName().getText());
         }
-        if (mutableFuncDef!=null) {
+        if (mutableFuncDef != null) {
             mutableSamplerDef.setSamplerFuncDef(mutableFuncDef);
             mutableFuncDef = null;
         }
-        if (ctx.samplerFunc()!=null) {
+        if (ctx.samplerFunc() != null) {
             mutableSamplerDef.setSamplerFunc(ctx.samplerFunc().getText());
         }
         mutableMetagenDef.addSamplerDef(mutableSamplerDef.immutable());
@@ -142,17 +150,17 @@ public class MetagenerDSLModelBuilder extends MetagenBaseListener {
     @Override
     public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);
-
         errorNodes.add(node);
     }
 
     public boolean hasErrors() {
-        return (errorNodes.size()>0);
+        return (errorNodes.size() > 0);
     }
 
     public List<ErrorNode> getErrorNodes() {
         return errorNodes;
     }
+
 
 
 }

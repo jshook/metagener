@@ -1,10 +1,7 @@
 package com.metawiring.generation.fieldgenfuncs;
 
-import com.metawiring.generation.core.HashedSamplingAdapter;
+import com.metawiring.generation.core.HashedDiscreteSamplingAdapter;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
-import org.apache.commons.math3.distribution.IntegerDistribution;
-import org.apache.commons.math3.distribution.UniformIntegerDistribution;
-import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,15 +18,15 @@ public class LoremExtractGenerator implements TypedFieldFunction<String> {
 
     private int minsize, maxsize;
 
-    HashedSamplingAdapter sizeSamplingAdapter;
-    HashedSamplingAdapter positionSamplingAdapter;
+    HashedDiscreteSamplingAdapter sizeSamplingAdapter;
+    HashedDiscreteSamplingAdapter positionSamplingAdapter;
 
     public LoremExtractGenerator(int minsize, int maxsize) {
         this.minsize = minsize;
         this.maxsize = maxsize;
         loremIpsumImage = loadLoremIpsum();
-        positionSamplingAdapter = new HashedSamplingAdapter(1, loremIpsumImage.limit() - maxsize, "uniform");
-        sizeSamplingAdapter= new HashedSamplingAdapter(minsize, maxsize, "uniform");
+        positionSamplingAdapter = new HashedDiscreteSamplingAdapter(1, loremIpsumImage.limit() - maxsize, "uniform");
+        sizeSamplingAdapter= new HashedDiscreteSamplingAdapter(minsize, maxsize, "uniform");
     }
 
     public LoremExtractGenerator(String minsize, String maxsize) {

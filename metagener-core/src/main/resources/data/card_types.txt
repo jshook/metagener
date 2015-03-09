@@ -1,0 +1,5 @@
+AMEX
+VISA
+MC
+DISC
+CASH

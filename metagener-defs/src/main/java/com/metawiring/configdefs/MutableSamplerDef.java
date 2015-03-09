@@ -46,4 +46,14 @@ public class MutableSamplerDef implements SamplerDef {
     public FuncDef getSamplerFuncDef() {
         return samplerFuncDef;
     }
+
+    @Override
+    public String toString() {
+        return "MutableSamplerDef{" +
+                "entityName='" + entityName + '\'' +
+                ", samplerFunc='" + samplerFunc + '\'' +
+                ", samplerName='" + samplerName + '\'' +
+                ", samplerFuncDef=" + samplerFuncDef +
+                '}';
+    }
 }

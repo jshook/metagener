@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.Is.is;
 import static org.testng.Assert.*;
@@ -25,8 +24,8 @@ public class RetailEntitySamplerServiceTest {
 
     @Test
     public void testGet() throws Exception {
-        PrebundledStreams pbs = new PrebundledStreamsImpl();
-        EntitySamplerService ess  = pbs.getRetailStreams();
+        PrebundledStreams pbs = new PrebundledStreams();
+        EntitySamplerService ess = pbs.getRetailStreams();
         assertNotNull(ess);
     }
 
@@ -34,26 +33,19 @@ public class RetailEntitySamplerServiceTest {
     public void testGetDefinedStreamsIsValidBeforeStreamAccess() {
         EntitySamplerService ess = new RetailEntitySamplerService();
         List<SamplerDef> des = ess.getDefinedEntitySamplers();
-        assertThat(des.size(),greaterThan(0));
+        assertThat(des.size(), greaterThan(0));
     }
 
-    @Test
-    public void testGetSampleStreamMapIsEmptyBeforeLazyInit() throws Exception {
-        EntitySamplerService ess = new RetailEntitySamplerService();
-        Map<String, EntitySampler> ssmap = ess.getSampleStreamMap();
-        assertThat(ssmap.values().size(),equalTo(0));
-    }
-
-    @Test(enabled=false)
+    @Test(enabled = false)
     public void testGetEntitySamplerReturnsWorkingSampler() {
         EntitySamplerService ess = new RetailEntitySamplerService();
         SamplerDef des = ess.getDefinedEntitySamplers().get(0);
-        EntitySampler sampleStream = ess.getSampleStream("brand");
+        EntitySampler sampleStream = ess.getEntitySampleStream("brand");
         EntitySample es;
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             es = sampleStream.getNextEntity();
             Object[] vals = es.getFieldValues();
-            assertThat(vals.length,greaterThan(0));
+            assertThat(vals.length, greaterThan(0));
             Map<String, Object> vmap;
             vmap = es.getOrderedFieldMap();
             logger.info(vmap.toString());
@@ -63,18 +55,67 @@ public class RetailEntitySamplerServiceTest {
     @Test(enabled = false)
     public void testBrandNames() {
         EntitySamplerService ess = new RetailEntitySamplerService();
-        ess.getSampleStream("brand");
+        ess.getEntitySampleStream("brand");
 
         SamplerDef des = ess.getDefinedEntitySamplers().get(0);
-        EntitySampler sampleStream = ess.getSampleStream(des.getSamplerName());
+        EntitySampler sampleStream = ess.getEntitySampleStream(des.getSamplerName());
         EntitySample es = sampleStream.getNextEntity();
         Object[] vals = es.getFieldValues();
-        assertThat(vals.length,greaterThan(0));
+        assertThat(vals.length, greaterThan(0));
         Map<String, Object> vmap = es.getOrderedFieldMap();
         logger.info(vmap.toString());
     }
 
 
+    @Test
+    public void testEntitySamplersAreValid() {
+        EntitySamplerService retail = new RetailEntitySamplerService();
+        retail.getEntitySampleStream("retail.employees");
+        retail.getEntitySampleStream("retail.stores");
+        retail.getEntitySampleStream("retail.item_scans");
+    }
 
+    @Test
+    public void verifyValuesForEmployees() {
+        EntitySamplerService retail = new RetailEntitySamplerService();
+        EntitySampler employees = retail.getEntitySampleStream("retail.employees");
+        EntitySample nextEntity;
+        for (int i = 0; i < 10; i++) {
+            nextEntity = employees.getNextEntity();
+            System.out.println(nextEntity);
+        }
+    }
 
+    @Test
+    public void verifyValuesForStores() throws Exception {
+        EntitySamplerService retail = new RetailEntitySamplerService();
+        EntitySampler stores = retail.getEntitySampleStream("retail.stores");
+        EntitySample nextEntity;
+        for (int i = 0; i < 10; i++) {
+            nextEntity = stores.getNextEntity();
+            System.out.println(nextEntity);
+        }
+    }
+
+    @Test
+    public void verifyValuesForItemScans() throws Exception {
+        EntitySamplerService retail = new RetailEntitySamplerService();
+        EntitySampler item_scans = retail.getEntitySampleStream("retail.item_scans");
+        EntitySample nextEntity;
+        for (int i = 0; i < 10; i++) {
+            nextEntity = item_scans.getNextEntity();
+            System.out.println(nextEntity);
+        }
+    }
+
+    @Test
+    public void verifyValuesForPayments() throws Exception {
+        EntitySamplerService retail = new RetailEntitySamplerService();
+        EntitySampler payments = retail.getEntitySampleStream("retail.payments");
+        EntitySample nextEntity;
+        for (int i = 0; i < 10; i++) {
+            nextEntity = payments.getNextEntity();
+            System.out.println(nextEntity);
+        }
+    }
 }
