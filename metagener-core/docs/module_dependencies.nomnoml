@@ -2,7 +2,9 @@
 [<package> metagener-dsl]
 [<package> metagener-defs]
 [<package> metagener-webapi]
+[<package> metagener-cli]
 
+[metagener-cli] --> [metagener-core]
 [metagener-webapi] --> [metagener-core]
 [metagener-core] --> [metagener-dsl]
 [metagener-core] --> [metagener-defs]

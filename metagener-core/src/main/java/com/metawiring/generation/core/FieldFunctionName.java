@@ -14,7 +14,7 @@ public enum FieldFunctionName {
     murmur3(Murmur3Hash.class),
     modentity(EntityModulo.class),
     mod(Modulo.class),
-    modulopop(ModuloPop.class),
+    pmodulo(ModuloPop.class),
 
 
     prefix(Prefix.class),
@@ -31,7 +31,7 @@ public enum FieldFunctionName {
     pdist(PopulationSampler.class), // Population/long distribution sampling
     cdist(ContinuousDistributionSampler.class), // Continuous/Real distribution sampling
     cclamp(ContinuousRangeClamp.class),
-    idist(DiscreteDistributionSampler.class), // Discrete/Int distribution sampling
+    ddist(DiscreteDistributionSampler.class), // Discrete/Int distribution sampling
     iclamp(DiscreteRangeClamp.class),
     tostring(BoxedString.class),
     dateshift(DateShift.class),

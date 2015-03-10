@@ -1,0 +1,22 @@
+[sampler user_samples] -> [entity user]
+[entity user] -> [field username]
+[entity user] -> [field eventtime]
+
+[sampler user_samples|
+ func:
+]
+
+[entity user|
+ population: 1000
+]
+
+
+[field username|
+ type: text;
+ func: oneof('Abby,Billy,Carrie,Don')
+]
+
+[field eventtime|
+ type: timestamp;
+ func:
+]
