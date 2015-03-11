@@ -1,7 +1,11 @@
 package com.metawiring.generation.longfuncs;
 
+import com.metawiring.annotations.Input;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.GenericFieldFunction;
 
+@Input({Double.class})
+@Output({Double.class})
 public class ContinuousRangeClamp implements GenericFieldFunction<Double,Double> {
     private double minValue;
     private double maxValue;

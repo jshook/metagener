@@ -1,9 +1,11 @@
 package com.metawiring.generation.fieldgenericfuncs;
 
-import com.metawiring.types.FieldFunctionSignature;
+import com.metawiring.annotations.Input;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.GenericFieldFunction;
 
-@FieldFunctionSignature(input=String.class,output=String.class)
+@Input({String.class})
+@Output({String.class})
 public class Suffix implements GenericFieldFunction<String,String> {
 
     private String suffix;

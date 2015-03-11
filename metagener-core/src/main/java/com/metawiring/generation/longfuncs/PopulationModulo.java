@@ -7,7 +7,7 @@ import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 /**
  * Simple modulo by a number.
  */
-public class ModuloPop implements LongUnaryFieldFunction, EntityDefAware {
+public class PopulationModulo implements LongUnaryFieldFunction, EntityDefAware {
 
     private long populationSize;
 

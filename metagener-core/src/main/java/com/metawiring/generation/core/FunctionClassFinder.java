@@ -1,6 +1,6 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.generation.longfuncs.Identity;
+import com.metawiring.generation.longfuncs.LoggedIdentity;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
 import com.metawiring.generation.fieldgenfuncs.EntityModulo;
 import com.metawiring.types.functiontypes.GenericFieldFunction;
@@ -15,7 +15,7 @@ public class FunctionClassFinder {
 
 
     public static Package[] packages = new Package[] {
-            Identity.class.getPackage(),
+            LoggedIdentity.class.getPackage(),
             BoxedInt.class.getPackage(),
             Prefix.class.getPackage(),
             EntityModulo.class.getPackage()

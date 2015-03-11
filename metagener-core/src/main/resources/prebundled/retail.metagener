@@ -2,14 +2,14 @@ sampler retail.item_scans <- murmur3();
 entity retail.item_scans pop=1000000000 // define a data type of item_scan, with 10E9 unique samples
  //field scantime : timestamp <- sampleid(); multiply(1000); dateshift(2015);
  field scan_duration_seconds:double <- cdist(pareto,0.2,5)
- field scan_qty:int                 <- idist(geometric,0.8); iclamp(1,10);
+ field scan_qty:int                 <- ddist(geometric,0.8); iclamp(1,10);
  field product_id:text              <- filesample(product_ids.txt,uniform);
  //field item_discount:decimal      <- cdist(levy,0.0,0.5); cclamp(0.0,10.0);
  field item_discount:decimal        <- murmur3(); cdist(pareto,0.5,10); cclamp(0.0,10.0);
 
 sampler retail.stores <- murmur3();
 entity retail.stores pop=30000
-//  field store_id : int        <- sampleid(); modulopop();
+//  field store_id : int        <- sampleid(); pmodulo();
   field store_id : int          <- pdist(uniform);
   field tax_rate : decimal      <- scaleddouble(0.0435,0.0945);
   field express_registers : int <- rangedrandom(2,6)
@@ -25,7 +25,7 @@ entity retail.stores pop=30000
 
 sampler retail.employees <- murmur3();
 entity retail.employees pop=600000
-  field employee_id: int   <- sampleid(); modulopop();
+  field employee_id: int   <- sampleid(); pmodulo();
   field store_id:int       <- rangedrandom(1,30000)
   field first_name:text    <- filesample(first_names.txt,uniform);
   field last_name:text     <- filesample(last_names.txt,uniform);

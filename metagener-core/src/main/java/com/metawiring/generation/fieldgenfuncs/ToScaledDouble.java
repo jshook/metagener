@@ -14,10 +14,13 @@
 */
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Input;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
 import java.security.InvalidParameterException;
 
+@Output({Double.class})
 public class ToScaledDouble implements TypedFieldFunction<Double> {
 
     private final int fractionalDigits;

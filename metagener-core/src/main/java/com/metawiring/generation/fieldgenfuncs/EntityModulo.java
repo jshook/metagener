@@ -1,5 +1,6 @@
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.EntityDefAware;
 import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import com.metawiring.types.EntityDef;

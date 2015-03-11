@@ -1,5 +1,6 @@
 package com.metawiring.generation.longfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.generation.core.HashedContinuousSamplingAdapter;
 import com.metawiring.types.EntityDef;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
@@ -10,6 +11,7 @@ import java.security.InvalidParameterException;
 /**
  * This is *NOT* threadsafe. It will be reworked to provide a more functional integration with apache commons math, if possible.
  */
+@Output({Double.class})
 public class ContinuousDistributionSampler implements TypedFieldFunction<Double> {
 
     private EntityDef entityDef;

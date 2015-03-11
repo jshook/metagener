@@ -2,14 +2,11 @@ package com.metawiring.generation.core;
 
 import com.metawiring.generation.fieldgenboxes.BoxedLong;
 import com.metawiring.generation.fieldgenboxes.BoxedString;
-import com.metawiring.generation.longfuncs.Identity;
 import com.metawiring.types.functiontypes.*;
 import com.metawiring.types.*;
 import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
 
 /**
  * Parses function specs, composes functions.
@@ -106,6 +103,7 @@ public class FieldFunctionCompositor {
         if (composedTypedFunc == null) {
             composedTypedFunc = (composedLongFunc == null) ? new BoxedString() : composedLongFunc.andThen(new BoxedString());
         }
+
 
         return composedTypedFunc;
     }

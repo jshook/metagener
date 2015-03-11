@@ -1,9 +1,9 @@
 package com.metawiring.generation.fieldgenboxes;
 
-import com.metawiring.types.FieldFunctionSignature;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
-@FieldFunctionSignature(input=Long.class,output=Double.class)
+@Output({Double.class})
 public class BoxedDouble implements TypedFieldFunction<Double> {
 
     @Override

@@ -1,14 +1,13 @@
 package com.metawiring.generation.fieldgenboxes;
 
-import com.metawiring.types.FieldFunctionSignature;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
-
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
-@FieldFunctionSignature(input=Long.class,output=InetAddress.class)
+@Output({InetAddress.class})
 public class BoxedInetAddress implements TypedFieldFunction<InetAddress> {
 
     ByteBuffer bb = ByteBuffer.allocate(Integer.BYTES);
