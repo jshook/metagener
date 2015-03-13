@@ -6,7 +6,7 @@ import com.metawiring.types.functiontypes.TypedFieldFunction;
 import java.math.BigInteger;
 
 @Output({Integer.class})
-public class BoxedInt implements TypedFieldFunction<Integer> {
+public class BoxedInteger implements TypedFieldFunction<Integer> {
 
     @Override
     public Integer apply(long value) {

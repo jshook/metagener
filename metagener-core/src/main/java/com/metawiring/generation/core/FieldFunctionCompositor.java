@@ -27,10 +27,11 @@ public class FieldFunctionCompositor {
      *
      * @param funcDef String specifier of function names and arguments, in the format "func1;func2:arg1,..."
      * @param es      The entity sampler which this composed function is associated to
+     * @param fieldType
      * @return the composed function
      */
     @SuppressWarnings({"ConstantConditions", "unchecked"})
-    public static TypedFieldFunction<?> composeFieldFunction(FuncDef funcDef, EntitySampler es) {
+    public static TypedFieldFunction<?> composeFieldFunction(FuncDef funcDef, EntitySampler es, FieldType requiredResultType) {
         LongUnaryFieldFunction composedLongFunc = null;
         TypedFieldFunction<?> composedTypedFunc = null;
 
@@ -101,7 +102,15 @@ public class FieldFunctionCompositor {
         }
 
         if (composedTypedFunc == null) {
-            composedTypedFunc = (composedLongFunc == null) ? new BoxedString() : composedLongFunc.andThen(new BoxedString());
+            TypedFieldFunction typedFieldFunction = null;
+            try {
+                typedFieldFunction = DefaultFunctionType.typeOf(requiredResultType.name())
+                        .getDefaultTypedFieldFunctionClass().newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            composedTypedFunc = (composedLongFunc == null) ? typedFieldFunction : composedLongFunc.andThen(typedFieldFunction);
         }
 
 

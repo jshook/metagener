@@ -1,4 +1,5 @@
 ## Metagener Types
+___How we hack around Java 8 Oddities___
 
 In order for metagener to operate efficiently, primitive types are used when possible. Metagener also needs to support POJOs of any kind as output, so generics are used to bridge the gap.
 
@@ -7,6 +8,8 @@ Fundamentally, there are two key data types required for the heavy lifting: A pr
 * double, for the primitive continuous type
 
 The practicality of this becomes more obvious when you realize that most hashing methods operate directly with the long type, and that most of the identity semantics are handled best with this type as well. The part of a composed field generator function that converts to the native field type is best left to the last (outer-most) functions.
+
+For the non-scalar generator function results, everything else is an object type. You might need to yield a long, or a double, but you might also need to yield a DateTime. Because of the odd way in which the Java 8 APIs deal with functional signatures, we have to make a compromise to be able to dynamically compose functions which have both primitive inputs and have non-primitive outputs.
 
 This does impose a particular compositional model on the whole composed function. Simply put, the final composed function is of type LongFunction&lt;R&gt;, where R is the final result type. This takes, of course, a long as the input. A chained function definition which supports this is as follows:
 1. Zero or more LongUnaryOperator functions
@@ -20,11 +23,11 @@ Actually, these types are extended internally by Metagener, with additional defa
 
 In other words, the LongFunction&lt;R&gt; is the composed function type that is used as the static function signature by all of the generic internal logic.
 
-While it might seem that this particular arrangement is overly restrictive, in practice you generally won't run into composition issues, since the sensible compositions are the ones that don't violate the pattern. There are certain wiring default that will automatically fix up the chained function in order to make this easier. For example, if you create a field def which resolves to an implementation of the GenericFieldFunction&lt;Float,String&gt;, then an auto-boxing function will be inserted ahead of it which does the Float conversion. All basic types have a default boxing function that acts very much like Java's autoboxing in practice, although the implementation is simply aware of the patterns in which the autoboxing is needed to fixup type chaining.
+While it might seem that this particular arrangement is overly restrictive, in practice it is quite reasonable. You generally won't run into type-chain issues when composing functions, since the sensible compositions are the ones that don't violate the pattern. There are some common fix-ups that are applied by the function compositor in order to make this easier. For example, if you create a field def which resolves to an implementation of the GenericFieldFunction&lt;Float,String&gt;, then an auto-boxing function will be inserted ahead of it which does the Float conversion. All basic types have a default boxing function that acts very much like Java's autoboxing in practice, although the implementation is simply aware of the patterns in which the autoboxing is needed to fixup type chaining.
 
-When metagener composes functions together internally, some awareness is needed of the types involved. Unfortunately, type erasure isn't helpful here, and the reflection API is rather cumbersome, yielding autoboxed signatures where primitive signatures would be needed. There simply is no useful bridge between primitive types and the auto-boxed types used in reflection. This is unfortunate, since it makes combining late-binding strategies, lambdas, and primitives an ugly affair.
+When metagener composes functions together internally, some awareness is needed of the types involved. Unfortunately, type erasure isn't helpful here, and the reflection API is rather cumbersome, yielding autoboxed signatures where primitive signatures would be needed. You can use isPrimitive() to detect non-boxed signatures, but the lack of language and type system consistency causes this to quickly devolve into something resembling a hand-coded neural network. This is unfortunate, since it makes combining late-binding strategies, lambdas, and primitives an ugly affair. Yet, we still need to make sense of valid types and combinations so that we can provide meaningful and corrective feedback to the user when they need it.
 
-At runtime, the input and output types for a function are needed in order to ensure valid composition and type chaining. Knowledge of these types allows the composed function to be type safe. It also makes possible the fix-ups like the one described above. Due to the limitations of the reflection API and primitive types mentioned above, the types are detected at runtime using the following strategy:
+So, we need to figure out the input and output types for a function. Due to the limitations of the reflection API and primitive types mentioned above, the types are detected at runtime using the following strategy:
 1. For LongUnaryOperator, type types are assumed to be input:long, output:long
 2. For TypedFieldFunction, the input is assumed to be long, the outputs are read from the @Output annotation, which is required for TypedFieldFunctions. An error is thrown if this annotation is missing.
 3. For GenericFieldFunction, the input and output are read from the @Input and @Output annotations. An error is thrown if either are missing when they are needed.
