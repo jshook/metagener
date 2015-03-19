@@ -1,3 +1,7 @@
+# NOTICE
+
+This documentation is a work in progress.. Also, this project is a work in progress. Do not expect it to behave as documented until there is an 1.0 release. Until then, documentation links will be broken, Documentation will be out of sync, Metagener will be incomplete, etc..
+
 # Metagener
 
 Metagener is a meta-programming library and conceptual power tool for flexible and highly-concurrent statistical data generation.  More specifically, it is a conceptual model for thinking about and composing data generator functions, a language for expressing them, and a runtime for accessing the results of these functions.
