@@ -41,15 +41,15 @@ Honestly, I don't know of another tool like it. If there are any that I've misse
 
 The best way to use Metagener will be as a native Java API. The CLI is a handy way to experiment with recipes. The RESTful service is there when you need to share a stream across systems, or when you are using a different language than Java 8.
 
-[__The Java API__] -- Using metagener as a direct Java API will be the most optimal way to get large amounts of data for a steady-state or long-running type of simulation. This allows you to consume data from it continuously at whatever rate is appropriate. If you want to use Metagener as a Maven artifact, you can easily clone and 'mvn install' locally, or you can manually install the jar from the [releases](https://github.com/jshook/metagener/releases) on github. Eventually, Metagener may be in Maven central, but this not a given.
+__The Java API__ -- Using metagener as a direct Java API will be the most optimal way to get large amounts of data for a steady-state or long-running type of simulation. This allows you to consume data from it continuously at whatever rate is appropriate. If you want to use Metagener as a Maven artifact, you can easily clone and 'mvn install' locally, or you can manually install the jar from the [releases](https://github.com/jshook/metagener/releases) on github. Eventually, Metagener may be in Maven central, but this not a given.
 
-[__Creating Generators__] -- It is helpful to have some familiarity with how metagener works in order to build custom recipes. Metagener is as much about the conceptual tools for generating data as it is the runtime and language.
+__Creating Generators__ -- It is helpful to have some familiarity with how metagener works in order to build custom recipes. Metagener is as much about the conceptual tools for generating data as it is the runtime and language.
 
-[__CLI__] -- With the command line interface, you can easily experiment with different recipes. The metagener jar is executable. You can download it directly from the the Metagener [releases](https://github.com/jshook/metagener/releases) area on github. In this form, metagener can write results to stdout, or file(s) in json or CSV format.
+__CLI__ -- With the command line interface, you can easily experiment with different recipes. The metagener jar is executable. You can download it directly from the the Metagener [releases](https://github.com/jshook/metagener/releases) area on github. In this form, metagener can write results to stdout, or file(s) in json or CSV format.
 
-[__The RESTful Service__] -- You can run metagener-webapi.jar as an executable jar. It allows you to use it as a network service for any web-based client.
+__The RESTful Service__ -- You can run metagener-webapi.jar as an executable jar. It allows you to use it as a network service for any web-based client.
 
-[__Prebundled_Configurations__] -- Metagener has some baked-in recipes which can be used to quickly start generating data, if you want to experiment. These are available regardless of which way you choose to use metagener. The CLI has options for copying out named configurations into the filesystem, so that you can modify and use them iteratively.
+__Prebundled_Configurations__ -- Metagener has some baked-in recipes which can be used to quickly start generating data, if you want to experiment. These are available regardless of which way you choose to use metagener. The CLI has options for copying out named configurations into the filesystem, so that you can modify and use them iteratively.
 
 ## License & Contributions
 
