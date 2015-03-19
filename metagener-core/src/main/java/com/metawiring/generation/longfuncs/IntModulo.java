@@ -1,13 +1,11 @@
 package com.metawiring.generation.longfuncs;
 
-import com.metawiring.types.FieldFunctionSignature;
-import com.metawiring.types.functiontypes.GenericFieldFunction;
+import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 
-@FieldFunctionSignature(input=Long.class,output = Long.class)
-public class IntModulo implements GenericFieldFunction<Long,Long> {
+public class IntModulo implements LongUnaryFieldFunction {
 
     @Override
-    public Long apply(Long aLong) {
-        return (aLong % Integer.MAX_VALUE);
-   }
+    public long applyAsLong(long operand) {
+        return operand % Integer.MAX_VALUE;
+    }
 }

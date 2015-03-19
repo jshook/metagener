@@ -1,5 +1,6 @@
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.generation.core.HashedDiscreteSamplingAdapter;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import org.apache.commons.math3.distribution.IntegerDistribution;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Output({String.class})
 public class FileLineSampler implements TypedFieldFunction<String> {
     private final static Logger logger = LoggerFactory.getLogger(FileLineSampler.class);
 

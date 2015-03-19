@@ -18,7 +18,7 @@ public class BoxedFieldFunctionsTest {
 
     @Test
     public void testBoxedBigInt() {
-        TypedFieldFunction<BigInteger> ff = new BoxedBigInt();
+        TypedFieldFunction<BigInteger> ff = new BoxedBigInteger();
         BigInteger actual= ff.apply(12345l);
         BigInteger expected = BigInteger.valueOf(12345l);
         assertThat(actual, is(expected));
@@ -80,7 +80,7 @@ public class BoxedFieldFunctionsTest {
 
     @Test
     public void testBoxedInt() {
-        TypedFieldFunction<Integer> ff = new BoxedInt();
+        TypedFieldFunction<Integer> ff = new BoxedInteger();
         Integer actual = ff.apply(12345l);
         Integer expected = Integer.valueOf("12345");
         assertThat(actual,is(expected));

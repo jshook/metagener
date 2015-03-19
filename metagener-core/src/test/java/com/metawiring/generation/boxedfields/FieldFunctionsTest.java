@@ -2,7 +2,7 @@ package com.metawiring.generation.boxedfields;
 
 import com.metawiring.configdefs.MutableEntityDef;
 import com.metawiring.configdefs.MutableSamplerDef;
-import com.metawiring.generation.longfuncs.Identity;
+import com.metawiring.generation.longfuncs.LoggedIdentity;
 import com.metawiring.generation.longfuncs.IntModulo;
 import com.metawiring.generation.longfuncs.LongLongUnaryDiagnostic;
 import com.metawiring.generation.longfuncs.Modulo;
@@ -37,8 +37,8 @@ public class FieldFunctionsTest {
 
     @Test
     public void testIdentity() {
-        Identity id = new Identity();
-        Long result = id.apply(2345l);
+        LoggedIdentity id = new LoggedIdentity();
+        Long result = id.applyAsLong(2345l);
         assertThat(result,is(2345l));
     }
 
@@ -52,7 +52,7 @@ public class FieldFunctionsTest {
 
     @Test
     public void testDateTimeField() {
-        DateTimeField dtf = new DateTimeField("YYYY-MM-dd-HH-mm-ss.mmm");
+        DateTimeString dtf = new DateTimeString("YYYY-MM-dd-HH-mm-ss.mmm");
         long instantAt = new DateTime(2015,11,5,2,6,7, DateTimeZone.UTC).getMillis();
         String result = dtf.apply(instantAt);
         // Haven't clearly identified the millisecond offset yet
@@ -103,12 +103,12 @@ public class FieldFunctionsTest {
 
     @Test
     public void testIntModulo() {
-        IntModulo io = new IntModulo();
-        Long ioCeiling=io.apply((long)Integer.MAX_VALUE);
+        IntModulo intModulo = new IntModulo();
+        Long ioCeiling=intModulo.applyAsLong((long) Integer.MAX_VALUE);
         assertThat(ioCeiling,is(0l));
-        Long overBy1 = io.apply((long)Integer.MAX_VALUE+1);
-        assertThat(overBy1,is(1l));
-        Long overBy1cycleAnd1 = io.apply((long)Integer.MAX_VALUE + (long)Integer.MAX_VALUE + 1l);
+        Long overBy1 = intModulo.applyAsLong((long) Integer.MAX_VALUE + 1);
+        assertThat(overBy1, is(1l));
+        Long overBy1cycleAnd1 = intModulo.applyAsLong((long) Integer.MAX_VALUE + (long) Integer.MAX_VALUE + 1l);
         assertThat(overBy1cycleAnd1,is(1l));
     }
 

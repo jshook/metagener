@@ -1,7 +1,9 @@
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
+@Output({String.class})
 public class StringSelection implements TypedFieldFunction<String> {
 
     private String[] selections;

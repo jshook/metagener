@@ -10,41 +10,51 @@ import com.metawiring.generation.fieldgenericfuncs.Suffix;
 
 public enum FieldFunctionName {
 
-    identity(Identity.class),  // primarily for testing
-    murmur3(Murmur3Hash.class),
-    modentity(EntityModulo.class),
-    mod(Modulo.class),
-    pmodulo(ModuloPop.class),
+    // population-based long->long functions
+    pmodulo(PopulationModulo.class),
+    pdist(PopulationSampler.class), // Population/long distribution sampling
 
+    // generic long->long functions
+    identity(LoggedIdentity.class),  // primarily for testing
+    murmur3(Murmur3Hash.class),
+    modulo(Modulo.class),
+    multiply(Multiply.class),
+    iclamp(DiscreteRangeClamp.class),
+    rangedrandom(RangedRandom.class),
+
+    // datetime long->long functions
+    dateshift(DateShift.class),
+    daterange(DateRange.class),
+    intmod(IntModulo.class),
+
+    // generic String->String functions
 
     prefix(Prefix.class),
     suffix(Suffix.class),
     index(StringIndex.class),
+    leftstring(LeftString.class),
+    rightstring(RightString.class),
+
+    // long->String functions
     oneof(StringSelection.class),
     numbname(NumbNamer.class),
+    numbername(NamedNumberString.class),
+
+    // file-based long->String functions
     filesample(FileLineSampler.class),
     filecycle(FileLineCycler.class),
-    numbername(NamedNumberString.class),
-    imodulo(LongModulo.class),
-    intmod(IntModulo.class),
-    multiply(Multiply.class),
-    pdist(PopulationSampler.class), // Population/long distribution sampling
+
+    // statistical sampling functions
     cdist(ContinuousDistributionSampler.class), // Continuous/Real distribution sampling
     cclamp(ContinuousRangeClamp.class),
     ddist(DiscreteDistributionSampler.class), // Discrete/Int distribution sampling
-    iclamp(DiscreteRangeClamp.class),
-    tostring(BoxedString.class),
-    dateshift(DateShift.class),
-    daterange(DateRange.class),
-    rangedrandom(RangedRandom.class),
+
+
+    // long->Double functions
     scaleddouble(ToScaledDouble.class),
-
+    // Double->Double functions
     mindouble(MinDouble.class),
-    maxdouble(MaxDouble.class),
-
-    leftstring(LeftString.class),
-    rightstring(RightString.class);
-
+    maxdouble(MaxDouble.class);
 
     private final Class<?> implClass;
 

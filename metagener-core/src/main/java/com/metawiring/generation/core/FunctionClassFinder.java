@@ -1,10 +1,10 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.generation.longfuncs.Identity;
+import com.metawiring.generation.longfuncs.LoggedIdentity;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
 import com.metawiring.generation.fieldgenfuncs.EntityModulo;
 import com.metawiring.types.functiontypes.GenericFieldFunction;
-import com.metawiring.generation.fieldgenboxes.BoxedInt;
+import com.metawiring.generation.fieldgenboxes.BoxedInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +15,8 @@ public class FunctionClassFinder {
 
 
     public static Package[] packages = new Package[] {
-            Identity.class.getPackage(),
-            BoxedInt.class.getPackage(),
+            LoggedIdentity.class.getPackage(),
+            BoxedInteger.class.getPackage(),
             Prefix.class.getPackage(),
             EntityModulo.class.getPackage()
     };

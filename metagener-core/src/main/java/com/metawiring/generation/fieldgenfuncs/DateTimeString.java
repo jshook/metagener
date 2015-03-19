@@ -1,14 +1,16 @@
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class DateTimeField implements TypedFieldFunction<String> {
+@Output({String.class})
+public class DateTimeString implements TypedFieldFunction<String> {
 
     private DateTimeFormatter dateTimeFormatter;
 
-    public DateTimeField(String format) {
+    public DateTimeString(String format) {
         this.dateTimeFormatter = DateTimeFormat.forPattern(format).withZoneUTC();
     }
 

@@ -133,7 +133,7 @@ public class EntitySamplerImpl implements EntitySampler {
             logger.debug("funcChain: " + funcDef.toString());
 
             try {
-                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(funcDef, this);
+                TypedFieldFunction<?> fieldSpecificFunction = FieldFunctionCompositor.composeFieldFunction(funcDef, this, fieldDef.getFieldType());
                 fieldFunctions[defOffset] = (LongFunction<?>) fieldSpecificFunction;
             } catch (Exception e) {
                 throw new RuntimeException(e);

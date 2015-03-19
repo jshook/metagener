@@ -1,5 +1,7 @@
 package com.metawiring.generation.fieldgenericfuncs;
 
+import com.metawiring.annotations.Input;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.EntityDefAware;
 import com.metawiring.types.functiontypes.GenericFieldFunction;
 import com.metawiring.types.EntityDef;
@@ -8,6 +10,8 @@ import com.metawiring.types.functiontypes.SamplerDefAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Input({String.class})
+@Output({String.class})
 public class StringStringDiagnostic implements GenericFieldFunction<String,String>, EntityDefAware, SamplerDefAware {
     private static final Logger logger = LoggerFactory.getLogger(StringStringDiagnostic.class);
 

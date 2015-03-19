@@ -1,5 +1,6 @@
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.generation.core.HashedDiscreteSamplingAdapter;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
 
+@Output({String.class})
 public class LoremExtractGenerator implements TypedFieldFunction<String> {
 
     private final static Logger logger = LoggerFactory.getLogger(LoremExtractGenerator.class);

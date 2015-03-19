@@ -14,25 +14,27 @@
 */
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
 import java.text.DecimalFormat;
 
-public class DecimalFormatter implements TypedFieldFunction<String> {
+@Output({String.class})
+public class DecimalString implements TypedFieldFunction<String> {
 
     private final double min;
     private final double max;
     private final double scale;
     private final DecimalFormat decimalFormat;
 
-    public DecimalFormatter(double min, double max, DecimalFormat decimalFormat) {
+    public DecimalString(double min, double max, DecimalFormat decimalFormat) {
         this.min = min;
         this.max = max;
         this.scale = max-min / (double) Long.MAX_VALUE;
         this.decimalFormat = decimalFormat;
     }
 
-    public DecimalFormatter(String min, String max, String decimalFormat) {
+    public DecimalString(String min, String max, String decimalFormat) {
         this(Double.valueOf(min),Double.valueOf(max),new DecimalFormat(decimalFormat));
     }
 

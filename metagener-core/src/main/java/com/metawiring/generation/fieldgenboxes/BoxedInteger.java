@@ -1,8 +1,12 @@
 package com.metawiring.generation.fieldgenboxes;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
-public class BoxedInt implements TypedFieldFunction<Integer> {
+import java.math.BigInteger;
+
+@Output({Integer.class})
+public class BoxedInteger implements TypedFieldFunction<Integer> {
 
     @Override
     public Integer apply(long value) {

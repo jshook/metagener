@@ -1,5 +1,7 @@
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Input;
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.GenericFieldFunction;
 
 import java.nio.CharBuffer;
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.function.IntUnaryOperator;
 
+@Input({Long.class})
+@Output({String.class})
 public class NumbNamer implements GenericFieldFunction<Long, String> {
 
     private static String[] digitNames = new String[]{
