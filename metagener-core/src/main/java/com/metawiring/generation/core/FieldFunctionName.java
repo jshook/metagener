@@ -42,6 +42,7 @@ public enum FieldFunctionName {
 
     // file-based long->String functions
     filesample(FileLineSampler.class),
+    csvfilesample(CSVLineSampler.class),
     filecycle(FileLineCycler.class),
 
     // statistical sampling functions

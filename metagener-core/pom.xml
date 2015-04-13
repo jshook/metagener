@@ -72,6 +72,12 @@
             <version>3.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>3.3</version>
+        </dependency>
+
         <!-- primarily for access to common types, for now -->
         <!--<dependency>-->
             <!--<groupId>com.datastax.cassandra</groupId>-->
@@ -90,6 +96,7 @@
             <artifactId>commons-math3</artifactId>
             <version>3.3</version>
         </dependency>
+
 
     </dependencies>
 
