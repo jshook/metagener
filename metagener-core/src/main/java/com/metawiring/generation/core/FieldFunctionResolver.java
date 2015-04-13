@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class FieldFunctionResolver {
     private final static Logger logger = LoggerFactory.getLogger(FieldFunctionResolver.class);
 
-    public static Object resolveFunctionObject(FuncCallDef functionSpec) {
+    public static Object resolveAndCreateFunctionObject(FuncCallDef functionSpec) {
 
         Class<?> functionClass = null;
 

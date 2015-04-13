@@ -3,6 +3,11 @@ package com.metawiring.generation.core;
 import com.metawiring.generation.fieldgenboxes.*;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
+/**
+ * This is the generator-side mapping of default functions which can accept a long value and produce the backing type
+ * as enumerated in FieldType.java (in metagener-defs). The types must be compatible. For example, the
+ * BoxedBigInteger function is valid IFF it produces a result type which is assignable to the matching FieldType.
+ */
 public enum DefaultFunctionType {
     ASCII     (BoxedString.class),
     BIGINT    (BoxedBigInteger.class),

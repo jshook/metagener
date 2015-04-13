@@ -42,4 +42,8 @@ public enum FieldType {
     public static FieldType typeOf(String name) {
         return valueOf(name.toUpperCase());
     }
+
+    public Class<?> getBackingClass() {
+        return clazz;
+    }
 }

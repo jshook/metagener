@@ -54,7 +54,9 @@ public class MutableFuncDef implements FuncDef {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(funcName==null ? "NULL" : funcName + " ");
+        if (funcName!=null) {
+            sb.append("(name:").append(funcName).append(") ");
+        }
         for (FuncCallDef funcCallDef : funcCallDefs) {
             sb.append(funcCallDef.toString()).append("; ");
         }

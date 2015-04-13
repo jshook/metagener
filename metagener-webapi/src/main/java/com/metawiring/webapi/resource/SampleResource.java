@@ -2,6 +2,7 @@ package com.metawiring.webapi.resource;
 
 import com.metawiring.types.EntitySample;
 import com.metawiring.types.EntitySampler;
+import com.metawiring.types.SamplerDef;
 import com.metawiring.webapi.representation.BulkSampleValues;
 import com.metawiring.webapi.representation.SampleValue;
 import com.metawiring.wiring.GenContext;
@@ -21,6 +22,21 @@ public class SampleResource {
 
     public SampleResource(GenContexts metagenerContexts) {
         this.metagenerContexts = metagenerContexts;
+    }
+
+    @GET
+    @Path("/{contextName}/")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getContextList(
+            @PathParam("contextName") String contextName
+    ) {
+        GenContext genContext = metagenerContexts.get(contextName);
+        StringBuilder sb = new StringBuilder();
+        for (SamplerDef samplerDef : genContext.getDefinedEntitySamplers()) {
+            sb.append(samplerDef.getSamplerName());
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     @GET
