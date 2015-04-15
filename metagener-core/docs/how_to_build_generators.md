@@ -100,16 +100,24 @@ In order to create the eventtime field above as a monotonically increasing times
 
 Some functions are implemented in the code base with the requirement that they are initialized with the sampler or entity that they are going to be used with. This allows some functions to be initialized at runtime based on the population of your entity, for example. Population sampling functions are just that. They are aware of the size of the population for the entity that they are being used for, hence they can automatically adjust to reasonable settings according to normative expectations.
 
-## Simulating Probability Distributions
+## Using Probability Distributions
 
-If you want to draw entities from a distribution according to a known probability distribution, binomial, for example. That is simply a function that you can use. All of the probability distribution sampling functions exhibit the same behavior with respect to idempotent results. In other words, a given metagener sampler will always produce the same sequence of outputs, even if these outputs have fields that simulate a given probability density with continued access. The way this is achived is by manually controlling the RNG which is fed to the inverse CDF sampling methods, deriving random-enough RNG streams from the murmur3 hash of the input.
+There are a few ways to use probability distributions to simulate real data patterns. Metagener uses the apache commons math library for its distributions.
+All of the distributions available in that library are available for use in a distribution function. Various distribution sampling functions are provided, accomodating both continuous and discrete sampling, as well as population-based auto sizing of sampling functions. These sampling functions are named accordingly:
 
-This is handled automatically by the function implementations. All of the probability distributions in the apache commons math3 library are supported. There are specific variants of these probability sampling functions, depending on the scenario:
-
-* pdist(&lt;distname&gt;) -- "population distributions" -- for sampling over the entityid space, essentially the range of values between 1 and the population size for the entity being sampled. The distname must be a discrete distribution (integers). The function will auto-size it's parameters according to the documentent auto-sizing rules for that distribution and the entity population.
-* sddist(&lt;distname&gt;,&lt;min&gt;,&lt;max&gt;) -- "sized discrete distribution" -- for sampling over a range of values using auto-sizing. The funtion will auto-size it's internal parameters according to the documented auto-sizing rules for that distribution and the min and max.
-* ddist(&lt;distname&gt;,...) -- "discrete distributions" -- for sampling over the integers, according to the standard parameters for the named distribution.
 * cdist(&lt;distname&gt;,...) -- "continuous distributions" -- for sampling over the reals, according to the standard parameters for the named distribution.
+* ddist(&lt;distname&gt;,...) -- "discrete distributions" -- for sampling over the integers, according to the standard parameters for the named distribution.
+* pdist(&lt;distname&gt;) -- "population distributions" -- for sampling over the entityid space, essentially the range of values between 1 and the population size for the entity being sampled. The distname must be a discrete distribution (integers). The function will auto-size it's parameters according to the documentent auto-sizing rules for that distribution and the entity population.
+* sddist(&lt;distname&gt;,&lt;min&gt;,&lt;max&gt;,&lt;pct&gt;) -- "sized discrete distribution" -- for sampling over a range of values using auto-sizing. The funtion will auto-size it's internal parameters according to the documented auto-sizing rules for that distribution and the min and max.
+* scdist(&lt;distname&gt;,&lt;min&gt;,&lt;max&gt;,&lt;pct&gt;) -- "sized continuous distribution" -- for sampling over a range of double values using auto-sizing. The function will auto-size its internal parameters according to the documented auto-sizing rules 
+
+Auto-sizing simply means that the probability distribution will be configured according to a range of intended output values. The intent is to use a standard parameter form for all the distributions, such as &lt;distname&gt;,&lt;min&gt;,&lt;max&gt;,&lt;pct&gt;, where &lt;pct&gt; is the percent of all possible values which are intended to be within the bounded sample space. For example, if you were pulling floating-point samples from a gaussian distribution, you might want to include up to the 3rd standard deviation, without considering the longer tail of values. That would be a &lt;pct&gt; value of 97.7.
+
+#### Distribution Sampling and Idempotency
+
+All of the probability distribution sampling functions exhibit the same behavior with respect to idempotent results. In other words, a given metagener sampler will always produce the same sequence of outputs from the beginning. Field 'foo' from the 7343rd sample will always have the same value, even if it was drawn in some way from a probability distribution. However, all values of field 'foo' should have the distribution specified, when taken across the individual samples.
+
+This is achieved by manually controlling the RNG, which is fed to the inverse CDF sampling methods, deriving random-enough RNG streams from the murmur3 hash of the input. This is handled automatically by the distribution sampling functions.
 
 ## Higher-Order functions
 
