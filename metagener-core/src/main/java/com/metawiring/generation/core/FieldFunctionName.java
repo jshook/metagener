@@ -52,6 +52,7 @@ public enum FieldFunctionName {
 
 
     // long->Double functions
+    fftsim(FFTSim.class),
     scaleddouble(ToScaledDouble.class),
     // Double->Double functions
     mindouble(MinDouble.class),
