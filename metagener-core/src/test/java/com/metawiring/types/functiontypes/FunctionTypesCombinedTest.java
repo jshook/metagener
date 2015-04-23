@@ -2,8 +2,7 @@ package com.metawiring.types.functiontypes;
 
 import org.testng.annotations.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FunctionTypesCombinedTest {
 
@@ -11,7 +10,7 @@ public class FunctionTypesCombinedTest {
     public void testLongFieldFunction() {
         Plus plus = new Plus(3l);
         long result = plus.applyAsLong(4l);
-        assertThat(result,is(7l));
+        assertThat(result).isEqualTo(7l);
     }
 
     @Test
@@ -21,11 +20,11 @@ public class FunctionTypesCombinedTest {
 
         LongUnaryFieldFunction modComposePlus = mod2.compose(plus3);
         long mod2ComposePlus3 = modComposePlus.applyAsLong(17l);
-        assertThat(mod2ComposePlus3,is(0l));
+        assertThat(mod2ComposePlus3).isEqualTo(0l);
 
         LongUnaryFieldFunction plusComposeMod = plus3.compose(mod2);
         long plus3ComposeMod2 = plusComposeMod.applyAsLong(17l);
-        assertThat(plus3ComposeMod2,is(4l));
+        assertThat(plus3ComposeMod2).isEqualTo(4l);
     }
 
     @Test
@@ -35,11 +34,11 @@ public class FunctionTypesCombinedTest {
 
         LongUnaryFieldFunction modAndThenPlus = mod11.andThen(plus13);
         long mod11AndThenPlus13 = modAndThenPlus.applyAsLong(19l);
-        assertThat(mod11AndThenPlus13,is(21l));
+        assertThat(mod11AndThenPlus13).isEqualTo(21l);
 
         LongUnaryFieldFunction plusAndThenMod = plus13.andThen(mod11);
         long plus13AndThenMod11 = plusAndThenMod.applyAsLong(19l);
-        assertThat(plus13AndThenMod11,is(10l));
+        assertThat(plus13AndThenMod11).isEqualTo(10l);
 
     }
 
@@ -51,21 +50,21 @@ public class FunctionTypesCombinedTest {
         TypedFieldFunction<String> tff = plus13.andThen(mods11);
 
         String plus13AndThenModString11 = tff.apply(19l);
-        assertThat(plus13AndThenModString11,is("10"));
+        assertThat(plus13AndThenModString11).isEqualTo("10");
     }
 
     @Test
     public void testTypedFieldFunction() {
         ModString mods19 = new ModString(19l);
         String result = mods19.apply(27l);
-        assertThat(result,is("8"));
+        assertThat(result).isEqualTo("8");
     }
 
     @Test
     public void testGenericFieldFunction() {
         StringModString smods31 = new StringModString(31l);
         String result = smods31.apply("64");
-        assertThat(result,is("2"));
+        assertThat(result).isEqualTo("2");
     }
 
     @Test
@@ -74,7 +73,7 @@ public class FunctionTypesCombinedTest {
         ModString mods31 = new ModString(31l);
         GenericFieldFunction<Long, String> StringModStringComposeLongModString = smods7.compose(mods31);
         String result = StringModStringComposeLongModString.apply(73l);
-        assertThat(result,is("4"));
+        assertThat(result).isEqualTo("4");
     }
 
     @Test

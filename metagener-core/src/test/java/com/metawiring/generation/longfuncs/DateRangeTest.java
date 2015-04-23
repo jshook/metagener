@@ -4,8 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.*;
 
 public class DateRangeTest {
@@ -17,7 +16,7 @@ public class DateRangeTest {
             long input = (long)(0.0101d * (double) i * Long.MAX_VALUE);
             long dateRange01 = dr.applyAsLong(input);
             DateTime dt = new DateTime(dateRange01+1, DateTimeZone.UTC);
-            assertThat((long) dt.getYear(), is(2000+i));
+            assertThat((long) dt.getYear()).isEqualTo(2000+i);
         }
     }
 }

@@ -9,8 +9,7 @@ import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FunctionAssemblerTest {
 
@@ -25,7 +24,7 @@ public class FunctionAssemblerTest {
         LongUnaryFieldFunction mod6then3 = assy.getlongFunction();
 
         long l = mod6then3.applyAsLong(23429l);
-        assertThat(l,is(2l));
+        assertThat(l).isEqualTo(2l);
 
     }
 
@@ -39,8 +38,8 @@ public class FunctionAssemblerTest {
         TypedFieldFunction bs = assy.getTypedFunction();
         Object stringResult = bs.apply(23429l);
         Class<?> clazz = stringResult.getClass();
-        assertThat(clazz.getSimpleName(),is("String"));
-        assertThat(stringResult,is("2"));
+        assertThat(clazz.getSimpleName()).isEqualTo("String");
+        assertThat(stringResult).isEqualTo("2");
     }
 
     @Test(expectedExceptions = {RuntimeException.class}, expectedExceptionsMessageRegExp = "Input type of class java.lang.String must have a compatible inner, or previous function.*")
@@ -61,15 +60,15 @@ public class FunctionAssemblerTest {
         TypedFieldFunction bs = assy.getTypedFunction();
         Object stringResult = bs.apply(23429l);
         Class<?> clazz = stringResult.getClass();
-        assertThat(clazz.getSimpleName(),is("String"));
-        assertThat(stringResult, is("2"));
+        assertThat(clazz.getSimpleName()).isEqualTo("String");
+        assertThat(stringResult).isEqualTo("2");
 
         assy.andThen(new Prefix("pre-"));
         assy.andThen(new Suffix("-post"));
 
         TypedFieldFunction stringy = assy.getTypedFunction();
         Object pre2post = stringy.apply(23429l);
-        assertThat(pre2post,is("pre-2-post"));
+        assertThat(pre2post).isEqualTo("pre-2-post");
 
     }
 
@@ -83,14 +82,14 @@ public class FunctionAssemblerTest {
         TypedFieldFunction bs = assy.getTypedFunction();
         Object stringResult = bs.apply(23429l);
         Class<?> clazz = stringResult.getClass();
-        assertThat(clazz.getSimpleName(),is("String"));
-        assertThat(stringResult, is("2"));
+        assertThat(clazz.getSimpleName()).isEqualTo("String");
+        assertThat(stringResult).isEqualTo("2");
 
         assy.andThen(new MinDouble(1.0d));
 
         TypedFieldFunction stringy = assy.getTypedFunction();
         Object pre2post = stringy.apply(23429l);
-        assertThat(pre2post,is("pre-2-post"));
+        assertThat(pre2post).isEqualTo("pre-2-post");
 
 
     }

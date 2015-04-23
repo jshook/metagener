@@ -11,10 +11,7 @@ import java.io.*;
 import java.nio.CharBuffer;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MetagenDefParserTest {
 
@@ -32,7 +29,7 @@ public class MetagenDefParserTest {
         if (modelBuilder.hasErrors()) {
             System.out.println(modelBuilder.getErrorNodes());
         }
-        assertThat(modelBuilder.hasErrors(),is(false));
+        assertThat(modelBuilder.hasErrors()).isEqualTo(false);
         MetagenDef genContextDef = modelBuilder.getGenContextDef();
 
     }
@@ -40,33 +37,33 @@ public class MetagenDefParserTest {
     @Test
     public void testParseEntity() {
         MetagenDef md = parseString("entity parsley");
-        assertThat(md.getEntityDefs().size(), is(1));
+        assertThat(md.getEntityDefs().size()).isEqualTo(1);
         EntityDef entityDef = md.getEntityDefs().get(0);
-        assertThat(entityDef.getName(), is("parsley"));
-        assertThat(entityDef.getPopulationSize(),is(Long.MAX_VALUE));
+        assertThat(entityDef.getName()).isEqualTo("parsley");
+        assertThat(entityDef.getPopulationSize()).isEqualTo(Long.MAX_VALUE);
     }
 
     @Test
     public void testParseEntityWithPopulation() {
         MetagenDef md = parseString("entity carrots pop=42343");
-        assertThat(md.getEntityDefs().size(), is(1));
+        assertThat(md.getEntityDefs().size()).isEqualTo(1);
         EntityDef entityDef = md.getEntityDefs().get(0);
-        assertThat(entityDef.getName(), is("carrots"));
-        assertThat(entityDef.getPopulationSize(),is(42343l));
+        assertThat(entityDef.getName()).isEqualTo("carrots");
+        assertThat(entityDef.getPopulationSize()).isEqualTo(42343l);
     }
 
     @Test
     public void testParseEntityField() {
         MetagenDef md = parseString("entity carrots pop=42343\nfield color text\n");
-        assertThat(md.getEntityDefs().size(), is(1));
+        assertThat(md.getEntityDefs().size()).isEqualTo(1);
         EntityDef entityDef = md.getEntityDefs().get(0);
-        assertThat(entityDef.getName(), is("carrots"));
-        assertThat(entityDef.getPopulationSize(),is(42343l));
-        assertThat(entityDef.getFieldDefs().size(), is(1));
+        assertThat(entityDef.getName()).isEqualTo("carrots");
+        assertThat(entityDef.getPopulationSize()).isEqualTo(42343l);
+        assertThat(entityDef.getFieldDefs().size()).isEqualTo(1);
         FieldDef color = entityDef.getFieldDefs().get(0);
-        assertThat(color.getFieldName(),is("color"));
-        assertThat(color.getFieldType(),is(FieldType.TEXT));
-        assertThat(color.getFieldFunc(),is(nullValue()));
+        assertThat(color.getFieldName()).isEqualTo("color");
+        assertThat(color.getFieldType()).isEqualTo(FieldType.TEXT);
+        assertThat(color.getFieldFunc()).isNull();
     }
 
 
@@ -75,11 +72,10 @@ public class MetagenDefParserTest {
         MetagenDef md = parseString("entity carrots pop=42343\nfield color:text <- entity()\n");
         EntityDef entityDef = md.getEntityDefs().get(0);
         FieldDef color = entityDef.getFieldDefs().get(0);
-        assertThat(color.getFieldName(),is("color"));
-        assertThat(color.getFieldType(),is(FieldType.TEXT));
-        assertThat(color.getFieldFunc(),is("entity()"));
-        assertThat(color.getFieldFuncDef().getFuncName(),is(nullValue()));
-
+        assertThat(color.getFieldName()).isEqualTo("color");
+        assertThat(color.getFieldType()).isEqualTo(FieldType.TEXT);
+        assertThat(color.getFieldFunc()).isEqualTo("entity()");
+        assertThat(color.getFieldFuncDef().getFuncName()).isNull();
     }
 
     // This probably neeeds to be rewritten after function calls are added
@@ -88,105 +84,105 @@ public class MetagenDefParserTest {
         MetagenDef md = parseString("entity carrots pop=42343\nfield color:text <- fassign=entity()\n");
         EntityDef entityDef = md.getEntityDefs().get(0);
         FieldDef color = entityDef.getFieldDefs().get(0);
-        assertThat(color.getFieldName(),is("color"));
-        assertThat(color.getFieldType(),is(FieldType.TEXT));
-        assertThat(color.getFieldFunc(),is("fassign=entity()"));
+        assertThat(color.getFieldName()).isEqualTo("color");
+        assertThat(color.getFieldType()).isEqualTo(FieldType.TEXT);
+        assertThat(color.getFieldFunc()).isEqualTo("fassign=entity()");
     }
 
     @Test
     public void testParseSamplerDef() {
         MetagenDef md = parseString("sampler somefood");
-        assertThat(md.getSamplerDefs().size(),is(1));
+        assertThat(md.getSamplerDefs().size()).isEqualTo(1);
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
-        assertThat(samplerDef.getSamplerName(),is("somefood"));
-        assertThat(samplerDef.getEntityName(),is("somefood"));
-        assertThat(samplerDef.getSamplerFuncDef(),is(nullValue()));
+        assertThat(samplerDef.getSamplerName()).isEqualTo("somefood");
+        assertThat(samplerDef.getEntityName()).isEqualTo("somefood");
+        assertThat(samplerDef.getSamplerFuncDef()).isNull();
     }
     @Test
     public void testParseSamplerDefWithAlias() {
         MetagenDef md = parseString("sampler somefood:foosball");
-        assertThat(md.getSamplerDefs().size(),is(1));
+        assertThat(md.getSamplerDefs().size()).isEqualTo(1);
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
-        assertThat(samplerDef.getSamplerName(),is("somefood"));
-        assertThat(samplerDef.getEntityName(),is("foosball"));
-        assertThat(samplerDef.getSamplerFuncDef(),is(nullValue()));
+        assertThat(samplerDef.getSamplerName()).isEqualTo("somefood");
+        assertThat(samplerDef.getEntityName()).isEqualTo("foosball");
+        assertThat(samplerDef.getSamplerFuncDef()).isNull();
     }
 
     @Test
     public void testParseSamplerDefWithAliasAndFunction() {
         MetagenDef md = parseString("sampler somefood:foosball <- lizardgills()");
-        assertThat(md.getSamplerDefs().size(),is(1));
+        assertThat(md.getSamplerDefs().size()).isEqualTo(1);
         SamplerDef samplerDef = md.getSamplerDefs().get(0);
-        assertThat(samplerDef.getSamplerName(),is("somefood"));
-        assertThat(samplerDef.getEntityName(),is("foosball"));
-        assertThat(samplerDef.getSamplerFuncDef().getFuncName(),is(nullValue()));
-        assertThat(samplerDef.getSamplerFuncDef().getFuncCallDefs().get(0).getFuncName(),is("lizardgills"));
+        assertThat(samplerDef.getSamplerName()).isEqualTo("somefood");
+        assertThat(samplerDef.getEntityName()).isEqualTo("foosball");
+        assertThat(samplerDef.getSamplerFuncDef().getFuncName()).isNull();
+        assertThat(samplerDef.getSamplerFuncDef().getFuncCallDefs().get(0).getFuncName()).isEqualTo("lizardgills");
     }
 
 
     @Test
     public void testParseEntityDefFieldWithFuncDef() {
         MetagenDef md = parseString("entity foo\nfield bar:text <- funca(one,two)");
-        assertThat(md.getEntityDefs().size(),is(1));
+        assertThat(md.getEntityDefs().size()).isEqualTo(1);
         EntityDef entityDef = md.getEntityDefs().get(0);
-        assertThat( entityDef.getFieldDefs().size(),is(1));
+        assertThat( entityDef.getFieldDefs().size()).isEqualTo(1);
         FieldDef fieldBar = entityDef.getFieldDef("bar");
-        assertThat(fieldBar,is(notNullValue()));
-        assertThat(fieldBar.getFieldFuncDef(),is(notNullValue()));
+        assertThat(fieldBar).isNotNull();
+        assertThat(fieldBar.getFieldFuncDef()).isNotNull();
         FuncDef fieldFuncDef = fieldBar.getFieldFuncDef();
-        assertThat(fieldFuncDef.getFuncCallDefs().size(),is(1));
+        assertThat(fieldFuncDef.getFuncCallDefs().size()).isEqualTo(1);
         List<FuncCallDef> funcCallDefs = fieldFuncDef.getFuncCallDefs();
 
         FuncCallDef fcd0 = funcCallDefs.get(0);
-        assertThat(fcd0.getFuncName(),is("funca"));
-        assertThat(fcd0.getFuncArgs().size(),is(2));
-        assertThat(fcd0.getFuncArgs().get(0),is("one"));
-        assertThat(fcd0.getFuncArgs().get(1),is("two"));
+        assertThat(fcd0.getFuncName()).isEqualTo("funca");
+        assertThat(fcd0.getFuncArgs().size()).isEqualTo(2);
+        assertThat(fcd0.getFuncArgs().get(0)).isEqualTo("one");
+        assertThat(fcd0.getFuncArgs().get(1)).isEqualTo("two");
     }
 
     @Test
     public void testFieldFunctionDefProvidesSimpleParameterValues() {
         MetagenDef md = parseString("entity foo\nfield bar:text <- funca(1,5,10)");
-        assertThat(md.getEntityDefs().size(),is(1));
+        assertThat(md.getEntityDefs().size()).isEqualTo(1);
         EntityDef entityDef = md.getEntityDefs().get(0);
-        assertThat(entityDef.getFieldDefs().size(),is(1));
+        assertThat(entityDef.getFieldDefs().size()).isEqualTo(1);
         FieldDef fieldDef = entityDef.getFieldDefs().get(0);
         FuncDef fieldFuncDef = fieldDef.getFieldFuncDef();
-        assertThat(fieldFuncDef,is(notNullValue()));
-        assertThat(fieldFuncDef.getFuncCallDefs().size(),is(1));
+        assertThat(fieldFuncDef).isNotNull();
+        assertThat(fieldFuncDef.getFuncCallDefs().size()).isEqualTo(1);
         FuncCallDef funcCallDef = fieldFuncDef.getFuncCallDefs().get(0);
         List<String> funcArgs = funcCallDef.getFuncArgs();
-        assertThat(funcArgs.size(),is(3));
+        assertThat(funcArgs.size()).isEqualTo(3);
     }
 
     @Test
     public void testParseEntityDefFieldWithFuncDefs() {
         MetagenDef md = parseString("entity foo\nfield bar:text <- funca();funcb(one,two);funcc(p1=v1,p2=v2)");
-        assertThat(md.getEntityDefs().size(),is(1));
+        assertThat(md.getEntityDefs().size()).isEqualTo(1);
         EntityDef entityDef = md.getEntityDefs().get(0);
-        assertThat( entityDef.getFieldDefs().size(),is(1));
+        assertThat( entityDef.getFieldDefs().size()).isEqualTo(1);
         FieldDef fieldBar = entityDef.getFieldDef("bar");
-        assertThat(fieldBar,is(notNullValue()));
-        assertThat(fieldBar.getFieldFuncDef(),is(notNullValue()));
+        assertThat(fieldBar).isNotNull();
+        assertThat(fieldBar.getFieldFuncDef()).isNotNull();
         FuncDef fieldFuncDef = fieldBar.getFieldFuncDef();
-        assertThat(fieldFuncDef.getFuncCallDefs().size(),is(3));
+        assertThat(fieldFuncDef.getFuncCallDefs().size()).isEqualTo(3);
         List<FuncCallDef> funcCallDefs = fieldFuncDef.getFuncCallDefs();
 
         FuncCallDef fcd0 = funcCallDefs.get(0);
-        assertThat(fcd0.getFuncName(),is("funca"));
-        assertThat(fcd0.getFuncArgs().size(),is(0));
+        assertThat(fcd0.getFuncName()).isEqualTo("funca");
+        assertThat(fcd0.getFuncArgs().size()).isEqualTo(0);
 
         FuncCallDef fcd1 = funcCallDefs.get(1);
-        assertThat(fcd1.getFuncName(),is("funcb"));
-        assertThat(fcd1.getFuncArgs().size(),is(2));
-        assertThat(fcd1.getFuncArgs().get(0),is("one"));
-        assertThat(fcd1.getFuncArgs().get(1),is("two"));
+        assertThat(fcd1.getFuncName()).isEqualTo("funcb");
+        assertThat(fcd1.getFuncArgs().size()).isEqualTo(2);
+        assertThat(fcd1.getFuncArgs().get(0)).isEqualTo("one");
+        assertThat(fcd1.getFuncArgs().get(1)).isEqualTo("two");
 
         FuncCallDef fcd2 = funcCallDefs.get(2);
-        assertThat(fcd2.getFuncName(),is("funcc"));
-        assertThat(fcd2.getFuncArgs().size(),is(2));
-        assertThat(fcd2.getFuncArgs().get(0),is("p1=v1"));
-        assertThat(fcd2.getFuncArgs().get(1),is("p2=v2"));
+        assertThat(fcd2.getFuncName()).isEqualTo("funcc");
+        assertThat(fcd2.getFuncArgs().size()).isEqualTo(2);
+        assertThat(fcd2.getFuncArgs().get(0)).isEqualTo("p1=v1");
+        assertThat(fcd2.getFuncArgs().get(1)).isEqualTo("p2=v2");
 
     }
 
@@ -194,10 +190,10 @@ public class MetagenDefParserTest {
     public void testParseEntityDefFieldWithPathNameArgs() {
         MetagenDef md = parseString("entity foo\nfield bar:text <- funca(/file/path);");
         FieldDef fieldDef = md.getEntityDefs().get(0).getFieldDefs().get(0);
-        assertThat(fieldDef,is(notNullValue()));
+        assertThat(fieldDef).isNotNull();
         FuncCallDef funcCallDef = fieldDef.getFieldFuncDef().getFuncCallDefs().get(0);
-        assertThat(funcCallDef,is(notNullValue()));
-        assertThat(funcCallDef.getFuncArgs().size(),is(1));
+        assertThat(funcCallDef).isNotNull();
+        assertThat(funcCallDef.getFuncArgs().size()).isEqualTo(1);
     }
 
 

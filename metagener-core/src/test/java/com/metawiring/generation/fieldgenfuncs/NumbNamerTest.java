@@ -2,8 +2,7 @@ package com.metawiring.generation.fieldgenfuncs;
 
 import org.testng.annotations.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.*;
 
 public class NumbNamerTest {
@@ -13,11 +12,11 @@ public class NumbNamerTest {
         NumbNamer numbNamer = new NumbNamer();
         String result;
         result= numbNamer.apply(8675309l);
-        assertThat(result,is("esisefitrezeni"));
+        assertThat(result).isEqualTo("esisefitrezeni");
         result= numbNamer.apply(123456789101112l);
-        assertThat(result,is("ototrefofisiseeniozeoooto"));
+        assertThat(result).isEqualTo("ototrefofisiseeniozeoooto");
         result= numbNamer.apply(24601l);
-        assertThat(result,is("tofosizeo"));
+        assertThat(result).isEqualTo("tofosizeo");
     }
 
 }

@@ -7,8 +7,20 @@ import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.generation.fieldgenfuncs.*;
 import com.metawiring.generation.fieldgenericfuncs.Prefix;
 import com.metawiring.generation.fieldgenericfuncs.Suffix;
+import com.metawiring.generation.stack.*;
 
 public enum FieldFunctionName {
+
+    // stack operations
+    sadd(StackAdd.class),
+    ssub(StackSubtract.class),
+    smul(StackMultiply.class),
+    sdiv(StackDivide.class),
+    spush(StackPush.class),
+    spop(StackPop.class),
+    sswap(StackSwap.class),
+    sclear(StackClear.class),
+    sexch(StackExchange.class),
 
     // population-based long->long functions
     pmodulo(PopulationModulo.class),

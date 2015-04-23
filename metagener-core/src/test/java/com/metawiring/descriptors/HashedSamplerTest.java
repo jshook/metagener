@@ -3,7 +3,6 @@ package com.metawiring.descriptors;
 import com.metawiring.configdefs.MutableEntityDef;
 import com.metawiring.generation.longfuncs.Murmur3Hash;
 import com.metawiring.generation.longfuncs.PopulationSampler;
-import org.hamcrest.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -11,9 +10,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HashedSamplerTest {
     private static Logger logger = LoggerFactory.getLogger(HashedSamplerTest.class);
@@ -28,16 +25,16 @@ public class HashedSamplerTest {
             long j = i*(Long.MAX_VALUE / 10);
             sampled.add(ps.applyAsLong(j));
         }
-        assertThat(sampled.get(0),is(0l));
-        assertThat(sampled.get(1),is(10l));
-        assertThat(sampled.get(2),is(20l));
-        assertThat(sampled.get(3),is(30l));
-        assertThat(sampled.get(4),is(40l));
-        assertThat(sampled.get(5),is(50l));
-        assertThat(sampled.get(6),is(60l));
-        assertThat(sampled.get(7),is(70l));
-        assertThat(sampled.get(8),is(80l));
-        assertThat(sampled.get(9),is(90l));
+        assertThat(sampled.get(0)).isEqualTo(0l);
+        assertThat(sampled.get(1)).isEqualTo(10l);
+        assertThat(sampled.get(2)).isEqualTo(20l);
+        assertThat(sampled.get(3)).isEqualTo(30l);
+        assertThat(sampled.get(4)).isEqualTo(40l);
+        assertThat(sampled.get(5)).isEqualTo(50l);
+        assertThat(sampled.get(6)).isEqualTo(60l);
+        assertThat(sampled.get(7)).isEqualTo(70l);
+        assertThat(sampled.get(8)).isEqualTo(80l);
+        assertThat(sampled.get(9)).isEqualTo(90l);
 
         System.out.println(sampled);
     }
@@ -66,7 +63,7 @@ public class HashedSamplerTest {
 
         long distinct = sampled.stream().sorted().distinct().count();
 
-        assertThat(distinct, Matchers.<Long>is(greaterThan(distinctThreshold)));
+        assertThat(distinct).isGreaterThan(distinctThreshold);
         System.out.println("popsize:" + popSize + ", iterations:" + iterations + ", distinct:" + distinct);
         System.out.flush();
 

@@ -9,9 +9,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.*;
 
 public class RetailEntitySamplerServiceTest {
@@ -33,7 +31,7 @@ public class RetailEntitySamplerServiceTest {
     public void testGetDefinedStreamsIsValidBeforeStreamAccess() {
         EntitySamplerService ess = new RetailEntitySamplerService();
         List<SamplerDef> des = ess.getDefinedEntitySamplers();
-        assertThat(des.size(), greaterThan(0));
+        assertThat(des.size()).isGreaterThan(0);
     }
 
     @Test(enabled = false)
@@ -45,7 +43,7 @@ public class RetailEntitySamplerServiceTest {
         for (int i = 0; i < 10; i++) {
             es = sampleStream.getNextEntity();
             Object[] vals = es.getFieldValues();
-            assertThat(vals.length, greaterThan(0));
+            assertThat(vals.length).isGreaterThan(0);
             Map<String, Object> vmap;
             vmap = es.getOrderedFieldMap();
             logger.info(vmap.toString());
@@ -61,7 +59,7 @@ public class RetailEntitySamplerServiceTest {
         EntitySampler sampleStream = ess.getEntitySampleStream(des.getSamplerName());
         EntitySample es = sampleStream.getNextEntity();
         Object[] vals = es.getFieldValues();
-        assertThat(vals.length, greaterThan(0));
+        assertThat(vals.length).isGreaterThan(0);
         Map<String, Object> vmap = es.getOrderedFieldMap();
         logger.info(vmap.toString());
     }

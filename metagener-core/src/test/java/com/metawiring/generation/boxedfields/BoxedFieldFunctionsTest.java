@@ -11,8 +11,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BoxedFieldFunctionsTest {
 
@@ -21,7 +20,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<BigInteger> ff = new BoxedBigInteger();
         BigInteger actual= ff.apply(12345l);
         BigInteger expected = BigInteger.valueOf(12345l);
-        assertThat(actual, is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -29,10 +28,10 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<Boolean> ff = new BoxedBoolean();
 
         Boolean actualTrue = ff.apply(12346l);
-        assertThat(actualTrue,is(true));
+        assertThat(actualTrue).isEqualTo(true);
 
         Boolean actualFalse = ff.apply(12345l);
-        assertThat(actualFalse,is(false));
+        assertThat(actualFalse).isEqualTo(false);
     }
 
     @Test
@@ -42,7 +41,7 @@ public class BoxedFieldFunctionsTest {
         ByteBuffer expected = ByteBuffer.allocate(Long.BYTES);
         expected.putLong(12345l);
         expected.flip();
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -50,7 +49,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<Double> ff = new BoxedDouble();
         Double actual = ff.apply(12345l);
         Double expected = Double.valueOf("12345");
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -58,7 +57,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<Float> ff = new BoxedFloat();
         Float actual = ff.apply(12345l);
         Float expected = Float.valueOf("12345");
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
 
     }
 
@@ -75,7 +74,7 @@ public class BoxedFieldFunctionsTest {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -83,7 +82,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<Integer> ff = new BoxedInteger();
         Integer actual = ff.apply(12345l);
         Integer expected = Integer.valueOf("12345");
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -91,7 +90,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<List<Long>> ff = new BoxedList();
         List<Long> actual = ff.apply(12345l);
         List<Long> expected = Arrays.asList(12345l);
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -99,7 +98,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<Long> ff = new BoxedLong();
         Long actual = ff.apply(12345l);
         Long expected = 12345l;
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -108,7 +107,7 @@ public class BoxedFieldFunctionsTest {
         Map<Long,Long> actual = ff.apply(12345l);
         Map<Long,Long> expected = new HashMap<>();
         expected.put(12345l, 12345l);
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -117,7 +116,7 @@ public class BoxedFieldFunctionsTest {
         Set<Long> actual = ff.apply(12345l);
         Set<Long> expected = new HashSet<>();
         expected.add(12345l);
-        assertThat(actual, is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -125,7 +124,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<String> ff = new BoxedString();
         String actual = ff.apply(12345l);
         String expected = "12345";
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -133,7 +132,7 @@ public class BoxedFieldFunctionsTest {
         TypedFieldFunction<DateTime> ff = new BoxedDateTime();
         DateTime actual = ff.apply(12345l);
         DateTime expected = new DateTime(12345l);
-        assertThat(actual,is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -142,7 +141,7 @@ public class BoxedFieldFunctionsTest {
         UUID actual = ff.apply(12345l);
         UUID expected = new UUID(12345l,12345l);
         // TODO: Get UUIDs working in a useful way
-        assertThat(actual, is(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
 }

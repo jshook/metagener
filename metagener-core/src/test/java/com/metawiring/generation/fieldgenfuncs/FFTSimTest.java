@@ -14,29 +14,29 @@
 */
 package com.metawiring.generation.fieldgenfuncs;
 
+import org.assertj.core.data.Offset;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.number.IsCloseTo.closeTo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 public class FFTSimTest {
 
     @Test
     public void testFFTSim1327311() {
         FFTSim fft1 = new FFTSim(1,0.03,2,0.07,3,0.011);
-        assertThat(fft1.apply(0), is(0d));
-        assertThat(fft1.apply(1),is(closeTo(0.0398d, 0.001d)));
-        assertThat(fft1.apply(2),is(closeTo(0.0404d, 0.001d)));
-        assertThat(fft1.apply(4),is(closeTo(0.0821d, 0.001d)));
-        assertThat(fft1.apply(8),is(closeTo(0.1743d, 0.001d)));
-        assertThat(fft1.apply(16),is(closeTo(0.4080d, 0.001d)));
-        assertThat(fft1.apply(32),is(closeTo(0.8880d, 0.001d)));
-        assertThat(fft1.apply(64),is(closeTo(0.9147d, 0.001d)));
-        assertThat(fft1.apply(128),is(closeTo(-0.5965d, 0.001d)));
-        assertThat(fft1.apply(256),is(closeTo(1.0544d, 0.001d)));
-        assertThat(fft1.apply(512),is(closeTo(0.3575d, 0.001d)));
-        assertThat(fft1.apply(1024),is(closeTo(-0.6732d, 0.001d)));
-        assertThat(fft1.apply(2048),is(closeTo(-1.0411d, 0.001d)));
+        assertThat(fft1.apply(0)).isEqualTo(0d);
+        assertThat(fft1.apply(1)).isCloseTo(0.0398d, within(0.001d));
+        assertThat(fft1.apply(2)).isCloseTo(0.0404d, within(0.001d));
+        assertThat(fft1.apply(4)).isCloseTo(0.0821d, within(0.001d));
+        assertThat(fft1.apply(8)).isCloseTo(0.1743d, within(0.001d));
+        assertThat(fft1.apply(16)).isCloseTo(0.4080d, within(0.001d));
+        assertThat(fft1.apply(32)).isCloseTo(0.8880d, within(0.001d));
+        assertThat(fft1.apply(64)).isCloseTo(0.9147d, within(0.001d));
+        assertThat(fft1.apply(128)).isCloseTo(-0.5965d, within(0.001d));
+        assertThat(fft1.apply(256)).isCloseTo(1.0544d, within(0.001d));
+        assertThat(fft1.apply(512)).isCloseTo(0.3575d, within(0.001d));
+        assertThat(fft1.apply(1024)).isCloseTo(-0.6732d, within(0.001d));
+        assertThat(fft1.apply(2048)).isCloseTo(-1.0411d, within(0.001d));
     }
 }
