@@ -4,6 +4,11 @@ import com.metawiring.types.FieldDef;
 import com.metawiring.types.FieldType;
 import com.metawiring.types.FuncDef;
 
+import java.security.InvalidParameterException;
+import java.util.Arrays;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+
 public class MutableFieldDef implements FieldDef {
     private String fieldName;
     private FieldType fieldType;
@@ -22,7 +27,12 @@ public class MutableFieldDef implements FieldDef {
 
 
     public MutableFieldDef setFieldType(String fieldTypeName) {
-        this.fieldType = FieldType.typeOf(fieldTypeName);
+        try {
+            this.fieldType = FieldType.typeOf(fieldTypeName);
+        } catch (Exception e) {
+            throw new InvalidParameterException("field type '" + fieldTypeName + "' is not a known type. Did you mean one of these?: "
+                    + Arrays.asList(FieldType.values()).stream().map(Enum::toString).collect(Collectors.joining(", ")).toLowerCase());
+        }
         return this;
     }
 

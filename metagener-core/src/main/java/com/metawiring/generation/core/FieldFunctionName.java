@@ -1,15 +1,29 @@
 package com.metawiring.generation.core;
 
-import com.metawiring.generation.fieldgenericfuncs.LeftString;
-import com.metawiring.generation.fieldgenericfuncs.RightString;
+import com.metawiring.generation.fieldgenboxes.*;
+import com.metawiring.generation.fieldgenericfuncs.*;
 import com.metawiring.generation.longfuncs.*;
-import com.metawiring.generation.fieldgenboxes.BoxedString;
 import com.metawiring.generation.fieldgenfuncs.*;
-import com.metawiring.generation.fieldgenericfuncs.Prefix;
-import com.metawiring.generation.fieldgenericfuncs.Suffix;
 import com.metawiring.generation.stack.*;
 
 public enum FieldFunctionName {
+
+    // [not] autoboxing ...
+    tobigdecimal(BoxedBigDecimal.class),
+    tobiginteger(BoxedBigInteger.class),
+    toboolean(BoxedBoolean.class),
+    tobytebuffer(BoxedByteBuffer.class),
+    todatetime(BoxedDateTime.class),
+    todouble(BoxedDouble.class),
+    tofloat(BoxedFloat.class),
+    toinetaddress(BoxedInetAddress.class),
+    tointeger(BoxedInteger.class),
+    tolist(BoxedList.class),
+    tolong(BoxedLong.class),
+    tomap(BoxedMap.class),
+    toset(BoxedSet.class),
+    tostring(BoxedString.class),
+    touuid(BoxedUUID.class),
 
     // stack operations
     sadd(StackAdd.class),
@@ -21,6 +35,7 @@ public enum FieldFunctionName {
     sswap(StackSwap.class),
     sclear(StackClear.class),
     sexch(StackExchange.class),
+    sinit(StackInit.class),
 
     // population-based long->long functions
     pmodulo(PopulationModulo.class),
@@ -33,11 +48,14 @@ public enum FieldFunctionName {
     multiply(Multiply.class),
     iclamp(DiscreteRangeClamp.class),
     rangedrandom(RangedRandom.class),
+    intmod(IntModulo.class),
 
     // datetime long->long functions
     dateshift(DateShift.class),
     daterange(DateRange.class),
-    intmod(IntModulo.class),
+    datescan(DateScan.class),
+    // datetime->datetime functions
+    dayhours(DateTimeHours.class),
 
     // generic String->String functions
 

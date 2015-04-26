@@ -107,6 +107,18 @@ public class StackTests {
         assertThat(stack[3]).isEqualTo(23433423l);
     }
 
+    @Test
+    public void testStackInit() {
+        StackInit init = new StackInit();
+        long[] stack = new long[] { 3,50,10,3 };
+        init.applyLongStack(stack);
+        assertThat(stack[0]).isEqualTo(3);
+        assertThat(init.applyAsLong(234l)).isEqualTo(234l);
+        assertThat(stack[0]).isEqualTo(1);
+        assertThat(stack[1]).isEqualTo(234l);
+    }
+
+
 
 
 }
