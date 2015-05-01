@@ -62,16 +62,19 @@ public class FunctionAssembler {
         if (functionObject instanceof TypedFieldFunction<?>) {
             return andThen((TypedFieldFunction<?>) functionObject);
         }
-        if (functionObject instanceof GenericFieldFunction<?,?>) {
-            return andThen((GenericFieldFunction<?,?>) functionObject);
+        if (functionObject instanceof GenericFieldFunction<?, ?>) {
+            return andThen((GenericFieldFunction<?, ?>) functionObject);
         }
         throw new RuntimeException("Function object was not of recognizable type.");
     }
 
     public FunctionAssembler andThen(LongUnaryFieldFunction outerLongFunc) {
         if (composedFunction != null) {
-            throw new RuntimeException("Unable to compose a LongUnaryFieldFunction around a TypedFieldFunction:" +
-                    "outer:" + outerLongFunc + ", inner:" + composedFunction);
+            if (!Long.class.isAssignableFrom(outputType)) {
+                throw new RuntimeException("Unable to compose a LongUnaryFieldFunction around a TypedFieldFunction:" +
+                        "outer:" + outerLongFunc + ", inner:" + composedFunction + ", unless the inner yields a Long");
+            }
+            composedFunction = outerLongFunc.composeLongUnary(composedFunction);
         }
 
         if (longFunction == null) {         // IF the initial function
@@ -83,11 +86,17 @@ public class FunctionAssembler {
     }
 
     public FunctionAssembler andThen(TypedFieldFunction<?> outerTypedFunc) {
-        if (composedFunction == null) {
+        if (composedFunction!=null) {
+            if (!Long.class.isAssignableFrom(outputType)) {
+                throw new RuntimeException("Unable to wrap an existing composed function which outputs outputs:" + outputType.getSimpleName() + ", and something assignable to Long is required.");
+            }
+            composedFunction = outerTypedFunc.composeLongUnary((TypedFieldFunction<Long>)composedFunction);
+        } else {
             composedFunction = outerTypedFunc;
         }
         if (longFunction != null) {
             composedFunction = composedFunction.compose(longFunction);
+            longFunction = null;
         }
         outputType = outputTypeFor(outerTypedFunc);
         return this;
@@ -112,12 +121,13 @@ public class FunctionAssembler {
         }
         return this;
     }
+
     public LongUnaryFieldFunction getlongFunction() {
         return longFunction;
     }
 
     public TypedFieldFunction<?> getTypedFunction() {
-        if (composedFunction!=null) {
+        if (composedFunction != null) {
             return composedFunction;
         }
         return null;
@@ -125,7 +135,9 @@ public class FunctionAssembler {
 
     public Class<?> getOutputType() {
         return outputType;
-    };
+    }
+
+    ;
 
     private static Class<?> inputTypeFor(Object function) {
         Input annotation = function.getClass().getAnnotation(Input.class);
@@ -134,9 +146,11 @@ public class FunctionAssembler {
 
     private static Class<?> outputTypeFor(Object function) {
         Output annotation = function.getClass().getAnnotation(Output.class);
+        if (annotation == null) {
+            throw new RuntimeException("function " + function.toString() + " is missing its Output annotation.");
+        }
         return annotation.value()[0];
     }
-
 
 
 }

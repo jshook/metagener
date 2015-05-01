@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
-@Output({Set.class})
+@Output(Set.class)
 public class BoxedSet implements TypedFieldFunction<Set<Long>> {
 
     @Override

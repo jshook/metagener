@@ -4,7 +4,8 @@ import com.metawiring.generation.fieldgenboxes.*;
 import com.metawiring.generation.fieldgenericfuncs.*;
 import com.metawiring.generation.longfuncs.*;
 import com.metawiring.generation.fieldgenfuncs.*;
-import com.metawiring.generation.stack.*;
+import com.metawiring.generation.stackdouble.*;
+import com.metawiring.generation.stacklong.*;
 
 public enum FieldFunctionName {
 
@@ -25,17 +26,29 @@ public enum FieldFunctionName {
     tostring(BoxedString.class),
     touuid(BoxedUUID.class),
 
-    // stack operations
-    sadd(StackAdd.class),
-    ssub(StackSubtract.class),
-    smul(StackMultiply.class),
-    sdiv(StackDivide.class),
-    spush(StackPush.class),
-    spop(StackPop.class),
-    sswap(StackSwap.class),
-    sclear(StackClear.class),
-    sexch(StackExchange.class),
-    sinit(StackInit.class),
+    // long stack operations
+    slinit(StackInitLong.class),
+    slclear(StackClearLong.class),
+    slpush(StackPushLong.class),
+    slpop(StackPopLong.class),
+    slswap(StackSwapLong.class),
+    slexch(StackExchangeLong.class),
+    sladd(StackAddLong.class),
+    slsub(StackSubtractLong.class),
+    slmul(StackMultiplyLong.class),
+    sldiv(StackDivideLong.class),
+
+    // double stack operations
+    sdinit(StackInitDouble.class),
+    sdclear(StackClearDouble.class),
+    sdpush(StackPushDouble.class),
+    sdpop(StackPopDouble.class),
+    sdswap(StackSwapDouble.class),
+    sdexch(StackExchangeDouble.class),
+    sdadd(StackAddDouble.class),
+    sdsub(StackSubtractDouble.class),
+    sdmul(StackMultiplyDouble.class),
+    sddiv(StackDivideDouble.class),
 
     // population-based long->long functions
     pmodulo(PopulationModulo.class),
@@ -54,6 +67,9 @@ public enum FieldFunctionName {
     dateshift(DateShift.class),
     daterange(DateRange.class),
     datescan(DateScan.class),
+    dateplus(DatePlus.class),
+    dateminus(DateMinus.class),
+    tomillis(ToMillis.class),
     // datetime->datetime functions
     dayhours(DateTimeHours.class),
 

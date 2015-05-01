@@ -1,9 +1,9 @@
-package com.metawiring.generation.stack;
+package com.metawiring.generation.stacklong;
 
 import com.metawiring.types.functiontypes.LongStackAware;
 import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 
-public class StackPush implements LongUnaryFieldFunction, LongStackAware {
+public class StackClearLong implements LongUnaryFieldFunction, LongStackAware {
 
     private long[] stack;
 
@@ -14,8 +14,7 @@ public class StackPush implements LongUnaryFieldFunction, LongStackAware {
 
     @Override
     public long applyAsLong(long operand) {
-        stack[(int)stack[0]+1] = operand;
-        stack[0]++;
+        stack[0]=0;
         return operand;
     }
 }

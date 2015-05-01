@@ -38,6 +38,7 @@ public class EntitySamplerImpl implements EntitySampler {
     // memoized elements, recomputed when the source stream is set
     private Stream<EntitySample> esStream;
     private Iterator<EntitySample> esIterator;
+    private EntitySample lastEntitySample;
 //    private List<Iterator<?>> fieldIterators;
 
     public EntitySamplerImpl(SamplerDef samplerDef, EntityDef entityDef) {
@@ -59,6 +60,7 @@ public class EntitySamplerImpl implements EntitySampler {
     @Override
     public EntitySample getNextEntity() {
         EntitySample es = esIterator.next();
+        this.lastEntitySample = es;
         return es;
     }
 
@@ -72,6 +74,10 @@ public class EntitySamplerImpl implements EntitySampler {
     public <T> T getFieldValue(String fieldName, long sampleId) {
         LongFunction function= fieldFunctionMap.get(fieldName);
         return (T) function.apply(sampleId);
+    }
+
+    public <T> T getLastFieldValue(String fieldName) {
+        return lastEntitySample.getFieldValue(fieldName);
     }
 
     @Override

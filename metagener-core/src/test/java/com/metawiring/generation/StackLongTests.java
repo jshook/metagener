@@ -1,15 +1,15 @@
 package com.metawiring.generation;
 
-import com.metawiring.generation.stack.*;
+import com.metawiring.generation.stacklong.*;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StackTests {
+public class StackLongTests {
 
     @Test
     public void testStackPush() {
-        StackPush push = new StackPush();
+        StackPushLong push = new StackPushLong();
         long[] stack = new long[10];
         push.applyLongStack(stack);
         push.applyAsLong(5);
@@ -19,20 +19,20 @@ public class StackTests {
 
     @Test
     public void testStackPop() {
-        StackPop pop = new StackPop();
+        StackPopLong pop = new StackPopLong();
         long[] stack = new long[] { 2, 5, 7 };
         pop.applyLongStack(stack);
-        long top7 = pop.applyAsLong(234l);
+        long top7 = pop.apply(new Object());
         assertThat(top7).isEqualTo(7);
         assertThat(stack[0]).isEqualTo(1l);
-        long top5 = pop.applyAsLong(3423l);
+        long top5 = pop.apply(new Object());
         assertThat(top5).isEqualTo(5);
         assertThat(stack[0]).isEqualTo(0l);
     }
 
     @Test
     public void testStackSwap() {
-        StackSwap swap = new StackSwap();
+        StackSwapLong swap = new StackSwapLong();
         long[] stack = new long[] { 2,3,4};
         swap.applyLongStack(stack);
         long swapped = swap.applyAsLong(23);
@@ -44,7 +44,7 @@ public class StackTests {
 
     @Test
     public void testStackAdd() {
-        StackAdd add = new StackAdd();
+        StackAddLong add = new StackAddLong();
         long[] stack = new long[] { 3,7,11,19 };
         add.applyLongStack(stack);
         assertThat(add.applyAsLong(3200)).isEqualTo(30);
@@ -55,7 +55,7 @@ public class StackTests {
 
     @Test
     public void testStackSubtract() {
-        StackSubtract subtract = new StackSubtract();
+        StackSubtractLong subtract = new StackSubtractLong();
         long[] stack = new long[] { 3,23,17,11 };
         subtract.applyLongStack(stack);
         assertThat(subtract.applyAsLong(3200)).isEqualTo(6);
@@ -66,7 +66,7 @@ public class StackTests {
 
     @Test
     public void testStackMultiply() {
-        StackMultiply multiply = new StackMultiply();
+        StackMultiplyLong multiply = new StackMultiplyLong();
         long[] stack = new long[] { 3,23,17,11 };
         multiply.applyLongStack(stack);
         assertThat(multiply.applyAsLong(3200)).isEqualTo(187);
@@ -77,7 +77,7 @@ public class StackTests {
 
     @Test
     public void testStackDivide() {
-        StackDivide divide = new StackDivide();
+        StackDivideLong divide = new StackDivideLong();
         long[] stack = new long[] { 3,50,10,3 };
         divide.applyLongStack(stack);
         assertThat(divide.applyAsLong(3200)).isEqualTo(3);
@@ -88,7 +88,7 @@ public class StackTests {
 
     @Test
     public void testStackClear() {
-        StackClear clear = new StackClear();
+        StackClearLong clear = new StackClearLong();
         long[] stack = new long[] { 3,50,10,3 };
         clear.applyLongStack(stack);
         assertThat(stack[0]).isEqualTo(3);
@@ -98,7 +98,7 @@ public class StackTests {
 
     @Test
     public void testStackExchange() {
-        StackExchange exchange = new StackExchange();
+        StackExchangeLong exchange = new StackExchangeLong();
         long[] stack = new long[] { 3,50,10,3 };
         exchange.applyLongStack(stack);
         assertThat(stack[0]).isEqualTo(3);
@@ -109,7 +109,7 @@ public class StackTests {
 
     @Test
     public void testStackInit() {
-        StackInit init = new StackInit();
+        StackInitLong init = new StackInitLong();
         long[] stack = new long[] { 3,50,10,3 };
         init.applyLongStack(stack);
         assertThat(stack[0]).isEqualTo(3);

@@ -14,8 +14,10 @@
 */
 package com.metawiring.generation.fieldgenfuncs;
 
+import com.metawiring.annotations.Output;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 
+@Output(Double.class)
 public class FFTSim implements TypedFieldFunction<Double> {
 
     private double[] fftSignature;
@@ -27,7 +29,9 @@ public class FFTSim implements TypedFieldFunction<Double> {
     public FFTSim(double... fftparams) {
         fftSignature = fftparams;
     }
-    public FFTSim(String... fftparams) {
+
+    public FFTSim(String fftparamsJoined) {
+        String[] fftparams = fftparamsJoined.split(",");
         fftSignature = new double[fftparams.length];
         for (int idx = 0; idx < fftparams.length; idx++) {
             fftSignature[idx]=Double.valueOf(fftparams[idx]);
@@ -37,7 +41,7 @@ public class FFTSim implements TypedFieldFunction<Double> {
     @Override
     public Double apply(long value) {
         double y=0.0d;
-        for (int idx = 0; idx < fftSignature.length; idx+=3) {
+        for (int idx = 0; idx < fftSignature.length; idx+=2) {
             y+= fftSignature[idx] * Math.sin(fftSignature[idx+1]*value);
         }
         return y;

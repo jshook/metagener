@@ -21,4 +21,7 @@ public interface LongUnaryFieldFunction extends LongUnaryOperator {
         return (long input) -> outer.apply(applyAsLong(input));
     }
 
+    default <R extends Long> TypedFieldFunction<? extends Long> composeLongUnary(TypedFieldFunction<? extends Long> composedFunction) {
+        return (long input) -> applyAsLong(composedFunction.apply(input));
+    }
 }

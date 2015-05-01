@@ -1,9 +1,9 @@
-package com.metawiring.generation.stack;
+package com.metawiring.generation.stacklong;
 
 import com.metawiring.types.functiontypes.LongStackAware;
 import com.metawiring.types.functiontypes.LongUnaryFieldFunction;
 
-public class StackInit implements LongUnaryFieldFunction, LongStackAware {
+public class StackInitLong implements LongUnaryFieldFunction, LongStackAware {
 
     private long[] stack;
 

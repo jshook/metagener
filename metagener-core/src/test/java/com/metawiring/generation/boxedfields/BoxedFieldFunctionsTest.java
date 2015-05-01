@@ -3,6 +3,7 @@ package com.metawiring.generation.boxedfields;
 import com.metawiring.generation.fieldgenboxes.*;
 import com.metawiring.types.functiontypes.TypedFieldFunction;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
@@ -131,7 +132,7 @@ public class BoxedFieldFunctionsTest {
     public void testBoxedTimeStamp() {
         TypedFieldFunction<DateTime> ff = new BoxedDateTime();
         DateTime actual = ff.apply(12345l);
-        DateTime expected = new DateTime(12345l);
+        DateTime expected = new DateTime(12345l, DateTimeZone.UTC);
         assertThat(actual).isEqualTo(expected);
     }
 

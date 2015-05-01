@@ -35,8 +35,16 @@ public interface TypedFieldFunction<R> extends LongFunction<R> {
         return (long input) -> after.apply(apply(input));
     }
 
+    default TypedFieldFunction<R> composeLongUnary(TypedFieldFunction<? extends Long> before) {
+        Objects.requireNonNull(before);
+        return (long input) -> apply(before.apply(input));
+    }
+
+
     default TypedFieldFunction<R> compose(LongUnaryOperator before) {
         Objects.requireNonNull(before);
         return (long input) -> apply(before.applyAsLong(input));
     }
+
+
 }

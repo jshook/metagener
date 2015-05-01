@@ -1,5 +1,8 @@
 package com.metawiring.webapi.common;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.metawiring.webapi.resource.BulkSampleResource;
 import com.metawiring.webapi.resource.GenContextResource;
 import com.metawiring.webapi.resource.SampleResource;
@@ -43,6 +46,10 @@ public class MetagenerWebApp extends Application<MetagenerWebConfig> {
         environment.jersey().register(bulkSampleResource);
 
         environment.healthChecks().register("presence",new PresenceHealthCheck());
+
+        environment.getObjectMapper().registerModule(new JodaModule());
+        environment.getObjectMapper().setDateFormat(new ISO8601DateFormat());
+        environment.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     @Override
