@@ -4,6 +4,10 @@ This documentation is a work in progress.. Also, this project is a work in progr
 
 Actually, this documentation is meant to describe what metagener should look like once it is ready for release. Much of what is described here does not exist yet.
 
+# STATUS
+
+If you are currently using metagener, the current stable version is on branch v011. I didn't expect so many to start using while it was still an experiment. If you need to have only stable merges, consider tracking the v011 branch. The main branch is expected to be volatile while I sort out some conceptual and implementation challenges.
+
 # Metagener
 
 Metagener is a meta-programming library and conceptual power tool for flexible and highly-concurrent statistical data generation.  More specifically, it is a conceptual model for thinking about and composing data generator functions, a language for expressing them, and a runtime for accessing the results of these functions.
