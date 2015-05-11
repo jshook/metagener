@@ -60,12 +60,13 @@ public class BasicPerfTest {
 
             for (int j = 0; j<innerLoop; j++) {
                 EntitySample nextEntity = s.getNextEntity();
+                String generatedString = nextEntity.getFieldValue("astring");
 
             }
             time.stop();
         }
         double v = stringsTimer.getMeanRate() * innerLoop;
-        System.out.printf("calculated mean rate=%1$.2f/s, with %2$d loops of %3$d cycles.", v, outerLoop, innerLoop);
+        System.out.printf("calculated mean rate=%1$.2f/s, with %2$d loops of %3$d total cycles.", v, outerLoop, innerLoop);
         System.out.flush();
 
     }
