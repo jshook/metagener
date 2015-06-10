@@ -9,7 +9,7 @@
         <dependency>
             <groupId>com.metawiring</groupId>
             <artifactId>metagener-defs</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
