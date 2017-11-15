@@ -1,3 +1,8 @@
+WARNING
+=======
+
+This is no longer maintained. It has been made public again only for code spelunkers.
+
 metagener
 =========
 
